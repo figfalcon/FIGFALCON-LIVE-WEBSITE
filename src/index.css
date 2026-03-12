@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -103,7 +103,8 @@
   }
 
   .section-badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-border/60 bg-secondary/50 text-muted-foreground;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-primary/40 bg-secondary/50 text-primary;
+    box-shadow: 0 0 12px hsl(217 91% 60% / 0.25), inset 0 0 12px hsl(217 91% 60% / 0.05);
   }
 
   .glow-dot {
