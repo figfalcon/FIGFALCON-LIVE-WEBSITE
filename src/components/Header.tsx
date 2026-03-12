@@ -43,12 +43,16 @@ const Header = () => {
           <img src={logo} alt="Figfalcon" className="h-8" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
-              className={`nav-link ${location.pathname === link.path ? "active text-foreground" : ""}`}
+              className={`text-sm font-medium px-4 py-2 rounded-full transition-all duration-300 ${
+                location.pathname === link.path
+                  ? "bg-secondary border border-primary/40 text-primary shadow-[0_0_10px_hsl(217_91%_60%/0.2)]"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {link.label}
             </Link>
