@@ -41,7 +41,7 @@ const Footer = () => {
               <a href="mailto:agency@figfalcon.com" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <Mail className="w-4 h-4" /> agency@figfalcon.com
               </a>
-              <a href="https://wa.me/917995602748" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href="https://wa.me/7303318392" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <Phone className="w-4 h-4" /> +91 7303318392
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
