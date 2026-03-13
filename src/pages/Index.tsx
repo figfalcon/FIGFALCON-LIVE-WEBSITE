@@ -105,7 +105,6 @@ const Index = () => {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden lg:block"
             >
               <div className="glass-card p-8">
                 <div className="flex items-center justify-between mb-6">
