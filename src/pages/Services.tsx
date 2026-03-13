@@ -182,18 +182,19 @@ const Services = () => {
             <h2 className="section-heading mb-4">
               Save More With <span className="gradient-text">Bundled Systems</span>
             </h2>
+
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Get multiple services working together as one integrated growth machine at better value.
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {bundles.map((bundle, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
                 <div className={`glass-card-hover p-8 h-full flex flex-col ${i === 1 ? "border-primary/30 ring-1 ring-primary/20" : ""}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-heading font-bold text-xl">{bundle.name}</h3>
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${i === 1 ? "bg-primary/20 text-primary" : "bg-accent/10 text-accent"} border ${i === 1 ? "border-primary/30" : "border-accent/20"}`}>
+                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap ${i === 0 ? "bg-accent/10 text-accent border border-accent/20" : i === 1 ? "bg-primary/20 text-primary border border-primary/30" : "bg-accent/10 text-accent border border-accent/20"}`}>
                       {bundle.tag}
                     </span>
                   </div>

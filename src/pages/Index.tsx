@@ -90,7 +90,7 @@ const Index = () => {
                 <Link to="/contact" className="btn-primary">
                   Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/case-studies" className="btn-secondary">
+                <Link to="/case-studies" className="btn-secondary text-base px-6 py-3">
                   See Our Results
                 </Link>
               </div>
@@ -105,7 +105,6 @@ const Index = () => {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="hidden lg:block"
             >
               <div className="glass-card p-8">
                 <div className="flex items-center justify-between mb-6">
@@ -299,10 +298,10 @@ const Index = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px]" />
         <div className="container mx-auto px-6 relative z-10 text-center">
           <ScrollReveal>
-            <h2 className="section-heading mb-6">
-              Ready for Structured,{" "}
-              <span className="gradient-text">Predictable Growth?</span>
-            </h2>
+              <h2 className="section-heading mb-6">
+                Let's Build Your{" "}
+                <span className="gradient-text">Growth Systems</span>
+              </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
               Book your Immediate AI Demo Call. We'll audit your operations, map automation opportunities, and design a custom system for predictable results. Not a sales call, a strategy conversation.
             </p>
