@@ -50,7 +50,7 @@ const Header = () => {
               to={link.path}
               className={`text-sm font-medium px-4 py-2 rounded-full transition-all duration-300 ${
                 location.pathname === link.path
-                  ? "bg-secondary border border-primary/40 text-primary shadow-[0_0_10px_hsl(217_91%_60%/0.2)]"
+                  ? "bg-secondary/80 border border-border/60 text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

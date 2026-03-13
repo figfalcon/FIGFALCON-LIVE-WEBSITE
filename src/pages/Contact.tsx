@@ -151,7 +151,7 @@ const Contact = () => {
                     </div>
 
                     <button type="submit" className="btn-primary w-full justify-center text-base py-4">
-                      Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
+                      Surprise Me <ArrowRight className="w-4 h-4" />
                     </button>
                   </form>
                 </div>
@@ -186,7 +186,7 @@ const Contact = () => {
                         <div className="text-foreground group-hover:text-primary transition-colors">agency@figfalcon.com</div>
                       </div>
                     </a>
-                    <a href="https://wa.me/917995602748" className="flex items-center gap-3 text-sm group">
+                    <a href="https://wa.me/7303318392" className="flex items-center gap-3 text-sm group">
                       <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                         <Phone className="w-4 h-4 text-primary" />
                       </div>

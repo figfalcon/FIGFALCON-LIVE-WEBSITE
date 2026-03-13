@@ -41,7 +41,7 @@ const Footer = () => {
               <a href="mailto:agency@figfalcon.com" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <Mail className="w-4 h-4" /> agency@figfalcon.com
               </a>
-              <a href="https://wa.me/917995602748" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href="https://wa.me/7303318392" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <Phone className="w-4 h-4" /> +91 7303318392
               </a>
               <div className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -57,8 +57,8 @@ const Footer = () => {
             © {new Date().getFullYear()} Figfalcon. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</a>
-            <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</a>
+            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -135,7 +135,7 @@ const Services = () => {
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">{service.icon}</div>
                   <h2 className="section-heading text-3xl">{service.title}</h2>
                 </div>
-                <p className="text-sm text-primary font-medium mb-4">Best For: {service.bestFor}</p>
+                
                 <p className="text-muted-foreground leading-relaxed mb-8">{service.desc}</p>
                 <h4 className="font-heading font-semibold mb-4">What's Included:</h4>
                 <div className="space-y-2 mb-8">
