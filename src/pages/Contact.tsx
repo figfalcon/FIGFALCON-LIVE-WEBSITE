@@ -151,7 +151,7 @@ const Contact = () => {
                     </div>
 
                     <button type="submit" className="btn-primary w-full justify-center text-base py-4">
-                      Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
+                      Surprise Me <ArrowRight className="w-4 h-4" />
                     </button>
                   </form>
                 </div>
