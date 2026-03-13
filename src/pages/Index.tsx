@@ -90,7 +90,7 @@ const Index = () => {
                 <Link to="/contact" className="btn-primary">
                   Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/case-studies" className="btn-secondary">
+                <Link to="/case-studies" className="btn-secondary text-base px-6 py-3">
                   See Our Results
                 </Link>
               </div>
