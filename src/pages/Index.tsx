@@ -112,8 +112,8 @@ const Index = () => {
                 {/* Systems Active floating badge */}
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
+                  animate={{ opacity: 1, y: [0, -6, 0] }}
+                  transition={{ delay: 0.4, y: { delay: 1, duration: 2.5, repeat: Infinity, ease: "easeInOut" } }}
                   className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border border-border/40"
                 >
                   <div>
