@@ -223,7 +223,7 @@ const Services = () => {
       <section className="py-24">
         <div className="container mx-auto px-6 text-center">
           <ScrollReveal>
-            <h2 className="section-heading mb-4">Not Sure Which Service Is Right for You?</h2>
+            <h2 className="section-heading mb-4">Not Sure Which Service Is <span className="gradient-text">Right for You?</span></h2>
             <p className="text-muted-foreground mb-8">Book a free strategy call and we'll analyze your situation to recommend the best approach.</p>
             <Link to="/contact" className="btn-primary text-lg px-8 py-4">
               Let's Automate Your Growth <ArrowRight className="w-5 h-5" />

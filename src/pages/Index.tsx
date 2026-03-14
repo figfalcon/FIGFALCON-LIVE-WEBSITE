@@ -79,9 +79,10 @@ const Index = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-tight mb-6">
-                Run Your Business{" "}
-                <span className="gradient-text">Without Operational Chaos</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
+                Run Your<br />
+                Business Without<br />
+                <span className="gradient-text">Operational Chaos</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
                 We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
@@ -91,7 +92,7 @@ const Index = () => {
                   Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4">
-                  See Our Results
+                  See Our Results <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
@@ -105,16 +106,25 @@ const Index = () => {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center lg:justify-end"
             >
-              <div className="glass-card p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-heading font-semibold text-lg">Client Results</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">Live Data</span>
+              <div className="glass-card p-8 w-[380px] relative">
+                {/* Systems Active floating badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border border-border/40"
+                >
+                  <div>
+                    <div className="font-heading font-semibold text-foreground">Systems Active</div>
+                    <div className="text-xs text-muted-foreground">Automation running</div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 mb-6 text-sm text-muted-foreground">
-                  <span className="glow-dot animate-pulse-glow" /> Systems Active — Automation running
+                </motion.div>
+
+                <div className="flex items-center justify-between mb-6 mt-2">
+                  <h3 className="font-heading font-bold text-xl">Client Results</h3>
+                  <span className="text-xs text-accent font-medium px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">Live Data</span>
                 </div>
                 <div className="space-y-4">
                   {stats.map((stat, i) => (
@@ -123,13 +133,13 @@ const Index = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 + i * 0.15 }}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-secondary/50 border border-border/30"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                         {stat.icon}
                       </div>
                       <div>
-                        <div className="stat-number text-2xl">{stat.value}</div>
+                        <div className="stat-number text-2xl font-bold">{stat.value}</div>
                         <div className="text-sm text-muted-foreground">{stat.label}</div>
                       </div>
                     </motion.div>
@@ -144,13 +154,21 @@ const Index = () => {
       {/* Trust Bar */}
       <section className="py-12 border-y border-border/30">
         <div className="container mx-auto px-6">
-          <p className="text-center text-sm text-muted-foreground mb-8">
+          <p className="text-center text-xs text-muted-foreground uppercase tracking-widest mb-8">
             Trusted by disruptive B2B companies to scale operations without the chaos
           </p>
-          <div className="flex items-center justify-center gap-12 flex-wrap opacity-40">
-            {["TechCorp", "InnovateLabs", "ScaleUp Inc", "GrowthCo"].map((name) => (
-              <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
-            ))}
+          <div className="flex items-center justify-center gap-4">
+            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
+              <ArrowRight className="w-4 h-4 rotate-180" />
+            </button>
+            <div className="flex items-center justify-center gap-12 flex-wrap opacity-50">
+              {["GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name) => (
+                <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
+              ))}
+            </div>
+            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>

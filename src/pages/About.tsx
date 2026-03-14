@@ -32,7 +32,7 @@ const About = () => {
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-3xl">
           <ScrollReveal>
-            <h2 className="section-heading text-center mb-12">Why We Built Figfalcon</h2>
+            <h2 className="section-heading text-center mb-12">Why We Built <span className="gradient-text">Figfalcon</span></h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
             <div className="space-y-6 text-muted-foreground leading-relaxed">
@@ -76,18 +76,12 @@ const About = () => {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <ScrollReveal direction="left">
-              <div className="glass-card p-8 flex flex-col items-center text-center">
-                <img src={founderImg} alt="Bikram - Founder of Figfalcon" className="w-32 h-32 rounded-full object-cover mb-4" />
-                <h3 className="font-heading font-semibold text-xl">Bikram</h3>
-                <p className="text-sm text-muted-foreground">Founder & Head of Systems Architecture</p>
-                <div className="flex gap-6 mt-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold font-heading">2+</div>
-                    <div className="text-xs text-muted-foreground">Years Experience</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold font-heading">50+</div>
-                    <div className="text-xs text-muted-foreground">Projects Scaled</div>
+              <div className="relative rounded-2xl overflow-hidden max-w-sm mx-auto">
+                <img src={founderImg} alt="Bikram - Founder of Figfalcon" className="w-full aspect-[3/4] object-cover" />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 via-background/70 to-transparent p-6 pt-16">
+                  <div className="glass-card px-5 py-4 rounded-xl">
+                    <h3 className="font-heading font-bold text-lg">Bikram</h3>
+                    <p className="text-sm text-primary">Founder & Head of Systems Architecture</p>
                   </div>
                 </div>
               </div>
