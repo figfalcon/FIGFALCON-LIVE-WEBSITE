@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Cog, Zap, Wrench, Users } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
+import founderImg from "@/assets/founder-bikram.png";
 
 const philosophy = [
   { icon: <Cog className="w-6 h-6" />, title: "Systems Over Hacks", desc: "We build infrastructure that scales, not quick fixes that break." },
@@ -76,7 +77,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <ScrollReveal direction="left">
               <div className="glass-card p-8 flex flex-col items-center text-center">
-                <div className="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center text-4xl font-heading font-bold text-primary mb-4">B</div>
+                <img src={founderImg} alt="Bikram - Founder of Figfalcon" className="w-32 h-32 rounded-full object-cover mb-4" />
                 <h3 className="font-heading font-semibold text-xl">Bikram</h3>
                 <p className="text-sm text-muted-foreground">Founder & Head of Systems Architecture</p>
                 <div className="flex gap-6 mt-6">
