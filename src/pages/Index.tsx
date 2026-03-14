@@ -106,16 +106,25 @@ const Index = () => {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="flex justify-center lg:justify-end"
             >
-              <div className="glass-card p-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-heading font-semibold text-lg">Client Results</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">Live Data</span>
+              <div className="glass-card p-8 w-[380px] relative">
+                {/* Systems Active floating badge */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border border-border/40"
+                >
+                  <div>
+                    <div className="font-heading font-semibold text-foreground">Systems Active</div>
+                    <div className="text-xs text-muted-foreground">Automation running</div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 mb-6 text-sm text-muted-foreground">
-                  <span className="glow-dot animate-pulse-glow" /> Systems Active — Automation running
+                </motion.div>
+
+                <div className="flex items-center justify-between mb-6 mt-2">
+                  <h3 className="font-heading font-bold text-xl">Client Results</h3>
+                  <span className="text-xs text-accent font-medium px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">Live Data</span>
                 </div>
                 <div className="space-y-4">
                   {stats.map((stat, i) => (
@@ -124,13 +133,13 @@ const Index = () => {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.5 + i * 0.15 }}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-secondary/50 border border-border/30"
+                      className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
                         {stat.icon}
                       </div>
                       <div>
-                        <div className="stat-number text-2xl">{stat.value}</div>
+                        <div className="stat-number text-2xl font-bold">{stat.value}</div>
                         <div className="text-sm text-muted-foreground">{stat.label}</div>
                       </div>
                     </motion.div>
