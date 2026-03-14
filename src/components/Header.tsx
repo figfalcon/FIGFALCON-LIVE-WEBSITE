@@ -59,7 +59,7 @@ const Header = () => {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Link to="/contact" className="btn-primary text-sm">
             Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
           </Link>
