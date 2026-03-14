@@ -43,7 +43,7 @@ const Header = () => {
           <img src={logo} alt="Figfalcon" className="h-8" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden lg:flex items-center gap-2">
           {navLinks.map((link) => (
             <Link
               key={link.path}
