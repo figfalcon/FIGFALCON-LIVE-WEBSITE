@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Cog, Zap, Wrench, Users } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
+import founderImg from "@/assets/founder-bikram.png";
 
 const philosophy = [
   { icon: <Cog className="w-6 h-6" />, title: "Systems Over Hacks", desc: "We build infrastructure that scales, not quick fixes that break." },
