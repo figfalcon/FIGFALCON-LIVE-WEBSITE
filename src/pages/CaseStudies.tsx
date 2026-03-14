@@ -54,24 +54,27 @@ const CaseStudies = () => {
             {caseStudies.map((study, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
                 <div className="glass-card-hover overflow-hidden h-full flex flex-col">
-                  <div className="h-40 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary font-heading font-bold text-xl">CS</div>
-                  </div>
-                  <div className="p-8 flex-1 flex flex-col">
-                    <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit mb-3">{study.tag}</span>
-                    <h3 className="font-heading font-semibold text-xl mb-1">{study.title}</h3>
-                    <p className="text-sm text-accent font-medium mb-3">{study.improvement}</p>
-                    <p className="text-sm text-muted-foreground mb-6 flex-1">{study.desc}</p>
-                    <div className="grid grid-cols-3 gap-4 border-t border-border/30 pt-6 mb-6">
-                      {study.stats.map((stat, j) => (
-                        <div key={j} className="text-center">
-                          <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">{stat.icon}<span className="text-xs uppercase">{stat.label}</span></div>
-                          <div className="font-heading font-bold text-primary">{stat.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                   <div className="h-40 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                     <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary font-heading font-bold text-xl">CS</div>
+                   </div>
+                   <div className="p-8 flex-1 flex flex-col">
+                     <span className="text-xs font-medium text-primary px-2 py-1 rounded-full bg-primary/10 border border-primary/20 w-fit mb-3">{study.tag}</span>
+                     <h3 className="font-heading font-semibold text-xl mb-1">{study.title}</h3>
+                     <p className="text-sm text-accent font-medium mb-3">{study.improvement}</p>
+                     <p className="text-sm text-muted-foreground mb-6 flex-1">{study.desc}</p>
+                     <div className="grid grid-cols-3 gap-4 border-t border-border/30 pt-6 mb-6">
+                       {study.stats.map((stat, j) => (
+                         <div key={j} className="text-center">
+                           <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">{stat.icon}<span className="text-xs uppercase">{stat.label}</span></div>
+                           <div className="font-heading font-bold text-primary">{stat.value}</div>
+                         </div>
+                       ))}
+                     </div>
+                     <button className="w-full py-3 rounded-lg border border-border/60 text-sm font-medium text-foreground hover:bg-secondary/50 transition-colors">
+                       View Full Case Study
+                     </button>
+                   </div>
+                 </div>
               </ScrollReveal>
             ))}
           </div>
