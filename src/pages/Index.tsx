@@ -79,9 +79,10 @@ const Index = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-tight mb-6">
-                Run Your Business{" "}
-                <span className="gradient-text">Without Operational Chaos</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
+                Run Your<br />
+                Business Without<br />
+                <span className="gradient-text">Operational Chaos</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
                 We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
