@@ -43,7 +43,7 @@ const Header = () => {
           <img src={logo} alt="Figfalcon" className="h-8" />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="hidden lg:flex items-center gap-2">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -59,14 +59,14 @@ const Header = () => {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Link to="/contact" className="btn-primary text-sm">
             Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
         <button
-          className="md:hidden text-foreground p-2"
+          className="lg:hidden text-foreground p-2"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -79,7 +79,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
+            className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
           >
             <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
