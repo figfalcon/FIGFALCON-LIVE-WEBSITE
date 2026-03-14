@@ -32,7 +32,7 @@ const About = () => {
       <section className="py-24">
         <div className="container mx-auto px-6 max-w-3xl">
           <ScrollReveal>
-            <h2 className="section-heading text-center mb-12">Why We Built Figfalcon</h2>
+            <h2 className="section-heading text-center mb-12">Why We Built <span className="gradient-text">Figfalcon</span></h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
             <div className="space-y-6 text-muted-foreground leading-relaxed">

@@ -154,13 +154,21 @@ const Index = () => {
       {/* Trust Bar */}
       <section className="py-12 border-y border-border/30">
         <div className="container mx-auto px-6">
-          <p className="text-center text-sm text-muted-foreground mb-8">
+          <p className="text-center text-xs text-muted-foreground uppercase tracking-widest mb-8">
             Trusted by disruptive B2B companies to scale operations without the chaos
           </p>
-          <div className="flex items-center justify-center gap-12 flex-wrap opacity-40">
-            {["TechCorp", "InnovateLabs", "ScaleUp Inc", "GrowthCo"].map((name) => (
-              <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
-            ))}
+          <div className="flex items-center justify-center gap-4">
+            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
+              <ArrowRight className="w-4 h-4 rotate-180" />
+            </button>
+            <div className="flex items-center justify-center gap-12 flex-wrap opacity-50">
+              {["GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name) => (
+                <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
+              ))}
+            </div>
+            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
