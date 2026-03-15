@@ -119,9 +119,9 @@ const Contact = () => {
                       </div>
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Company Size</label>
-                        <select
+                      <select
                           name="companySize" value={formData.companySize} onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm [&>option]:bg-card [&>option]:text-foreground"
                         >
                           <option value="">Select company size</option>
                           {companySizes.map((s) => <option key={s} value={s}>{s}</option>)}
