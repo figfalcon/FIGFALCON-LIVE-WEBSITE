@@ -133,7 +133,7 @@ const Contact = () => {
                       <label className="text-sm font-medium mb-1.5 block">Investment Budget</label>
                       <select
                         name="budget" value={formData.budget} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm [&>option]:bg-card [&>option]:text-foreground"
                       >
                         <option value="">Select budget range</option>
                         {budgets.map((b) => <option key={b} value={b}>{b}</option>)}

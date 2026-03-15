@@ -95,7 +95,7 @@ const Index = () => {
                   See Our Results <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-4 md:gap-6 text-sm text-muted-foreground pr-2">
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Done-for-you systems</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Custom automation</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Structured growth</span>
