@@ -297,13 +297,15 @@ const Index = () => {
               <blockquote className="text-xl md:text-2xl font-heading leading-relaxed mb-8 text-foreground/90">
                 "Finally, a system that runs without me. The automation handles lead capture, follow-up, and booking. I just show up to qualified calls."
               </blockquote>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">SC</div>
-                <div className="text-left">
-                  <div className="font-semibold text-sm">Sarah Chen</div>
-                  <div className="text-xs text-muted-foreground">Founder, Growth Advisory Co</div>
+              <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">SC</div>
+                  <div className="text-left">
+                    <div className="font-semibold text-sm">Sarah Chen</div>
+                    <div className="text-xs text-muted-foreground">Founder, Growth Advisory Co</div>
+                  </div>
                 </div>
-                <span className="ml-4 text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">
+                <span className="sm:ml-4 text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">
                   Pipeline on autopilot
                 </span>
               </div>
