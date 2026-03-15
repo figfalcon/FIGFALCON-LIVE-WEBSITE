@@ -79,7 +79,7 @@ const Index = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
                 Run Your<br />
                 Business Without<br />
                 <span className="gradient-text">Operational Chaos</span>
