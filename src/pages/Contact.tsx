@@ -109,9 +109,9 @@ const Contact = () => {
                     <div className="grid md:grid-cols-2 gap-5">
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Industry / Business Type</label>
-                        <select
+                      <select
                           name="industry" value={formData.industry} onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm [&>option]:bg-card [&>option]:text-foreground"
                         >
                           <option value="">Select your industry</option>
                           {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
