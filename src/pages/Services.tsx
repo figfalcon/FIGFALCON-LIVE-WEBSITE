@@ -95,7 +95,7 @@ const Services = () => {
       {/* Service Cards Overview */}
       <section className="py-16">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {services.slice(0, 3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
