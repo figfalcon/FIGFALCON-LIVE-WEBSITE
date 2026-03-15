@@ -190,7 +190,7 @@ const Index = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {problems.map((problem, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="glass-card-hover p-8 h-full">
