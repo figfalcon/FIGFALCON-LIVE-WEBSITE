@@ -188,7 +188,7 @@ const Services = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {bundles.map((bundle, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
                 <div className={`glass-card-hover p-8 h-full flex flex-col ${i === 1 ? "border-primary/30 ring-1 ring-primary/20" : ""}`}>

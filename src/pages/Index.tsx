@@ -257,7 +257,7 @@ const Index = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8">
             {processSteps.map((step, i) => (
               <ScrollReveal key={i} delay={i * 0.15}>
                 <div className="glass-card p-8 h-full relative overflow-hidden">

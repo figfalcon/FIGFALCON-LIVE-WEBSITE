@@ -161,6 +161,20 @@
   }
 }
 
+/* Trust bar sliding animation */
+@keyframes trust-slide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.trust-slider {
+  animation: trust-slide 20s linear infinite;
+}
+
+.trust-slider:hover {
+  animation-play-state: paused;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;

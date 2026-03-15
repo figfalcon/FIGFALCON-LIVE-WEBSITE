@@ -50,7 +50,7 @@ const CaseStudies = () => {
 
       <section className="py-24">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8">
             {caseStudies.map((study, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
                 <div className="glass-card-hover overflow-hidden h-full flex flex-col">
