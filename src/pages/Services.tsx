@@ -108,7 +108,7 @@ const Services = () => {
               </ScrollReveal>
             ))}
           </div>
-          <div className="grid md:grid-cols-3 gap-6 mt-6">
+          <div className="grid lg:grid-cols-3 gap-6 mt-6">
             {services.slice(3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
