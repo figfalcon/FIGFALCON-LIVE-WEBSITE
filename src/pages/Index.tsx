@@ -157,14 +157,16 @@ const Index = () => {
           <p className="text-center text-xs text-muted-foreground uppercase tracking-widest mb-8">
             Trusted by disruptive B2B companies to scale operations without the chaos
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-4">
             <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
               <ArrowRight className="w-4 h-4 rotate-180" />
             </button>
-            <div className="flex items-center justify-center gap-12 flex-wrap opacity-50">
-              {["GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name) => (
-                <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
-              ))}
+            <div className="flex-1 overflow-hidden">
+              <div className="trust-slider flex items-center gap-16 whitespace-nowrap">
+                {["InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen", "InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name, i) => (
+                  <span key={i} className="font-heading font-bold text-lg text-muted-foreground/60 shrink-0">{name}</span>
+                ))}
+              </div>
             </div>
             <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
               <ArrowRight className="w-4 h-4" />
