@@ -95,7 +95,7 @@ const Services = () => {
       {/* Service Cards Overview */}
       <section className="py-16">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {services.slice(0, 3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
@@ -108,7 +108,7 @@ const Services = () => {
               </ScrollReveal>
             ))}
           </div>
-          <div className="grid md:grid-cols-3 gap-6 mt-6">
+          <div className="grid lg:grid-cols-3 gap-6 mt-6">
             {services.slice(3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
@@ -188,7 +188,7 @@ const Services = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {bundles.map((bundle, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
                 <div className={`glass-card-hover p-8 h-full flex flex-col ${i === 1 ? "border-primary/30 ring-1 ring-primary/20" : ""}`}>

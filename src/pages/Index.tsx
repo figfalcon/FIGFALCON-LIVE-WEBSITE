@@ -79,7 +79,7 @@ const Index = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
                 Run Your<br />
                 Business Without<br />
                 <span className="gradient-text">Operational Chaos</span>
@@ -157,14 +157,16 @@ const Index = () => {
           <p className="text-center text-xs text-muted-foreground uppercase tracking-widest mb-8">
             Trusted by disruptive B2B companies to scale operations without the chaos
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-4">
             <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
               <ArrowRight className="w-4 h-4 rotate-180" />
             </button>
-            <div className="flex items-center justify-center gap-12 flex-wrap opacity-50">
-              {["GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name) => (
-                <span key={name} className="font-heading font-bold text-lg text-muted-foreground">{name}</span>
-              ))}
+            <div className="flex-1 overflow-hidden">
+              <div className="trust-slider flex items-center gap-16 whitespace-nowrap">
+                {["InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen", "InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name, i) => (
+                  <span key={i} className="font-heading font-bold text-lg text-muted-foreground/60 shrink-0">{name}</span>
+                ))}
+              </div>
             </div>
             <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
               <ArrowRight className="w-4 h-4" />
@@ -188,7 +190,7 @@ const Index = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {problems.map((problem, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="glass-card-hover p-8 h-full">
@@ -225,7 +227,7 @@ const Index = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
             {services.map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <Link to="/services" className="glass-card-hover p-8 block h-full group">
@@ -255,7 +257,7 @@ const Index = () => {
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8">
             {processSteps.map((step, i) => (
               <ScrollReveal key={i} delay={i * 0.15}>
                 <div className="glass-card p-8 h-full relative overflow-hidden">
