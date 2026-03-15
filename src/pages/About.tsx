@@ -55,7 +55,7 @@ const About = () => {
             <h2 className="section-heading">Structure, Not Chaos</h2>
           </ScrollReveal>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {philosophy.map((item, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <div className="glass-card-hover p-8 text-center h-full">

@@ -84,7 +84,7 @@ const Index = () => {
                 Business Without<br />
                 <span className="gradient-text">Operational Chaos</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
+              <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed pr-2">
                 We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
@@ -95,7 +95,7 @@ const Index = () => {
                   See Our Results <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center gap-4 md:gap-6 text-sm text-muted-foreground pr-2">
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Done-for-you systems</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Custom automation</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Structured growth</span>
@@ -297,13 +297,15 @@ const Index = () => {
               <blockquote className="text-xl md:text-2xl font-heading leading-relaxed mb-8 text-foreground/90">
                 "Finally, a system that runs without me. The automation handles lead capture, follow-up, and booking. I just show up to qualified calls."
               </blockquote>
-              <div className="flex items-center justify-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">SC</div>
-                <div className="text-left">
-                  <div className="font-semibold text-sm">Sarah Chen</div>
-                  <div className="text-xs text-muted-foreground">Founder, Growth Advisory Co</div>
+              <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">SC</div>
+                  <div className="text-left">
+                    <div className="font-semibold text-sm">Sarah Chen</div>
+                    <div className="text-xs text-muted-foreground">Founder, Growth Advisory Co</div>
+                  </div>
                 </div>
-                <span className="ml-4 text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">
+                <span className="sm:ml-4 text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">
                   Pipeline on autopilot
                 </span>
               </div>

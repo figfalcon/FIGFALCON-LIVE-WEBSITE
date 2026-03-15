@@ -75,29 +75,41 @@ const Header = () => {
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
-          >
-            <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`text-lg font-medium ${
-                    location.pathname === link.path ? "text-foreground" : "text-muted-foreground"
-                  }`}
-                >
-                  {link.label}
+          <>
+            {/* Backdrop overlay to close on outside click */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 top-20 z-[-1]"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
+            >
+              <div className="container mx-auto px-6 py-6 flex flex-col gap-2">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`text-lg font-medium px-4 py-3 rounded-xl transition-all duration-200 ${
+                      location.pathname === link.path
+                        ? "bg-secondary/80 border border-border/60 text-primary"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <Link to="/contact" className="btn-primary text-sm mt-4 w-full justify-center">
+                  Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
                 </Link>
-              ))}
-              <Link to="/contact" className="btn-primary text-sm mt-2 w-fit">
-                Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.header>
