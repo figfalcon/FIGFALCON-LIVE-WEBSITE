@@ -84,7 +84,7 @@ const Index = () => {
                 Business Without<br />
                 <span className="gradient-text">Operational Chaos</span>
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed">
+              <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed pr-2">
                 We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
