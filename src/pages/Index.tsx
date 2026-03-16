@@ -74,28 +74,28 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center lg:items-start"
             >
               <div className="section-badge mb-6">
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6">
-                Run Your<br />
-                Business Without<br />
-                <span className="gradient-text">Operational Chaos</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6 text-center lg:text-left">
+                Run Your Business<br />
+                <span className="gradient-text">Without Operational Chaos</span>
               </h1>
-              <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed pr-2">
+              <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed text-center lg:text-left mx-auto lg:mx-0">
                 We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
               </p>
-              <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
                 <Link to="/contact" className="btn-primary">
                   Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4">
-                  See Our Results <ArrowRight className="w-5 h-5" />
+                <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4 border border-border/60">
+                  See Our Results
                 </Link>
               </div>
-              <div className="flex items-center gap-4 md:gap-6 text-sm text-muted-foreground pr-2">
+              <div className="flex items-center gap-4 md:gap-6 text-sm text-muted-foreground justify-center lg:justify-start">
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Done-for-you systems</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Custom automation</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Structured growth</span>
@@ -106,7 +106,7 @@ const Index = () => {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center lg:justify-end"
+              className="flex justify-center"
             >
               <div className="glass-card p-8 w-[380px] relative">
                 {/* Systems Active floating badge */}
