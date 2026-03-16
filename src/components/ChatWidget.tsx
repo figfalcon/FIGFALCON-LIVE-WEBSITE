@@ -53,15 +53,24 @@ const ChatWidget = () => {
       {/* Floating Button */}
       <AnimatePresence>
         {!open && (
-          <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full overflow-hidden border-2 border-primary/40 shadow-lg hover:scale-110 transition-transform"
-          >
-            <img src={chatAvatar} alt="Chat with us" className="w-full h-full object-cover" />
-          </motion.button>
+          <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-secondary/90 border border-border/50 text-foreground text-sm px-4 py-2 rounded-full shadow-lg whitespace-nowrap"
+            >
+              Try a demo for free! 👋
+            </motion.div>
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              onClick={() => setOpen(true)}
+              className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary/40 shadow-lg hover:scale-110 transition-transform"
+            >
+              <img src={chatAvatar} alt="Chat with us" className="w-full h-full object-cover" />
+            </motion.button>
+          </div>
         )}
       </AnimatePresence>
 
