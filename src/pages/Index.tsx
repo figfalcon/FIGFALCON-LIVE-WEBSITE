@@ -74,6 +74,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center lg:items-start"
             >
               <div className="section-badge mb-6">
                 <Sparkles className="w-4 h-4 text-primary" />
