@@ -80,7 +80,7 @@ const Index = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
                 Your Operations & Growth Partner
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6 text-center lg:text-left">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6 text-center lg:text-left">
                 Run Your Business<br />
                 <span className="gradient-text">Without Operational Chaos</span>
               </h1>
@@ -95,7 +95,7 @@ const Index = () => {
                   See Our Results
                 </Link>
               </div>
-              <div className="flex items-center gap-4 md:gap-6 text-sm text-muted-foreground justify-center lg:justify-start flex-wrap">
+              <div className="flex items-center gap-3 text-xs sm:text-sm text-muted-foreground justify-center lg:justify-start flex-wrap">
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Done-for-you systems</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Custom automation</span>
                 <span className="flex items-center gap-2"><span className="glow-dot" /> Structured growth</span>
@@ -108,7 +108,7 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="flex justify-center"
             >
-              <div className="glass-card p-8 w-[380px] relative">
+              <div className="glass-card p-6 sm:p-8 w-full max-w-[380px] relative">
                 {/* Systems Active floating badge */}
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
