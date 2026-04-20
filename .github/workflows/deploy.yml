@@ -25,6 +25,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Write deploy beacon
+        run: |
+          echo "commit=${{ github.sha }}" > dist/deploy-beacon.txt
+          echo "run=${{ github.run_number }}" >> dist/deploy-beacon.txt
+          echo "time=$(date -u +%FT%TZ)" >> dist/deploy-beacon.txt
+          cat dist/deploy-beacon.txt
+
       - name: Deploy to Hostinger via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -33,5 +40,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: ${{ secrets.FTP_PATH }}/
-          protocol: ftps
+          protocol: ftp
           port: 21
+          log-level: verbose
