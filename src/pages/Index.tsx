@@ -108,7 +108,7 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="flex justify-center"
             >
-              <div className="glass-card p-6 sm:p-8 w-full max-w-[380px] relative">
+              <div className="glass-card p-8 sm:p-10 w-full max-w-[494px] relative">
                 {/* Systems Active floating badge */}
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
