@@ -108,7 +108,7 @@ const Services = () => {
               </ScrollReveal>
             ))}
           </div>
-          <div className="grid lg:grid-cols-3 gap-6 mt-6">
+          <div className="grid lg:grid-cols-2 gap-6 mt-6 lg:w-2/3 mx-auto">
             {services.slice(3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
@@ -191,10 +191,10 @@ const Services = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {bundles.map((bundle, i) => (
               <ScrollReveal key={i} delay={i * 0.12}>
-                <div className={`glass-card-hover p-8 h-full flex flex-col ${i === 1 ? "border-primary/30 ring-1 ring-primary/20" : ""}`}>
+                <div className={`glass-card-hover p-8 h-full flex flex-col ${i === 1 ? "border-primary/30 ring-1 ring-primary/20 lg:scale-105 lg:z-10" : ""}`}>
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-heading font-bold text-xl">{bundle.name}</h3>
-                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap ${i === 0 ? "bg-accent/10 text-accent border border-accent/20" : i === 1 ? "bg-primary/20 text-primary border border-primary/30" : "bg-accent/10 text-accent border border-accent/20"}`}>
+                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap ${i === 0 ? "bg-accent/10 text-accent border border-accent/20" : i === 1 ? "bg-accent/10 text-accent border border-accent/20" : "bg-accent/10 text-accent border border-accent/20"}`}>
                       {bundle.tag}
                     </span>
                   </div>
