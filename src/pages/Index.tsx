@@ -114,7 +114,7 @@ const Index = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: [0, -6, 0] }}
                   transition={{ delay: 0.4, y: { delay: 1, duration: 2.5, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border border-primary/60 shadow-[0_0_18px_4px_rgba(99,102,241,0.45)] bg-primary/10"
+                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm ring-2 ring-primary shadow-lg shadow-primary/50 bg-primary/10"
                 >
                   <div>
                     <div className="font-heading font-semibold text-foreground">Systems Active</div>
