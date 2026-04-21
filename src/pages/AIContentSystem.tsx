@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, ChevronLeft, ChevronRight, ChevronDown, Check, X } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight, ChevronDown, Check, X, Menu } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { getCalApi } from "@calcom/embed-react";
+import logo from "@/assets/figfalcon-logo.png";
 
 const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
 const CAL_NAMESPACE = "consultation";
@@ -95,36 +96,162 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   </motion.div>
 );
 
+/* ------------------------------- Navbar --------------------------------- */
+
+const LandingNavbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler);
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  const links = [
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Results", href: "#results" },
+    { label: "Pricing", href: "#roi" },
+    { label: "FAQ", href: "#faq" },
+  ];
+
+  return (
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
+        scrolled
+          ? "bg-background/85 backdrop-blur-xl border-b border-border/40 shadow-md shadow-background/40"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="container mx-auto px-6 flex items-center justify-between h-16 md:h-18">
+        <a href="#" className="flex items-center gap-2 shrink-0">
+          <img src={logo} alt="Figfalcon" className="h-7 md:h-8" />
+        </a>
+
+        <nav className="hidden md:flex items-center gap-1">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm font-medium px-4 py-2 rounded-full text-muted-foreground hover:text-foreground transition-colors duration-200"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden md:block">
+          <BookButton label="Book a Free Strategy Call" />
+        </div>
+
+        <button
+          className="md:hidden text-foreground p-2"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
+          >
+            <div className="container mx-auto px-6 py-5 flex flex-col gap-2">
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-base font-medium px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {l.label}
+                </a>
+              ))}
+              <div className="mt-3">
+                <BookButton label="Book a Free Strategy Call" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
+  );
+};
+
 /* ------------------------------- Sections ------------------------------- */
 
 const ProblemCards = () => {
   const items = [
-    { n: "01", title: "Visibility", body: "You post, but the right people never see you. Reach stays flat." },
-    { n: "02", title: "Trust", body: "Traffic comes in but nobody books. The content doesn't build belief." },
-    { n: "03", title: "Conversion", body: "Leads pile up in a DM inbox. No system, no follow-up, no calls." },
+    {
+      n: "01",
+      title: "Visibility",
+      body: "You've got the results and the experience. But if someone looks you up right now, they won't see any of that.",
+    },
+    {
+      n: "02",
+      title: "Trust",
+      body: "Even if they do find you, your content is dead or outdated. So they go with the competitor who shows up every day.",
+    },
+    {
+      n: "03",
+      title: "Conversion",
+      body: "Even if you post, where do those people go? No funnel. No follow-up. Just views that never turn into calls.",
+    },
   ];
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section className="py-24">
+      <div className="container mx-auto px-6 max-w-3xl">
         <FadeIn>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-4">
-            Why growth stays <span className="gradient-text">slow</span>
+          <h2 className="font-heading font-bold text-4xl md:text-5xl text-center leading-tight mb-4">
+            Why Your Business Isn&apos;t <br className="hidden md:block" />
+            Growing As Fast As It Should
           </h2>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-14">
-            Three things are missing. Miss one, the whole thing leaks.
+          <p className="text-center text-muted-foreground mb-14">
+            You&apos;re great at what you do. But not enough people know you exist.
           </p>
         </FadeIn>
-        <div className="grid md:grid-cols-3 gap-5">
+
+        <div className="space-y-5">
           {items.map((it, i) => (
             <FadeIn key={it.n} delay={i * 0.08}>
-              <div className="glass-card p-7 h-full">
-                <div className="text-5xl font-heading font-bold text-primary/30 mb-4">{it.n}</div>
-                <h3 className="font-heading font-semibold text-xl mb-3">{it.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{it.body}</p>
+              <div className="relative rounded-2xl bg-card border border-border/60 p-7 md:p-8 shadow-sm overflow-hidden">
+                <div className="absolute left-0 top-6 bottom-6 w-[3px] rounded-r-full bg-primary" />
+                <div className="flex items-start gap-5">
+                  <div className="w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center font-heading font-semibold text-sm shrink-0">
+                    {it.n}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-medium text-primary/80 mb-2 tracking-wider">
+                      / {it.n} of 03
+                    </div>
+                    <h3 className="font-heading font-bold text-3xl md:text-4xl mb-3">{it.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed max-w-xl">{it.body}</p>
+                  </div>
+                </div>
               </div>
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={0.2}>
+          <div className="flex flex-col items-center mt-14">
+            <div className="w-10 h-10 rounded-full border border-primary/30 bg-primary/5 flex items-center justify-center mb-5">
+              <ChevronDown className="w-5 h-5 text-primary" />
+            </div>
+            <div className="h-px w-full max-w-md bg-border/60 mb-6" />
+            <p className="text-center text-foreground max-w-xl leading-relaxed">
+              That&apos;s why we don&apos;t just make content for you. We build the entire system from the first video to the booked call.
+            </p>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
@@ -445,36 +572,131 @@ const ROICalculator = () => {
   );
 };
 
+const StepMockup = ({ step }: { step: number }) => {
+  const mockups = [
+    // Step 1: Strategy call mockup — two people / calendar
+    <div className="w-full h-full flex items-center justify-center gap-6 p-8">
+      {[{ label: "Marketing expert" }, { label: "You" }].map((p, i) => (
+        <div key={i} className="flex flex-col items-center gap-3">
+          <div className="w-16 h-16 rounded-full bg-primary/30 border-2 border-primary/50 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary/80 fill-current"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span className="text-xs text-white/70">{p.label}</span>
+        </div>
+      ))}
+    </div>,
+    // Step 2: Onboarding — recording / converting doc
+    <div className="w-full h-full flex items-center justify-center gap-5 p-6">
+      <div className="w-28 h-20 rounded-xl bg-primary/20 border border-primary/30 flex flex-col items-center justify-center gap-1">
+        <svg viewBox="0 0 24 24" className="w-7 h-7 text-primary/80 fill-current"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        <span className="text-[10px] text-white/60">Recording</span>
+      </div>
+      <div className="w-28 h-20 rounded-xl bg-white/10 border border-white/20 flex flex-col items-center justify-center gap-1 px-3">
+        <span className="text-[10px] text-white/80 font-semibold mb-1">Converting</span>
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="w-full h-1.5 rounded-full bg-white/20" />
+        ))}
+      </div>
+    </div>,
+    // Step 3: Results dashboard
+    <div className="w-full h-full flex items-start gap-3 p-5">
+      <div className="flex flex-col gap-1 shrink-0">
+        {["Social Media", "Instagram", "Facebook", "Website", "Youtube"].map((item, i) => (
+          <div key={i} className={`text-[10px] px-2 py-0.5 rounded ${i === 0 ? "text-white/80 font-semibold" : "text-white/50 hover:text-white/70"}`}>{item}</div>
+        ))}
+      </div>
+      <div className="flex-1 flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-white/60">Revenue</span>
+          <span className="text-xs font-bold text-green-400">+65.34%</span>
+        </div>
+        <div className="h-12 w-full rounded-lg bg-primary/20 flex items-end px-2 gap-1 pb-1">
+          {[30, 50, 35, 60, 45, 75, 55, 80].map((h, i) => (
+            <div key={i} className="flex-1 rounded-sm bg-primary/60" style={{ height: `${h}%` }} />
+          ))}
+        </div>
+        <div className="self-end w-14 h-10 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center justify-center">
+          <span className="text-sm font-bold text-green-400">98%</span>
+        </div>
+      </div>
+    </div>,
+  ];
+
+  return (
+    <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-primary/30 via-primary/20 to-primary/10 border border-primary/30 h-[200px] md:h-[240px]">
+      {mockups[step]}
+    </div>
+  );
+};
+
 const Onboarding = () => {
   const steps = [
-    { n: "01", title: "Strategy call", body: "30 minutes. We map your offer, audience, and the fastest path to booked calls." },
-    { n: "02", title: "Onboarding", body: "One shared doc, one recording. We build your voice, funnel, and sequence." },
-    { n: "03", title: "Execution", body: "Content goes out. Leads come in. You show up to calls already warm." },
+    {
+      n: "01",
+      label: "STEP 01",
+      title: "Book a Free Strategy Call",
+      body: "We talk about your business and your goals. If it's a fit, we map out your system and agree on lead targets.",
+    },
+    {
+      n: "02",
+      label: "STEP 02",
+      title: "Onboarding & One Time Handover",
+      body: "We onboard you within the first 14 days and take a complete handover from you to avoid any back & forth.",
+    },
+    {
+      n: "03",
+      label: "STEP 03",
+      title: "We Build & Run Everything",
+      body: "Short form and long form content, full funnel, emails, and landing pages live within 30 days & we also manage it all month over month.",
+    },
   ];
+
   return (
-    <section className="py-24">
-      <div className="container mx-auto px-6 max-w-5xl">
+    <section className="py-24" id="how-it-works">
+      <div className="container mx-auto px-6 max-w-4xl">
         <FadeIn>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-4">
-            What the first <span className="gradient-text">30 days</span> look like
+          <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">
+            Get Started
           </h2>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-14">
-            Three steps. You are live in weeks, not quarters.
-          </p>
+          <p className="text-center text-muted-foreground mb-14">As Easy As 1, 2, 3</p>
         </FadeIn>
-        <div className="grid md:grid-cols-3 gap-5 relative">
+
+        <div className="space-y-6">
           {steps.map((s, i) => (
-            <FadeIn key={s.n} delay={i * 0.08}>
-              <div className="glass-card p-6 h-full relative">
-                <div className="w-12 h-12 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-heading font-bold mb-4">
+            <FadeIn key={s.n} delay={i * 0.1}>
+              <div className="relative grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm">
+                {/* Step number top-right badge */}
+                <div className="absolute top-4 right-4 text-xs font-semibold text-muted-foreground/50">
                   {s.n}
                 </div>
-                <h3 className="font-heading font-semibold text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
+
+                {/* Left: mockup */}
+                <div className="p-4 md:p-5 flex items-center justify-center bg-secondary/20">
+                  <div className="w-full">
+                    <StepMockup step={i} />
+                  </div>
+                </div>
+
+                {/* Right: content */}
+                <div className="p-7 md:p-9 flex flex-col justify-center border-l border-border/40">
+                  <div className="text-xs font-semibold tracking-widest text-muted-foreground mb-3 uppercase">
+                    {s.label}
+                  </div>
+                  <h3 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-4">
+                    {s.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">{s.body}</p>
+                </div>
               </div>
             </FadeIn>
           ))}
         </div>
+
+        <FadeIn delay={0.3}>
+          <div className="flex justify-center mt-10">
+            <BookButton label="Book a Free Strategy Call" />
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
@@ -500,9 +722,12 @@ const VideoGallery = () => {
     <section className="py-24 bg-secondary/10">
       <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
-          <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-12">
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-4">
             See it in <span className="gradient-text">action</span>
           </h2>
+          <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
+            Real content produced by our AI system for real clients. Short-form, scroll-stopping, and built to convert viewers into booked calls.
+          </p>
         </FadeIn>
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-5">
@@ -676,9 +901,10 @@ const AIContentSystem = () => {
   return (
     <>
       <SEO />
+      <LandingNavbar />
 
       {/* HERO — unchanged */}
-      <section className="relative pt-20 pb-16 md:pt-28 md:pb-20 overflow-hidden">
+      <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 gradient-hero opacity-70" />
         <div className="container mx-auto px-6 relative z-10 max-w-4xl">
           <FadeIn>
@@ -709,11 +935,9 @@ const AIContentSystem = () => {
       <SocialProof />
       <SystemStages />
       <BeforeAfter />
-      <AICloneChallenge />
       <ROICalculator />
       <Onboarding />
       <VideoGallery />
-      <About />
       <FinalCTA />
       <FAQ />
 
