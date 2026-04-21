@@ -37,13 +37,32 @@ const Contact = () => {
   });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours with an initial assessment.",
-    });
-    setFormData({ name: "", email: "", company: "", phone: "", industry: "", companySize: "", budget: "", challenge: "" });
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://n8n.srv813240.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, submittedAt: new Date().toISOString(), source: "figfalcon.com/contact" }),
+      });
+      if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you within 24 hours with an initial assessment.",
+      });
+      setFormData({ name: "", email: "", company: "", phone: "", industry: "", companySize: "", budget: "", challenge: "" });
+    } catch (err) {
+      toast({
+        title: "Submission failed",
+        description: "Something went wrong. Please try again or email agency@figfalcon.com.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -150,8 +169,8 @@ const Contact = () => {
                       />
                     </div>
 
-                    <button type="submit" className="btn-primary w-full justify-center text-base py-4">
-                      Surprise Me <ArrowRight className="w-4 h-4" />
+                    <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
+                      {submitting ? "Sending..." : "Surprise Me"} <ArrowRight className="w-4 h-4" />
                     </button>
                   </form>
                 </div>

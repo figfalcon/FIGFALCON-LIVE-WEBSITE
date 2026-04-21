@@ -114,11 +114,12 @@ const Index = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: [0, -6, 0] }}
                   transition={{ delay: 0.4, y: { delay: 1, duration: 2.5, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border border-primary"
+                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border"
+                  style={{ borderColor: '#397eee' }}
                 >
                   <div>
-                    <div className="font-heading font-semibold text-foreground">Systems Active</div>
-                    <div className="text-xs text-muted-foreground">Automation running</div>
+                    <div className="font-heading font-semibold" style={{ color: '#397eee' }}>Systems Active</div>
+                    <div className="text-xs" style={{ color: '#397eee' }}>Automation running</div>
                   </div>
                 </motion.div>
 
