@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Users, TrendingUp, DollarSign } from "lucide-react";
+import { Users, TrendingUp, DollarSign } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 
@@ -87,7 +87,7 @@ const CaseStudies = () => {
           <ScrollReveal>
             <h2 className="section-heading mb-6">Ready to Be Our <span className="gradient-text">Next Success Story?</span></h2>
             <Link to="/contact" className="btn-primary text-lg px-8 py-4">
-              Book Your Strategy Call <ArrowRight className="w-5 h-5" />
+              Book Your Strategy Call
             </Link>
           </ScrollReveal>
         </div>

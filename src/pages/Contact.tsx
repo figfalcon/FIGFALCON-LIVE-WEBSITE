@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowRight, Mail, Phone, MapPin, Calendar, CheckCircle, ChevronDown } from "lucide-react";
+import { Mail, Phone, MapPin, Calendar, CheckCircle, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getCalApi } from "@calcom/embed-react";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -269,7 +269,7 @@ const Contact = () => {
                     </div>
 
                     <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
-                      {submitting ? "Sending..." : "Surprise Me"} <ArrowRight className="w-4 h-4" />
+                      {submitting ? "Sending..." : "Surprise Me"}
                     </button>
                   </form>
                 </div>
@@ -292,7 +292,7 @@ const Contact = () => {
                     data-cal-config='{"layout":"month_view","theme":"dark"}'
                     className="btn-primary w-full justify-center"
                   >
-                    Get Your Free Consultation <ArrowRight className="w-4 h-4" />
+                    Get Your Free Consultation
                   </button>
                 </div>
               </ScrollReveal>

@@ -89,7 +89,7 @@ const Index = () => {
               </p>
               <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
                 <Link to="/contact" className="btn-primary">
-                  Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
+                  Let's Automate Your Growth
                 </Link>
                 <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4 border border-border/60">
                   See Our Results
@@ -330,7 +330,7 @@ const Index = () => {
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link to="/contact" className="btn-primary text-lg px-8 py-4">
-                Let's Automate Your Growth <ArrowRight className="w-5 h-5" />
+                Let's Automate Your Growth
               </Link>
               <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4">
                 View Case Studies

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import logo from "@/assets/figfalcon-logo.png";
 
 const navLinks = [
@@ -62,7 +62,7 @@ const Header = () => {
 
         <div className="hidden lg:block">
           <Link to="/contact" className="btn-primary text-sm">
-            Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
+            Let's Automate Your Growth
           </Link>
         </div>
 
@@ -106,7 +106,7 @@ const Header = () => {
                   </Link>
                 ))}
                 <Link to="/contact" className="btn-primary text-sm mt-4 w-full justify-center">
-                  Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
+                  Let's Automate Your Growth
                 </Link>
               </div>
             </motion.div>

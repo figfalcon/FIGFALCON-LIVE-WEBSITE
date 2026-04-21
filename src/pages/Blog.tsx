@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Clock, Tag, Search } from "lucide-react";
+import { Clock, Tag, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -128,7 +128,7 @@ const Blog = () => {
                       to={`/blog/${featured.slug}`}
                       className="btn-primary text-sm w-fit"
                     >
-                      Read Article <ArrowRight className="w-4 h-4" />
+                      Read Article
                     </Link>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ const Blog = () => {
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/30">
                       <span className="text-xs text-muted-foreground">{post.date}</span>
                       <span className="flex items-center gap-1 text-xs text-primary font-semibold group-hover:gap-2 transition-all">
-                        Read more <ArrowRight className="w-3.5 h-3.5" />
+                        Read more
                       </span>
                     </div>
                   </Link>
@@ -240,7 +240,7 @@ const Blog = () => {
                   Book a free strategy call and we&apos;ll audit your current setup, identify the biggest gaps, and map out exactly what to build first.
                 </p>
                 <Link to="/contact" className="btn-primary">
-                  Let&apos;s Automate Your Growth <ArrowRight className="w-4 h-4" />
+                  Let&apos;s Automate Your Growth
                 </Link>
               </div>
             </div>
