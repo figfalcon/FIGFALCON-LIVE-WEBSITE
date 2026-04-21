@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, ChevronLeft, ChevronRight, ChevronDown, Check, X, Menu } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { getCalApi } from "@calcom/embed-react";
+import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
 
 const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
@@ -111,9 +112,16 @@ const LandingNavbar = () => {
   const links = [
     { label: "How It Works", href: "#how-it-works" },
     { label: "Results", href: "#results" },
-    { label: "Pricing", href: "#roi" },
+    { label: "Book a Call", href: "#booking" },
     { label: "FAQ", href: "#faq" },
   ];
+
+  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setMobileOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <motion.header
@@ -136,6 +144,7 @@ const LandingNavbar = () => {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => handleNav(e, l.href)}
               className="text-sm font-medium px-4 py-2 rounded-full text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               {l.label}
@@ -169,7 +178,7 @@ const LandingNavbar = () => {
                 <a
                   key={l.href}
                   href={l.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={(e) => handleNav(e, l.href)}
                   className="text-base font-medium px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {l.label}
@@ -719,7 +728,7 @@ const VideoGallery = () => {
   }, [emblaApi]);
 
   return (
-    <section className="py-24 bg-secondary/10">
+    <section className="py-24 bg-secondary/10" id="results">
       <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-4">
@@ -785,13 +794,39 @@ const FinalCTA = () => (
     <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
       <FadeIn>
         <h2 className="font-heading font-bold text-3xl md:text-5xl mb-6">
-          Ready to be seen, trusted, and <span className="gradient-text">chosen?</span>
+          <span className="block">Ready to Be Seen, Trusted,</span>
+          <span className="gradient-text block">and Chosen?</span>
         </h2>
       </FadeIn>
       <FadeIn delay={0.1}>
         <div className="flex flex-col items-center gap-2 mt-6">
           <BookButton label="Book Your Strategy Call" large />
           <p className="text-xs text-muted-foreground">Takes less than 2 minutes. No obligation.</p>
+        </div>
+      </FadeIn>
+    </div>
+  </section>
+);
+
+const BookingEmbed = () => (
+  <section className="py-24" id="booking">
+    <div className="container mx-auto px-6 max-w-4xl">
+      <FadeIn>
+        <div className="text-xs font-semibold tracking-widest text-primary uppercase text-center mb-3">
+          Book a Free Strategy Call.
+        </div>
+        <h2 className="font-heading font-bold text-4xl md:text-5xl text-center leading-tight mb-12">
+          <span className="block">Ready To Be Seen,</span>
+          <span className="gradient-text block">Trusted, and Chosen?</span>
+        </h2>
+      </FadeIn>
+      <FadeIn delay={0.1}>
+        <div className="rounded-2xl overflow-hidden border border-border/40 shadow-xl">
+          <Cal
+            calLink={CAL_LINK}
+            style={{ width: "100%", height: "100%", overflow: "scroll" }}
+            config={{ layout: "month_view", theme: "dark" }}
+          />
         </div>
       </FadeIn>
     </div>
@@ -809,11 +844,11 @@ const FAQ = () => {
   ];
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-24 bg-secondary/10">
+    <section className="py-24 bg-secondary/10" id="faq">
       <div className="container mx-auto px-6 max-w-3xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-12">
-            Frequently asked <span className="gradient-text">questions</span>
+            Frequently Asked <span className="gradient-text">Questions</span>
           </h2>
         </FadeIn>
         <div className="space-y-3">
@@ -909,9 +944,9 @@ const AIContentSystem = () => {
         <div className="container mx-auto px-6 relative z-10 max-w-4xl">
           <FadeIn>
             <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-center leading-tight mb-5">
-              Turn Your Content Into a<br />
-              <span className="gradient-text">Client Acquisition System</span><br />
-              That Brings You Qualified Leads
+              <span className="block">Turn Your Content Into a</span>
+              <span className="gradient-text block">Client Acquisition System</span>
+              <span className="block">That Brings You Qualified Leads</span>
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
@@ -939,6 +974,7 @@ const AIContentSystem = () => {
       <Onboarding />
       <VideoGallery />
       <FinalCTA />
+      <BookingEmbed />
       <FAQ />
 
       <div className="py-10 text-center text-xs text-muted-foreground border-t border-border/30">
