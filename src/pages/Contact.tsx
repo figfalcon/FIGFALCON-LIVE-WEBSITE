@@ -14,6 +14,70 @@ const industries = [
 const companySizes = ["Solo", "2-5", "6-15", "16-50", "50+"];
 const budgets = ["$3,000 - $5,000", "$5,000 - $10,000", "$10,000 - $20,000", "$20,000+"];
 
+// ISO code, flag emoji, country name, dial code
+const countries: { iso: string; flag: string; name: string; dial: string }[] = [
+  { iso: "IN", flag: "🇮🇳", name: "India", dial: "+91" },
+  { iso: "US", flag: "🇺🇸", name: "United States", dial: "+1" },
+  { iso: "GB", flag: "🇬🇧", name: "United Kingdom", dial: "+44" },
+  { iso: "CA", flag: "🇨🇦", name: "Canada", dial: "+1" },
+  { iso: "AU", flag: "🇦🇺", name: "Australia", dial: "+61" },
+  { iso: "AE", flag: "🇦🇪", name: "UAE", dial: "+971" },
+  { iso: "SG", flag: "🇸🇬", name: "Singapore", dial: "+65" },
+  { iso: "DE", flag: "🇩🇪", name: "Germany", dial: "+49" },
+  { iso: "FR", flag: "🇫🇷", name: "France", dial: "+33" },
+  { iso: "NL", flag: "🇳🇱", name: "Netherlands", dial: "+31" },
+  { iso: "ES", flag: "🇪🇸", name: "Spain", dial: "+34" },
+  { iso: "IT", flag: "🇮🇹", name: "Italy", dial: "+39" },
+  { iso: "CH", flag: "🇨🇭", name: "Switzerland", dial: "+41" },
+  { iso: "SE", flag: "🇸🇪", name: "Sweden", dial: "+46" },
+  { iso: "NO", flag: "🇳🇴", name: "Norway", dial: "+47" },
+  { iso: "DK", flag: "🇩🇰", name: "Denmark", dial: "+45" },
+  { iso: "FI", flag: "🇫🇮", name: "Finland", dial: "+358" },
+  { iso: "IE", flag: "🇮🇪", name: "Ireland", dial: "+353" },
+  { iso: "BE", flag: "🇧🇪", name: "Belgium", dial: "+32" },
+  { iso: "AT", flag: "🇦🇹", name: "Austria", dial: "+43" },
+  { iso: "PT", flag: "🇵🇹", name: "Portugal", dial: "+351" },
+  { iso: "PL", flag: "🇵🇱", name: "Poland", dial: "+48" },
+  { iso: "CZ", flag: "🇨🇿", name: "Czech Republic", dial: "+420" },
+  { iso: "GR", flag: "🇬🇷", name: "Greece", dial: "+30" },
+  { iso: "TR", flag: "🇹🇷", name: "Turkey", dial: "+90" },
+  { iso: "RU", flag: "🇷🇺", name: "Russia", dial: "+7" },
+  { iso: "UA", flag: "🇺🇦", name: "Ukraine", dial: "+380" },
+  { iso: "IL", flag: "🇮🇱", name: "Israel", dial: "+972" },
+  { iso: "SA", flag: "🇸🇦", name: "Saudi Arabia", dial: "+966" },
+  { iso: "QA", flag: "🇶🇦", name: "Qatar", dial: "+974" },
+  { iso: "KW", flag: "🇰🇼", name: "Kuwait", dial: "+965" },
+  { iso: "BH", flag: "🇧🇭", name: "Bahrain", dial: "+973" },
+  { iso: "OM", flag: "🇴🇲", name: "Oman", dial: "+968" },
+  { iso: "EG", flag: "🇪🇬", name: "Egypt", dial: "+20" },
+  { iso: "ZA", flag: "🇿🇦", name: "South Africa", dial: "+27" },
+  { iso: "NG", flag: "🇳🇬", name: "Nigeria", dial: "+234" },
+  { iso: "KE", flag: "🇰🇪", name: "Kenya", dial: "+254" },
+  { iso: "GH", flag: "🇬🇭", name: "Ghana", dial: "+233" },
+  { iso: "MA", flag: "🇲🇦", name: "Morocco", dial: "+212" },
+  { iso: "PK", flag: "🇵🇰", name: "Pakistan", dial: "+92" },
+  { iso: "BD", flag: "🇧🇩", name: "Bangladesh", dial: "+880" },
+  { iso: "LK", flag: "🇱🇰", name: "Sri Lanka", dial: "+94" },
+  { iso: "NP", flag: "🇳🇵", name: "Nepal", dial: "+977" },
+  { iso: "CN", flag: "🇨🇳", name: "China", dial: "+86" },
+  { iso: "HK", flag: "🇭🇰", name: "Hong Kong", dial: "+852" },
+  { iso: "TW", flag: "🇹🇼", name: "Taiwan", dial: "+886" },
+  { iso: "JP", flag: "🇯🇵", name: "Japan", dial: "+81" },
+  { iso: "KR", flag: "🇰🇷", name: "South Korea", dial: "+82" },
+  { iso: "MY", flag: "🇲🇾", name: "Malaysia", dial: "+60" },
+  { iso: "ID", flag: "🇮🇩", name: "Indonesia", dial: "+62" },
+  { iso: "PH", flag: "🇵🇭", name: "Philippines", dial: "+63" },
+  { iso: "TH", flag: "🇹🇭", name: "Thailand", dial: "+66" },
+  { iso: "VN", flag: "🇻🇳", name: "Vietnam", dial: "+84" },
+  { iso: "NZ", flag: "🇳🇿", name: "New Zealand", dial: "+64" },
+  { iso: "MX", flag: "🇲🇽", name: "Mexico", dial: "+52" },
+  { iso: "BR", flag: "🇧🇷", name: "Brazil", dial: "+55" },
+  { iso: "AR", flag: "🇦🇷", name: "Argentina", dial: "+54" },
+  { iso: "CL", flag: "🇨🇱", name: "Chile", dial: "+56" },
+  { iso: "CO", flag: "🇨🇴", name: "Colombia", dial: "+57" },
+  { iso: "PE", flag: "🇵🇪", name: "Peru", dial: "+51" },
+];
+
 const faqs = [
   { q: "How is this different from a marketing agency?", a: "We don't run ads or create content. We build the operational infrastructure — the systems, automation, and backend processes — that make your marketing actually convert into revenue." },
   { q: "Why work with Figfalcon instead of hiring in-house?", a: "Hiring an operations specialist costs $80-120K+/year. We deliver the same (often better) results at a fraction of the cost, with zero training, zero management overhead, and immediate results." },
@@ -33,7 +97,7 @@ const whatHappensNext = [
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "", email: "", company: "", phone: "", industry: "", companySize: "", budget: "", challenge: "",
+    name: "", email: "", company: "", phone: "", phoneCountry: "IN", industry: "", companySize: "", budget: "", challenge: "",
   });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
@@ -43,17 +107,28 @@ const Contact = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const country = countries.find(c => c.iso === formData.phoneCountry);
+      const dial = country?.dial ?? "";
+      const fullPhone = formData.phone ? `${dial} ${formData.phone}`.trim() : "";
       const res = await fetch("https://n8n.srv813240.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, submittedAt: new Date().toISOString(), source: "figfalcon.com/contact" }),
+        body: JSON.stringify({
+          ...formData,
+          phone: fullPhone,
+          phoneCountryIso: formData.phoneCountry,
+          phoneDialCode: dial,
+          phoneLocal: formData.phone,
+          submittedAt: new Date().toISOString(),
+          source: "figfalcon.com/contact",
+        }),
       });
       if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
       toast({
         title: "Message sent!",
         description: "We'll get back to you within 24 hours with an initial assessment.",
       });
-      setFormData({ name: "", email: "", company: "", phone: "", industry: "", companySize: "", budget: "", challenge: "" });
+      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "IN", industry: "", companySize: "", budget: "", challenge: "" });
     } catch (err) {
       toast({
         title: "Submission failed",
@@ -118,11 +193,24 @@ const Contact = () => {
 
                     <div>
                       <label className="text-sm font-medium mb-1.5 block">Phone Number</label>
-                      <input
-                        name="phone" value={formData.phone} onChange={handleChange}
-                        placeholder="Your phone"
-                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
-                      />
+                      <div className="flex gap-2">
+                        <select
+                          name="phoneCountry"
+                          value={formData.phoneCountry}
+                          onChange={handleChange}
+                          aria-label="Country code"
+                          className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[130px]"
+                        >
+                          {countries.map(c => (
+                            <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>
+                          ))}
+                        </select>
+                        <input
+                          name="phone" type="tel" value={formData.phone} onChange={handleChange}
+                          placeholder="Your phone"
+                          className="flex-1 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                        />
+                      </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-5">
