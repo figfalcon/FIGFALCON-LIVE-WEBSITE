@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowRight, Mail, Phone, MapPin, Calendar, CheckCircle, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getCalApi } from "@calcom/embed-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 import { useToast } from "@/hooks/use-toast";
+
+const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
 
 const industries = [
   "Technology / SaaS", "Healthcare", "Financial Services", "E-commerce / Retail",
@@ -100,8 +102,17 @@ const Contact = () => {
     name: "", email: "", company: "", phone: "", phoneCountry: "IN", industry: "", companySize: "", budget: "", challenge: "",
   });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const cal = await getCalApi({ namespace: "consultation" });
+      cal("ui", {
+        hideEventTypeDetails: false,
+        theme: "dark",
+      });
+    })();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -274,9 +285,15 @@ const Contact = () => {
                   </div>
                   <h3 className="font-heading font-semibold text-lg mb-2">Get Your Company AI Agent Today</h3>
                   <p className="text-sm text-muted-foreground mb-6">Experience our AI voice agent firsthand. Fill out the form and get an instant demo call.</p>
-                  <Link to="/contact" className="btn-primary w-full justify-center">
-                    Let's Automate Your Growth <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  <button
+                    type="button"
+                    data-cal-namespace="consultation"
+                    data-cal-link={CAL_LINK}
+                    data-cal-config='{"layout":"month_view","theme":"dark"}'
+                    className="btn-primary w-full justify-center"
+                  >
+                    Get Your Free Consultation <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </ScrollReveal>
 
