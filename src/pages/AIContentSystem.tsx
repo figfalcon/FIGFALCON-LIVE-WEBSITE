@@ -211,8 +211,8 @@ const ProblemCards = () => {
       <div className="container mx-auto px-6 max-w-3xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-4xl md:text-5xl text-center leading-tight mb-4">
-            Why Your Business Isn&apos;t <br className="hidden md:block" />
-            Growing As Fast As It Should
+            Why Your Business Isn&apos;t <span className="gradient-text">Growing</span><br />
+            As Fast As It Should
           </h2>
           <p className="text-center text-muted-foreground mb-14">
             You&apos;re great at what you do. But not enough people know you exist.
@@ -909,7 +909,9 @@ const AIContentSystem = () => {
         <div className="container mx-auto px-6 relative z-10 max-w-4xl">
           <FadeIn>
             <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-center leading-tight mb-5">
-              Turn Your Content Into a <span className="gradient-text">Client Acquisition System</span> That Brings You Qualified Leads
+              Turn Your Content Into a<br />
+              <span className="gradient-text">Client Acquisition System</span><br />
+              That Brings You Qualified Leads
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
@@ -932,10 +934,8 @@ const AIContentSystem = () => {
       </section>
 
       <ProblemCards />
-      <SocialProof />
       <SystemStages />
       <BeforeAfter />
-      <ROICalculator />
       <Onboarding />
       <VideoGallery />
       <FinalCTA />
