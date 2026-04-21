@@ -74,12 +74,15 @@ const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "
   );
 };
 
+const scrollToBooking = () => {
+  const el = document.getElementById("booking");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
 const BookButton = ({ label = "Book a Strategy Call", large = false }: { label?: string; large?: boolean }) => (
   <button
     type="button"
-    data-cal-namespace={CAL_NAMESPACE}
-    data-cal-link={CAL_LINK}
-    data-cal-config='{"layout":"month_view","theme":"dark"}'
+    onClick={scrollToBooking}
     className={`btn-primary justify-center ${large ? "text-lg px-10 py-4" : ""}`}
   >
     {label}
@@ -219,9 +222,9 @@ const ProblemCards = () => {
     <section className="py-24">
       <div className="container mx-auto px-6 max-w-3xl">
         <FadeIn>
-          <h2 className="font-heading font-bold text-4xl md:text-5xl text-center leading-tight mb-4">
-            Why Your Business Isn&apos;t <span className="gradient-text">Growing</span><br />
-            As Fast As It Should
+          <h2 className="font-heading font-bold text-3xl md:text-[2.6rem] text-center leading-tight mb-4">
+            <span className="block whitespace-nowrap">Why Your Business Isn&apos;t <span className="gradient-text">Growing</span></span>
+            <span className="block">As Fast As It Should</span>
           </h2>
           <p className="text-center text-muted-foreground mb-14">
             You&apos;re great at what you do. But not enough people know you exist.
@@ -712,23 +715,23 @@ const Onboarding = () => {
 };
 
 const VideoGallery = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", loop: false });
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    const update = () => {
-      setCanPrev(emblaApi.canScrollPrev());
-      setCanNext(emblaApi.canScrollNext());
-    };
-    update();
-    emblaApi.on("select", update);
-    emblaApi.on("reInit", update);
-  }, [emblaApi]);
+  // Triplicate so the loop is seamless
+  const looped = [...clientVideos, ...clientVideos, ...clientVideos];
 
   return (
     <section className="py-24 bg-secondary/10" id="results">
+      <style>{`
+        @keyframes video-marquee {
+          from { transform: translateX(0); }
+          to   { transform: translateX(calc(-100% / 3)); }
+        }
+        .video-marquee-track {
+          animation: video-marquee 18s linear infinite;
+        }
+        .video-marquee-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
       <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center mb-4">
@@ -738,34 +741,14 @@ const VideoGallery = () => {
             Real content produced by our AI system for real clients. Short-form, scroll-stopping, and built to convert viewers into booked calls.
           </p>
         </FadeIn>
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-5">
-            {clientVideos.map((v, i) => (
-              <div key={i} className="shrink-0 w-[260px] sm:w-[300px]">
+        <div className="overflow-hidden">
+          <div className="video-marquee-track flex gap-5" style={{ width: "max-content" }}>
+            {looped.map((v, i) => (
+              <div key={i} className="shrink-0 w-[240px]">
                 <VideoPlayer video={v} aspect="portrait" />
               </div>
             ))}
           </div>
-        </div>
-        <div className="flex items-center justify-center gap-3 mt-6">
-          <button
-            type="button"
-            onClick={() => emblaApi?.scrollPrev()}
-            disabled={!canPrev}
-            aria-label="Previous"
-            className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors disabled:opacity-40"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => emblaApi?.scrollNext()}
-            disabled={!canNext}
-            aria-label="Next"
-            className="w-10 h-10 rounded-full border border-border/50 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors disabled:opacity-40"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
         </div>
       </div>
     </section>
@@ -943,10 +926,10 @@ const AIContentSystem = () => {
         <div className="absolute inset-0 gradient-hero opacity-70" />
         <div className="container mx-auto px-6 relative z-10 max-w-4xl">
           <FadeIn>
-            <h1 className="font-heading font-bold text-4xl md:text-5xl lg:text-6xl text-center leading-tight mb-5">
+            <h1 className="font-heading font-bold text-4xl md:text-[2.75rem] lg:text-5xl text-center leading-tight mb-5">
               <span className="block">Turn Your Content Into a</span>
               <span className="gradient-text block">Client Acquisition System</span>
-              <span className="block">That Brings You Qualified Leads</span>
+              <span className="block whitespace-nowrap">That Brings You Qualified Leads</span>
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
