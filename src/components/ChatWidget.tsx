@@ -10,6 +10,17 @@ interface Message {
 
 const WEBHOOK_URL = "https://n8n.srv813240.hstgr.cloud/webhook/a7eb072d-4470-4384-b98e-840cbf55da98";
 
+const getSessionId = () => {
+  if (typeof window === "undefined") return "";
+  const KEY = "figfalcon_chat_session";
+  let id = window.localStorage.getItem(KEY);
+  if (!id) {
+    id = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    window.localStorage.setItem(KEY, id);
+  }
+  return id;
+};
+
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -18,6 +29,11 @@ const ChatWidget = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>("");
+
+  useEffect(() => {
+    sessionIdRef.current = getSessionId();
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,10 +52,26 @@ const ChatWidget = () => {
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({
+          action: "sendMessage",
+          sessionId: sessionIdRef.current,
+          chatInput: text,
+          message: text,
+          source: "figfalcon.com",
+        }),
       });
-      const data = await res.json();
-      const reply = typeof data === "string" ? data : data?.output || data?.message || data?.response || "Thanks! We'll get back to you soon.";
+      if (!res.ok) throw new Error(`Webhook ${res.status}`);
+      const raw = await res.text();
+      let data: unknown = raw;
+      try { data = JSON.parse(raw); } catch { /* plain text response */ }
+      const reply =
+        typeof data === "string"
+          ? data
+          : (data as Record<string, unknown>)?.output as string
+            || (data as Record<string, unknown>)?.message as string
+            || (data as Record<string, unknown>)?.response as string
+            || (data as Record<string, unknown>)?.text as string
+            || "Thanks! We'll get back to you soon.";
       setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", text: "Sorry, something went wrong. Please try again." }]);
