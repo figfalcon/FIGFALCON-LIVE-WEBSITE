@@ -44,12 +44,12 @@ const clientProjectVideos: VideoSlot[] = [
 /* ─────────────────────────── Primitives ─────────────────────────── */
 
 const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "video" | "portrait" }) => {
-  const aspectClass = aspect === "portrait" ? "h-[480px]" : "aspect-video";
+  const aspectClass = aspect === "portrait" ? "aspect-[9/16]" : "aspect-video";
 
   if (video.src) {
     const isIframe = /youtube\.com|youtu\.be|vimeo\.com/.test(video.src);
     return (
-      <div className={`relative ${aspectClass} w-full rounded-2xl overflow-hidden border border-border/50 bg-secondary/40`}>
+      <div className={`relative ${aspectClass} w-full rounded-2xl overflow-hidden border border-border/50 bg-background`}>
         {isIframe ? (
           <iframe
             src={video.src}
@@ -67,7 +67,7 @@ const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "
 
   return (
     <div
-      className={`relative ${aspectClass} w-full rounded-2xl overflow-hidden border border-border/50 flex items-center justify-center bg-gradient-to-br from-secondary/70 to-background`}
+      className={`relative ${aspectClass} w-full rounded-2xl overflow-hidden border border-border/50 flex items-center justify-center bg-background`}
       aria-label={video.title ?? "Video placeholder"}
     >
       <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.25),transparent_50%)]" />
@@ -192,34 +192,6 @@ const LandingNavbar = () => {
         )}
       </AnimatePresence>
     </motion.header>
-  );
-};
-
-/* ─────────────────────────── Numbers Bar ─────────────────────────── */
-
-const NumbersBar = () => {
-  const stats = [
-    { value: "1", label: "Recording Session" },
-    { value: "15+", label: "Pieces of Content" },
-    { value: "3", label: "Platforms Posted" },
-    { value: "30", label: "Days to Go Live" },
-    { value: "0", label: "Hours From You" },
-  ];
-  return (
-    <section className="py-10 border-y border-border/30 bg-secondary/10">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-          {stats.map((s, i) => (
-            <FadeIn key={i} delay={i * 0.06}>
-              <div className="text-center">
-                <div className="font-heading font-bold text-4xl md:text-5xl gradient-text">{s.value}</div>
-                <div className="text-xs text-muted-foreground mt-1 uppercase tracking-widest">{s.label}</div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
-    </section>
   );
 };
 
@@ -426,12 +398,6 @@ const OfferStack = () => {
             </div>
           </div>
         </FadeIn>
-        <FadeIn delay={0.2}>
-          <div className="flex flex-col items-center mt-10 gap-3">
-            <BookButton label="Claim Your Free Strategy Call" large />
-            <p className="text-xs text-muted-foreground">Takes less than 2 minutes to book. No commitment required.</p>
-          </div>
-        </FadeIn>
       </div>
     </section>
   );
@@ -441,11 +407,18 @@ const OfferStack = () => {
 
 const Guarantee = () => (
   <section className="py-16 bg-secondary/10">
+    <style>{`
+      @keyframes guarantee-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary)/0.4), 0 0 20px hsl(var(--primary)/0.2); }
+        50%       { box-shadow: 0 0 0 12px hsl(var(--primary)/0), 0 0 40px hsl(var(--primary)/0.4); }
+      }
+      .guarantee-glow { animation: guarantee-pulse 2.5s ease-in-out infinite; }
+    `}</style>
     <div className="container mx-auto px-6 max-w-3xl">
       <FadeIn>
         <div className="glass-card p-8 md:p-10 border border-primary/30 ring-1 ring-primary/10 text-center">
           <div className="flex justify-center mb-5">
-            <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center guarantee-glow">
               <Trophy className="w-8 h-8 text-primary" />
             </div>
           </div>
@@ -673,28 +646,114 @@ const ScarcityBar = () => {
 
 /* ─────────────────────────── Process Videos (3 static) ─────────────────────────── */
 
+const processSteps = [
+  {
+    video: processVideos[0],
+    n: "01",
+    badge: "RAW RECORDING",
+    title: "You Record Once",
+    desc: "30 minutes. No script. No studio. Just you talking about your expertise — once.",
+    accentText: "text-orange-400",
+    accentBorder: "border-orange-400/40",
+    accentBg: "bg-orange-400/10",
+    dot: "bg-orange-400",
+  },
+  {
+    video: processVideos[1],
+    n: "02",
+    badge: "AI CLONE BUILT",
+    title: "We Clone Your Presence",
+    desc: "Your voice, face and delivery style reproduced by AI. Infinite content from one session.",
+    accentText: "text-primary",
+    accentBorder: "border-primary/40",
+    accentBg: "bg-primary/10",
+    dot: "bg-primary",
+  },
+  {
+    video: processVideos[2],
+    n: "03",
+    badge: "READY TO POST",
+    title: "Polished and Published",
+    desc: "Edited, captioned, hooked. Live across Instagram, LinkedIn and YouTube Shorts.",
+    accentText: "text-emerald-400",
+    accentBorder: "border-emerald-400/40",
+    accentBg: "bg-emerald-400/10",
+    dot: "bg-emerald-400",
+  },
+];
+
 const ProcessVideos = () => (
-  <section className="py-24 bg-secondary/10" id="results">
+  <section className="py-24" id="results">
     <div className="container mx-auto px-6 max-w-5xl">
       <FadeIn>
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
           <span className="block">One Shoot.</span>
-          <span className="gradient-text block">Here is What Comes Out.</span>
+          <span className="gradient-text block">Here Is What Comes Out.</span>
         </h2>
-        <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
-          Raw recording goes in. Polished, platform-ready content comes out. Watch the exact transformation below.
+        <p className="text-center text-muted-foreground max-w-xl mx-auto mb-8">
+          Raw recording goes in. Polished, platform-ready content comes out.
         </p>
       </FadeIn>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {processVideos.map((v, i) => (
-          <FadeIn key={i} delay={i * 0.1}>
-            <div className="flex flex-col gap-3">
-              <VideoPlayer video={v} aspect="portrait" />
-              {v.label && (
-                <div className="text-center text-xs font-semibold text-primary uppercase tracking-wider">{v.label}</div>
+
+      {/* Animated step flow bar */}
+      <FadeIn delay={0.1}>
+        <div className="flex items-center justify-center gap-2 mb-12 flex-wrap">
+          {processSteps.map((s, i) => (
+            <div key={s.n} className="flex items-center gap-2">
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${s.accentBg} ${s.accentBorder} border`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
+                <span className={`text-xs font-bold ${s.accentText} uppercase tracking-widest whitespace-nowrap`}>
+                  Step {s.n} — {s.badge}
+                </span>
+              </div>
+              {i < 2 && (
+                <motion.div
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  whileInView={{ scaleX: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + i * 0.2, duration: 0.5 }}
+                  className="h-px w-6 bg-border/60 origin-left hidden sm:block"
+                />
               )}
             </div>
-          </FadeIn>
+          ))}
+        </div>
+      </FadeIn>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        {processSteps.map((s, i) => (
+          <motion.div
+            key={s.n}
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-4"
+          >
+            {/* Step badge */}
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${s.accentBg} ${s.accentBorder} border w-fit`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
+              <span className={`text-xs font-bold ${s.accentText} uppercase tracking-widest`}>Step {s.n}</span>
+            </div>
+
+            {/* Video — aspect-[9/16] ensures identical sizing */}
+            <div className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative">
+              <iframe
+                src={s.video.src}
+                title={s.video.title ?? "Video"}
+                className="absolute inset-0 w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Step description */}
+            <div className="px-1">
+              <div className={`text-xs font-bold ${s.accentText} uppercase tracking-widest mb-1`}>{s.badge}</div>
+              <h3 className="font-heading font-bold text-lg mb-1.5">{s.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+            </div>
+          </motion.div>
         ))}
       </div>
     </div>
@@ -753,31 +812,68 @@ const ClientProjects = () => {
 
 /* ─────────────────────────── Testimonials ─────────────────────────── */
 
-const Testimonials = () => {
-  const items = [
-    {
-      name: "James M.",
-      role: "Business Coach, Toronto",
-      result: "First inbound client in 5 weeks",
-      text: "I was posting twice a week and getting zero traction. Figfalcon built my content system in 14 days. By week 5 I had three people in my DMs who I had never met asking about my coaching program. First client from content alone closed for $6,000. The system just runs.",
-    },
-    {
-      name: "Sarah K.",
-      role: "Real Estate Agent, Vancouver",
-      result: "Inbound buyer in week 3",
-      text: "I did not want to be on camera. They set me up as a full AI clone. The videos went live and within three weeks I had a buyer reach out saying they had been watching my content for weeks before contacting me. That is exactly the kind of trust-first lead I wanted.",
-    },
-    {
-      name: "Daniel R.",
-      role: "Agency Owner, Calgary",
-      result: "6 hours saved every single week",
-      text: "I was spending six hours a week trying to keep up with content and it still looked inconsistent. Now I do one 30-minute call a month with their team and I am posting every single day across three platforms. I look like I have a full content team. I kind of do.",
-    },
-  ];
+const allTestimonials = [
+  {
+    name: "James M.",
+    role: "Business Coach, Toronto",
+    result: "First inbound client in 5 weeks",
+    text: "I was posting twice a week and getting zero traction. Figfalcon built my content system in 14 days. By week 5 I had three people in my DMs asking about my coaching program. First client from content alone closed for $6,000. The system just runs.",
+  },
+  {
+    name: "Sarah K.",
+    role: "Real Estate Agent, Vancouver",
+    result: "Inbound buyer in week 3",
+    text: "I did not want to be on camera. They set me up as a full AI clone. Within three weeks I had a buyer reach out saying they had been watching my content for weeks before contacting me. That is exactly the trust-first lead I wanted.",
+  },
+  {
+    name: "Daniel R.",
+    role: "Agency Owner, Calgary",
+    result: "6 hours saved every single week",
+    text: "I was spending six hours a week trying to keep up with content and it still looked inconsistent. Now I do one 30-minute call a month and I am posting every day across three platforms. I look like I have a full content team. I kind of do.",
+  },
+  {
+    name: "Priya S.",
+    role: "Business Consultant, Ottawa",
+    result: "3x LinkedIn profile views in 30 days",
+    text: "My LinkedIn was completely dead. One recording session and within 30 days my profile views tripled and I had two warm leads book intro calls on their own. I never had to chase anyone. The content did it for me.",
+  },
+  {
+    name: "Marcus T.",
+    role: "Online Coach, Montreal",
+    result: "Booked a speaking gig from a reel",
+    text: "I posted content before but it never went anywhere. Within six weeks of Figfalcon running my system I got a DM from an event organiser who had seen my reels. Booked a speaking slot from that. The personal brand does the selling when you are not in the room.",
+  },
+  {
+    name: "Rachel M.",
+    role: "Financial Advisor, Edmonton",
+    result: "Replaced cold outreach entirely",
+    text: "I used to cold call every week to fill my calendar. I stopped completely after month two. Clients now come in saying they have been following my content for a while and already trust me. The quality of conversations is completely different.",
+  },
+];
 
+const StarRow = () => (
+  <div className="flex items-center gap-1 mb-4">
+    {[...Array(5)].map((_, i) => (
+      <svg key={i} className="w-4 h-4 text-primary fill-primary" viewBox="0 0 20 20">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
+    ))}
+  </div>
+);
+
+const Testimonials = () => {
+  const looped = [...allTestimonials, ...allTestimonials];
   return (
     <section className="py-24 bg-secondary/10">
-      <div className="container mx-auto px-6 max-w-5xl">
+      <style>{`
+        @keyframes testimonial-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(calc(-100% / 2)); }
+        }
+        .testimonial-track { animation: testimonial-scroll 40s linear infinite; }
+        .testimonial-track:hover { animation-play-state: paused; }
+      `}</style>
+      <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
             <span className="block">What Happens When</span>
@@ -787,27 +883,26 @@ const Testimonials = () => {
             Real clients. Real results. Zero hours from them.
           </p>
         </FadeIn>
-        <div className="grid md:grid-cols-3 gap-5">
-          {items.map((t, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="glass-card p-7 h-full border border-border/60 flex flex-col">
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(5)].map((_, s) => (
-                    <svg key={s} className="w-4 h-4 text-primary fill-primary" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-5 italic">"{t.text}"</p>
-                <div className="pt-4 border-t border-border/40">
-                  <div className="font-semibold text-sm text-foreground">{t.name}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
-                  <div className="mt-3 inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs text-primary font-medium">
-                    {t.result}
-                  </div>
+      </div>
+
+      {/* Infinite scrolling testimonials */}
+      <div
+        className="overflow-hidden"
+        style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+      >
+        <div className="testimonial-track flex gap-5" style={{ width: "max-content" }}>
+          {looped.map((t, i) => (
+            <div key={i} className="shrink-0 w-[340px] glass-card p-7 border border-border/60 flex flex-col">
+              <StarRow />
+              <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-5 italic">"{t.text}"</p>
+              <div className="pt-4 border-t border-border/40">
+                <div className="font-semibold text-sm text-foreground">{t.name}</div>
+                <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
+                <div className="mt-3 inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs text-primary font-medium">
+                  {t.result}
                 </div>
               </div>
-            </FadeIn>
+            </div>
           ))}
         </div>
       </div>
@@ -1066,8 +1161,19 @@ const AIContentSystem = () => {
       <LandingNavbar />
 
       {/* ── HERO ── */}
+      <style>{`
+        @keyframes hero-mesh {
+          0%, 100% { transform: scale(1) translate(0, 0); }
+          33%       { transform: scale(1.08) translate(2%, -3%); }
+          66%       { transform: scale(1.04) translate(-2%, 2%); }
+        }
+        .hero-mesh { animation: hero-mesh 14s ease-in-out infinite; }
+      `}</style>
       <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 gradient-hero opacity-70" />
+        <div className="absolute inset-0 opacity-30 hero-mesh pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, hsl(var(--primary)/0.35), transparent 70%)" }}
+        />
         <div className="container mx-auto px-6 relative z-10 max-w-4xl">
           <FadeIn>
             <div className="flex justify-center mb-6">
@@ -1098,7 +1204,6 @@ const AIContentSystem = () => {
         </div>
       </section>
 
-      <NumbersBar />
       <ProblemCards />
       <SystemStages />
       <BeforeAfter />
