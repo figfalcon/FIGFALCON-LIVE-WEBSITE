@@ -590,9 +590,15 @@ const Onboarding = () => {
     <section className="py-24 bg-secondary/10" id="get-started">
       <div className="container mx-auto px-6 max-w-4xl">
         <FadeIn>
-          <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">Get Started</h2>
-          <p className="text-center text-muted-foreground mb-14">
+          <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">
+            Get Started
+            <span className="block gradient-text text-3xl md:text-4xl mt-1">In 3 Simple Steps</span>
+          </h2>
+          <p className="text-center text-muted-foreground mb-3 mt-4">
             30 Minutes of Your Time. 15 Pieces of Content. Live in 14 Days.
+          </p>
+          <p className="text-center text-muted-foreground/70 text-sm max-w-lg mx-auto mb-14">
+            No studio. No editing software. No content strategy needed. You record once — we handle everything else and get your content live across every platform.
           </p>
         </FadeIn>
         <div className="space-y-6">
@@ -656,9 +662,9 @@ const processSteps = [
     fullLabel: "STEP 01 — RAW RECORDING",
     title: "You Record Once",
     desc: "30 minutes. No script. No studio. Just you talking about anything — once.",
-    badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
-    dotCls:   "bg-amber-400",
-    titleCls: "text-amber-400",
+    badgeCls: "bg-primary/10 border-primary/30 text-primary",
+    dotCls:   "bg-primary",
+    titleCls: "text-primary",
     descCls:  "text-foreground/80",
   },
   {
@@ -667,8 +673,8 @@ const processSteps = [
     fullLabel: "STEP 02 — AI CLONE BUILT",
     title: "We Clone Your Presence",
     desc: "Your voice, face and delivery style reproduced by AI. Infinite content from one session.",
-    badgeCls: "bg-primary/10 border-primary/30 text-primary",
-    dotCls:   "bg-primary",
+    badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
+    dotCls:   "bg-amber-400",
     titleCls: "text-primary",
     descCls:  "text-foreground/80",
   },
@@ -680,7 +686,7 @@ const processSteps = [
     desc: "Edited, captioned, hooked. Live across Instagram, LinkedIn and YouTube Shorts.",
     badgeCls: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
     dotCls:   "bg-emerald-400",
-    titleCls: "text-emerald-400",
+    titleCls: "text-primary",
     descCls:  "text-foreground/80",
   },
 ];
