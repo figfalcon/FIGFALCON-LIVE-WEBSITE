@@ -799,8 +799,8 @@ const ClientProjects = () => {
             <span className="block">Real Creators.</span>
             <span className="gradient-text block">Real AI Clones. Real Results.</span>
           </h2>
-          <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
-            These are actual AI clone videos we have built for creators. The same system gets built for you. Watch and try to spot the difference from a real recording.
+          <p className="text-center text-muted-foreground max-w-2xl mx-auto mb-12">
+            Real AI clone videos we built for real creators. The same system gets built for you — watch and try to spot the difference.
           </p>
         </FadeIn>
         <div
