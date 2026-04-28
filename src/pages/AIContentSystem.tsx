@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, ChevronDown, Check, X, Menu, ShieldCheck, Clock, Zap, Users, Trophy } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
@@ -685,6 +685,52 @@ const processSteps = [
   },
 ];
 
+// ─── Hover-play video card ────────────────────────────────────────────────────
+const HoverVideo = ({ src, poster }: { src: string; poster: string }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const play = () => {
+    videoRef.current?.play().then(() => setPlaying(true)).catch(() => {});
+  };
+  const pause = () => {
+    videoRef.current?.pause();
+    setPlaying(false);
+  };
+  const toggle = () => (videoRef.current?.paused ? play() : pause());
+
+  return (
+    <div
+      className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative cursor-pointer select-none"
+      onMouseEnter={play}
+      onMouseLeave={pause}
+      onClick={toggle}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        playsInline
+        preload="none"
+        loop
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+      />
+      {/* Play icon — visible when paused */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 pointer-events-none ${
+          playing ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="w-14 h-14 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+          <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ProcessVideos = () => {
   return (
   <section className="py-24" id="results">
@@ -717,17 +763,8 @@ const ProcessVideos = () => {
               </div>
             </div>
 
-            {/* Video — self-hosted in Supabase Storage, native <video> with poster */}
-            <div className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative">
-              <video
-                src={s.video.src}
-                poster={s.video.poster}
-                controls
-                playsInline
-                preload="none"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
+            {/* Video — hover to play, click to toggle */}
+            <HoverVideo src={s.video.src} poster={s.video.poster} />
 
             {/* Step description */}
             <div className="px-1 text-center">
@@ -939,8 +976,8 @@ const WhoItsFor = () => {
           <FadeIn delay={0.1}>
             <div className="glass-card p-7 h-full border border-border/60">
               <div className="flex items-center gap-2 mb-5">
-                <X className="w-5 h-5 text-muted-foreground" />
-                <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">This is NOT for you if...</div>
+                <X className="w-5 h-5 text-red-400" />
+                <div className="text-sm font-semibold text-red-400 uppercase tracking-wider">This is NOT for you if...</div>
               </div>
               <ul className="space-y-4">
                 {notForYou.map((w) => (
