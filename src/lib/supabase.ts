@@ -27,19 +27,19 @@ export const getThumbnailUrl = (filename: string) =>
 export const PROCESS_VIDEOS = {
   step1: {
     src: getVideoUrl("step1-raw.mp4"),
-    poster: getThumbnailUrl("step1-raw.jpg"),
+    poster: getThumbnailUrl("step1-raw.png"),
     title: "Raw Recording",
     label: "Step 1 — You Record Once",
   },
   step2: {
     src: getVideoUrl("step2-clone.mp4"),
-    poster: getThumbnailUrl("step2-clone.jpg"),
+    poster: getThumbnailUrl("step2-clone.png"),
     title: "AI Clone Output",
     label: "Step 2 — We Build Your AI Clone",
   },
   step3: {
     src: getVideoUrl("step3-final.mp4"),
-    poster: getThumbnailUrl("step3-final.jpg"),
+    poster: getThumbnailUrl("step3-final.png"),
     title: "Final Polished Reel",
     label: "Step 3 — Ready to Post",
   },

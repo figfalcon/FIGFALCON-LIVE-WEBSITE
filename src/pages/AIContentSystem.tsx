@@ -655,7 +655,7 @@ const processSteps = [
     n: "01",
     fullLabel: "STEP 01 — RAW RECORDING",
     title: "You Record Once",
-    desc: "30 minutes. No script. No studio. Just you talking about your expertise — once.",
+    desc: "30 minutes. No script. No studio. Just you talking about anything — once.",
     badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
     dotCls:   "bg-amber-400",
     titleCls: "text-amber-400",
@@ -709,10 +709,12 @@ const ProcessVideos = () => {
             transition={{ duration: 0.55, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col gap-4"
           >
-            {/* Full step label — directly above the video */}
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border w-fit ${s.badgeCls}`}>
-              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${s.dotCls}`} />
-              <span className="text-xs font-bold uppercase tracking-widest whitespace-nowrap">{s.fullLabel}</span>
+            {/* Full step label — centered above the video */}
+            <div className="flex justify-center">
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${s.badgeCls}`}>
+                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${s.dotCls}`} />
+                <span className="text-xs font-bold uppercase tracking-widest whitespace-nowrap">{s.fullLabel}</span>
+              </div>
             </div>
 
             {/* Video — self-hosted in Supabase Storage, native <video> with poster */}
@@ -728,7 +730,7 @@ const ProcessVideos = () => {
             </div>
 
             {/* Step description */}
-            <div className="px-1">
+            <div className="px-1 text-center">
               <h3 className={`font-heading font-bold text-lg mb-1.5 ${s.titleCls}`}>{s.title}</h3>
               <p className={`text-sm leading-relaxed ${s.descCls}`}>{s.desc}</p>
             </div>
