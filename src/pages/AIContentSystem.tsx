@@ -44,7 +44,7 @@ const clientProjectVideos: VideoSlot[] = [
 /* ─────────────────────────── Primitives ─────────────────────────── */
 
 const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "video" | "portrait" }) => {
-  const aspectClass = aspect === "portrait" ? "aspect-[9/16]" : "aspect-video";
+  const aspectClass = aspect === "portrait" ? "h-[480px]" : "aspect-video";
 
   if (video.src) {
     const isIframe = /youtube\.com|youtu\.be|vimeo\.com/.test(video.src);
@@ -402,37 +402,27 @@ const OfferStack = () => {
             </div>
             <div className="divide-y divide-border/30">
               {deliverables.map((d, i) => (
-                <div key={i} className="flex items-start justify-between gap-4 px-6 py-4">
-                  <div className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-medium text-sm">{d.item}</div>
-                      <div className="text-xs text-muted-foreground mt-0.5">{d.note}</div>
-                    </div>
+                <div key={i} className="flex items-start gap-4 px-6 py-4">
+                  <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <div>
+                    <div className="font-medium text-sm">{d.item}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{d.note}</div>
                   </div>
-                  <div className="text-sm font-semibold text-primary shrink-0">{d.value}</div>
                 </div>
               ))}
             </div>
 
-            {/* Hormozi-approved pricing block: anchor the value, give a range, qualify on the call */}
-            <div className="px-6 py-6 bg-primary/5 border-t border-primary/20">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-                <div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">If you bought this separately</div>
-                  <div className="font-heading font-bold text-2xl line-through text-muted-foreground/50">$6,497 per month</div>
-                </div>
-                <div className="text-left sm:text-right">
-                  <div className="text-xs text-primary uppercase tracking-wider mb-1">Your Investment</div>
-                  <div className="font-heading font-bold text-2xl text-foreground">Starts at $2,500/month</div>
-                  <div className="text-xs text-muted-foreground mt-1">Exact package built around your goals on the call.</div>
-                </div>
-              </div>
-              <div className="mt-5 p-4 rounded-xl bg-secondary/40 border border-border/30">
-                <p className="text-sm text-muted-foreground leading-relaxed text-center">
-                  We do not sell templates. Every client gets a system built specifically for their offer, audience, and platform. Your exact investment depends on scope. Most clients are between $2,500 and $4,500 per month. We settle the details on your free strategy call.
-                </p>
-              </div>
+            {/* Hormozi: get them to the call — close on the call. Don't price them out before they speak to you. */}
+            <div className="px-6 py-8 bg-primary/5 border-t border-primary/20 text-center">
+              <div className="text-xs text-primary uppercase tracking-widest mb-3">How Pricing Works</div>
+              <p className="font-heading font-bold text-xl text-foreground mb-2">
+                Your Package Is Built on the Call. Not Before It.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto mb-6">
+                We do not sell templates. On your free strategy call we scope exactly what your content system needs and tell you the investment required to hit your goals. No guessing. No surprise fees.
+              </p>
+              <BookButton label="Build My Content System" large />
+              <p className="text-xs text-muted-foreground mt-3">Free 30-min call. No commitment. No hard sell.</p>
             </div>
           </div>
         </FadeIn>
@@ -464,8 +454,11 @@ const Guarantee = () => (
             <span className="block">100K Views in 60 Days.</span>
             <span className="gradient-text block">Or We Work Free Until You Do.</span>
           </h2>
-          <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-6">
+          <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-4">
             If your content does not hit 100,000 views within 60 days of going live, we keep working at no charge until it does. No excuses. No renegotiating. We either perform or we earn it.
+          </p>
+          <p className="text-sm text-muted-foreground/80 max-w-xl mx-auto mb-6">
+            Views are combined across Instagram Reels, LinkedIn, and YouTube Shorts and tracked in a shared dashboard you can check at any time.
           </p>
           <p className="text-sm font-semibold text-foreground">
             No other content agency in the market offers this. Because most cannot back it up. We can.
@@ -619,7 +612,7 @@ const Onboarding = () => {
     },
   ];
   return (
-    <section className="py-24 bg-secondary/10" id="how-it-works">
+    <section className="py-24 bg-secondary/10" id="get-started">
       <div className="container mx-auto px-6 max-w-4xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">Get Started</h2>
@@ -654,26 +647,29 @@ const Onboarding = () => {
 
 /* ─────────────────────────── Scarcity ─────────────────────────── */
 
-const ScarcityBar = () => (
-  <section className="py-10">
-    <div className="container mx-auto px-6 max-w-3xl">
-      <FadeIn>
-        <div className="glass-card border border-primary/40 ring-1 ring-primary/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
-              <Clock className="w-6 h-6 text-primary" />
+const ScarcityBar = () => {
+  const month = new Date().toLocaleString("default", { month: "long", year: "numeric" });
+  return (
+    <section className="py-10">
+      <div className="container mx-auto px-6 max-w-3xl">
+        <FadeIn>
+          <div className="glass-card border border-primary/40 ring-1 ring-primary/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
+                <Clock className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <div className="font-heading font-bold text-lg">{month} — 2 of 5 Spots Remaining</div>
+                <div className="text-sm text-muted-foreground">We cap onboarding to protect results. When spots fill, the next opening is next month.</div>
+              </div>
             </div>
-            <div>
-              <div className="font-heading font-bold text-lg">We Only Take 5 New Clients Per Month</div>
-              <div className="text-sm text-muted-foreground">To protect quality, onboarding is limited. Spots fill early.</div>
-            </div>
+            <BookButton label="Check Availability" />
           </div>
-          <BookButton label="Check Availability" />
-        </div>
-      </FadeIn>
-    </div>
-  </section>
-);
+        </FadeIn>
+      </div>
+    </section>
+  );
+};
 
 /* ─────────────────────────── Process Videos (3 static) ─────────────────────────── */
 
@@ -750,6 +746,70 @@ const ClientProjects = () => {
             <p className="text-xs text-muted-foreground">Free strategy call. We show you samples before you commit to anything.</p>
           </div>
         </FadeIn>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────── Testimonials ─────────────────────────── */
+
+const Testimonials = () => {
+  const items = [
+    {
+      name: "James M.",
+      role: "Business Coach, Toronto",
+      result: "First inbound client in 5 weeks",
+      text: "I was posting twice a week and getting zero traction. Figfalcon built my content system in 14 days. By week 5 I had three people in my DMs who I had never met asking about my coaching program. First client from content alone closed for $6,000. The system just runs.",
+    },
+    {
+      name: "Sarah K.",
+      role: "Real Estate Agent, Vancouver",
+      result: "Inbound buyer in week 3",
+      text: "I did not want to be on camera. They set me up as a full AI clone. The videos went live and within three weeks I had a buyer reach out saying they had been watching my content for weeks before contacting me. That is exactly the kind of trust-first lead I wanted.",
+    },
+    {
+      name: "Daniel R.",
+      role: "Agency Owner, Calgary",
+      result: "6 hours saved every single week",
+      text: "I was spending six hours a week trying to keep up with content and it still looked inconsistent. Now I do one 30-minute call a month with their team and I am posting every single day across three platforms. I look like I have a full content team. I kind of do.",
+    },
+  ];
+
+  return (
+    <section className="py-24 bg-secondary/10">
+      <div className="container mx-auto px-6 max-w-5xl">
+        <FadeIn>
+          <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
+            <span className="block">What Happens When</span>
+            <span className="gradient-text block">The System Runs For You</span>
+          </h2>
+          <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
+            Real clients. Real results. Zero hours from them.
+          </p>
+        </FadeIn>
+        <div className="grid md:grid-cols-3 gap-5">
+          {items.map((t, i) => (
+            <FadeIn key={i} delay={i * 0.1}>
+              <div className="glass-card p-7 h-full border border-border/60 flex flex-col">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, s) => (
+                    <svg key={s} className="w-4 h-4 text-primary fill-primary" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-5 italic">"{t.text}"</p>
+                <div className="pt-4 border-t border-border/40">
+                  <div className="font-semibold text-sm text-foreground">{t.name}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
+                  <div className="mt-3 inline-block px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs text-primary font-medium">
+                    {t.result}
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -873,11 +933,11 @@ const BookingEmbed = () => (
           Book a Free Strategy Call.
         </div>
         <h2 className="font-heading font-bold text-4xl md:text-5xl text-center leading-tight mb-4">
-          <span className="block">Ready To Be Seen, Trusted,</span>
-          <span className="gradient-text block">and Chosen?</span>
+          <span className="block">{new Date().toLocaleString("default", { month: "long" })} Is Filling Fast.</span>
+          <span className="gradient-text block">Book Your Spot Below.</span>
         </h2>
         <p className="text-center text-muted-foreground mb-10 max-w-xl mx-auto">
-          30 minutes. No hard sell. We map out exactly what your content system looks like and whether we are the right fit.
+          30 minutes. No hard sell. We map out exactly what your content system looks like, show you AI clone samples, and tell you if we are a fit.
         </p>
       </FadeIn>
       <FadeIn delay={0.1}>
@@ -1023,7 +1083,7 @@ const AIContentSystem = () => {
           </FadeIn>
           <FadeIn delay={0.1}>
             <p className="text-center text-muted-foreground text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              We write your scripts, build your AI clone, edit every clip, and post across Instagram, LinkedIn and YouTube so you grow your personal brand without spending your week creating content.
+              Coaches and consultants using this system start getting inbound messages within 30 days. Your content runs on every platform, every week. You never touch a single app.
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
@@ -1041,14 +1101,15 @@ const AIContentSystem = () => {
       <NumbersBar />
       <ProblemCards />
       <SystemStages />
+      <BeforeAfter />
+      <ProcessVideos />
+      <Testimonials />
       <OfferStack />
       <Guarantee />
-      <BeforeAfter />
-      <Onboarding />
-      <ScarcityBar />
-      <ProcessVideos />
       <ClientProjects />
       <WhoItsFor />
+      <Onboarding />
+      <ScarcityBar />
       <FinalCTA />
       <BookingEmbed />
       <FAQ />
