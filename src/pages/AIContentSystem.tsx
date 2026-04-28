@@ -138,13 +138,15 @@ const LandingNavbar = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border/40 shadow-lg" : "bg-transparent"
-      }`}
+      className="fixed top-3 left-0 right-0 z-50 px-4 md:px-6"
     >
-      <div className="container mx-auto px-6 flex items-center justify-between h-16">
+      <div className={`max-w-5xl mx-auto flex items-center justify-between h-12 px-4 md:px-5 rounded-2xl transition-all duration-300 ${
+        scrolled
+          ? "bg-background/95 backdrop-blur-xl border border-border/50 shadow-xl shadow-background/40"
+          : "bg-background/50 backdrop-blur-md border border-border/20"
+      }`}>
         <a href="#" className="flex items-center gap-2 shrink-0">
-          <img src={logo} alt="Figfalcon" className="h-7 md:h-8" />
+          <img src={logo} alt="Figfalcon" className="h-6 md:h-7" />
         </a>
         <nav className="hidden md:flex items-center gap-1">
           {links.map((l) => (
@@ -152,40 +154,50 @@ const LandingNavbar = () => {
               key={l.href}
               href={l.href}
               onClick={(e) => handleNav(e, l.href)}
-              className="text-sm font-medium px-4 py-2 rounded-full text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="text-xs font-medium px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               {l.label}
             </a>
           ))}
         </nav>
-        <div className="hidden md:block">
-          <BookButton label="Claim Your Free Strategy Call" />
-        </div>
-        <button className="md:hidden text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        <button
+          type="button"
+          onClick={scrollToBooking}
+          className="hidden md:block text-xs font-semibold px-4 py-1.5 rounded-full bg-primary text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+        >
+          Book a Free Call
+        </button>
+        <button className="md:hidden text-foreground p-1.5" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
+          {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
         </button>
       </div>
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border/40"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="max-w-5xl mx-auto mt-2 rounded-2xl bg-background/95 backdrop-blur-xl border border-border/40 shadow-xl overflow-hidden"
           >
-            <div className="container mx-auto px-6 py-5 flex flex-col gap-2">
+            <div className="px-5 py-4 flex flex-col gap-1">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={(e) => handleNav(e, l.href)}
-                  className="text-base font-medium px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground"
+                  className="text-sm font-medium px-4 py-2.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-colors"
                 >
                   {l.label}
                 </a>
               ))}
-              <div className="mt-3">
-                <BookButton label="Claim Your Free Strategy Call" />
+              <div className="mt-2 pt-2 border-t border-border/40">
+                <button
+                  type="button"
+                  onClick={() => { setMobileOpen(false); scrollToBooking(); }}
+                  className="w-full text-sm font-semibold px-4 py-2.5 rounded-xl bg-primary text-white hover:opacity-90 transition-opacity text-center"
+                >
+                  Book a Free Call
+                </button>
               </div>
             </div>
           </motion.div>
@@ -433,8 +445,8 @@ const Guarantee = () => (
           <p className="text-sm text-muted-foreground/80 max-w-xl mx-auto mb-6">
             Views are combined across Instagram Reels, LinkedIn, and YouTube Shorts and tracked in a shared dashboard you can check at any time.
           </p>
-          <p className="text-sm font-semibold text-foreground">
-            No other content agency in the market offers this. Because most cannot back it up. We can.
+          <p className="text-sm font-semibold text-foreground whitespace-nowrap">
+            No other agency offers this guarantee. Because most cannot back it up.
           </p>
         </div>
       </FadeIn>
@@ -650,35 +662,32 @@ const processSteps = [
   {
     video: processVideos[0],
     n: "01",
-    badge: "RAW RECORDING",
+    fullLabel: "STEP 01 — RAW RECORDING",
     title: "You Record Once",
     desc: "30 minutes. No script. No studio. Just you talking about your expertise — once.",
-    accentText: "text-orange-400",
-    accentBorder: "border-orange-400/40",
-    accentBg: "bg-orange-400/10",
-    dot: "bg-orange-400",
+    badgeCls: "bg-secondary/50 border-border/60 text-muted-foreground",
+    dotCls:   "bg-muted-foreground/50",
+    descCls:  "text-muted-foreground/80",
   },
   {
     video: processVideos[1],
     n: "02",
-    badge: "AI CLONE BUILT",
+    fullLabel: "STEP 02 — AI CLONE BUILT",
     title: "We Clone Your Presence",
     desc: "Your voice, face and delivery style reproduced by AI. Infinite content from one session.",
-    accentText: "text-primary",
-    accentBorder: "border-primary/40",
-    accentBg: "bg-primary/10",
-    dot: "bg-primary",
+    badgeCls: "bg-primary/10 border-primary/30 text-primary",
+    dotCls:   "bg-primary",
+    descCls:  "text-primary/80",
   },
   {
     video: processVideos[2],
     n: "03",
-    badge: "READY TO POST",
+    fullLabel: "STEP 03 — READY TO POST",
     title: "Polished and Published",
     desc: "Edited, captioned, hooked. Live across Instagram, LinkedIn and YouTube Shorts.",
-    accentText: "text-emerald-400",
-    accentBorder: "border-emerald-400/40",
-    accentBg: "bg-emerald-400/10",
-    dot: "bg-emerald-400",
+    badgeCls: "bg-secondary/40 border-border/50 text-foreground/80",
+    dotCls:   "bg-foreground/60",
+    descCls:  "text-muted-foreground",
   },
 ];
 
@@ -690,34 +699,9 @@ const ProcessVideos = () => (
           <span className="block">One Shoot.</span>
           <span className="gradient-text block">Here Is What Comes Out.</span>
         </h2>
-        <p className="text-center text-muted-foreground max-w-xl mx-auto mb-8">
+        <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
           Raw recording goes in. Polished, platform-ready content comes out.
         </p>
-      </FadeIn>
-
-      {/* Animated step flow bar */}
-      <FadeIn delay={0.1}>
-        <div className="flex items-center justify-center gap-2 mb-12 flex-wrap">
-          {processSteps.map((s, i) => (
-            <div key={s.n} className="flex items-center gap-2">
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${s.accentBg} ${s.accentBorder} border`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
-                <span className={`text-xs font-bold ${s.accentText} uppercase tracking-widest whitespace-nowrap`}>
-                  Step {s.n} — {s.badge}
-                </span>
-              </div>
-              {i < 2 && (
-                <motion.div
-                  initial={{ scaleX: 0, opacity: 0 }}
-                  whileInView={{ scaleX: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 + i * 0.2, duration: 0.5 }}
-                  className="h-px w-6 bg-border/60 origin-left hidden sm:block"
-                />
-              )}
-            </div>
-          ))}
-        </div>
       </FadeIn>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
@@ -730,13 +714,13 @@ const ProcessVideos = () => (
             transition={{ duration: 0.55, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col gap-4"
           >
-            {/* Step badge */}
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${s.accentBg} ${s.accentBorder} border w-fit`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${s.dot} shrink-0`} />
-              <span className={`text-xs font-bold ${s.accentText} uppercase tracking-widest`}>Step {s.n}</span>
+            {/* Full step label — directly above the video */}
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border w-fit ${s.badgeCls}`}>
+              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${s.dotCls}`} />
+              <span className="text-xs font-bold uppercase tracking-widest whitespace-nowrap">{s.fullLabel}</span>
             </div>
 
-            {/* Video — aspect-[9/16] ensures identical sizing */}
+            {/* Video — aspect-[9/16] ensures identical sizing across all 3 */}
             <div className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative">
               <iframe
                 src={s.video.src}
@@ -749,9 +733,8 @@ const ProcessVideos = () => (
 
             {/* Step description */}
             <div className="px-1">
-              <div className={`text-xs font-bold ${s.accentText} uppercase tracking-widest mb-1`}>{s.badge}</div>
               <h3 className="font-heading font-bold text-lg mb-1.5">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+              <p className={`text-sm leading-relaxed ${s.descCls}`}>{s.desc}</p>
             </div>
           </motion.div>
         ))}
@@ -786,7 +769,7 @@ const ClientProjects = () => {
         </FadeIn>
         <div
           className="overflow-hidden"
-          style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}
+          style={{ maskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)" }}
         >
           <div className="client-marquee-track flex gap-5" style={{ width: "max-content" }}>
             {looped.map((v, i) => (
@@ -867,8 +850,8 @@ const Testimonials = () => {
     <section className="py-24 bg-secondary/10">
       <style>{`
         @keyframes testimonial-scroll {
-          from { transform: translateX(0); }
-          to   { transform: translateX(calc(-100% / 2)); }
+          from { transform: translateX(calc(-100% / 2)); }
+          to   { transform: translateX(0); }
         }
         .testimonial-track { animation: testimonial-scroll 40s linear infinite; }
         .testimonial-track:hover { animation-play-state: paused; }
@@ -888,7 +871,7 @@ const Testimonials = () => {
       {/* Infinite scrolling testimonials */}
       <div
         className="overflow-hidden"
-        style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+        style={{ maskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)" }}
       >
         <div className="testimonial-track flex gap-5" style={{ width: "max-content" }}>
           {looped.map((t, i) => (
