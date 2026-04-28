@@ -148,27 +148,28 @@ const LandingNavbar = () => {
         <a href="#" className="flex items-center gap-2 shrink-0">
           <img src={logo} alt="Figfalcon" className="h-6 md:h-7" />
         </a>
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-0.5">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={(e) => handleNav(e, l.href)}
-              className="text-xs font-medium px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="relative text-sm font-medium px-4 py-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors duration-200 group"
             >
               {l.label}
+              <span className="absolute bottom-1 left-4 right-4 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left rounded-full" />
             </a>
           ))}
         </nav>
         <button
           type="button"
           onClick={scrollToBooking}
-          className="hidden md:block text-xs font-semibold px-4 py-1.5 rounded-full bg-primary text-white hover:opacity-90 transition-opacity whitespace-nowrap"
+          className="hidden md:flex items-center gap-2 text-sm font-bold px-6 py-2.5 rounded-full bg-primary text-white hover:opacity-90 active:scale-95 transition-all duration-200 whitespace-nowrap shadow-lg shadow-primary/30 hover:shadow-primary/50"
         >
           Book a Free Call
         </button>
         <button className="md:hidden text-foreground p-1.5" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">
-          {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
       <AnimatePresence>
@@ -194,7 +195,7 @@ const LandingNavbar = () => {
                 <button
                   type="button"
                   onClick={() => { setMobileOpen(false); scrollToBooking(); }}
-                  className="w-full text-sm font-semibold px-4 py-2.5 rounded-xl bg-primary text-white hover:opacity-90 transition-opacity text-center"
+                  className="w-full text-sm font-bold px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-opacity text-center shadow-lg shadow-primary/30"
                 >
                   Book a Free Call
                 </button>
@@ -369,7 +370,7 @@ const OfferStack = () => {
 
   return (
     <section className="py-24">
-      <div className="container mx-auto px-6 max-w-4xl">
+      <div className="container mx-auto px-6 max-w-2xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
             <span className="block">Everything You Get</span>
@@ -386,10 +387,10 @@ const OfferStack = () => {
             </div>
             <div className="divide-y divide-border/30">
               {deliverables.map((d, i) => (
-                <div key={i} className="flex items-start gap-4 px-6 py-4">
+                <div key={i} className="flex items-start gap-4 px-6 py-5">
                   <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-sm">{d.item}</div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-sm text-foreground">{d.item}</div>
                     <div className="text-xs text-muted-foreground mt-0.5">{d.note}</div>
                   </div>
                 </div>
@@ -601,13 +602,14 @@ const Onboarding = () => {
       <div className="container mx-auto px-6 max-w-4xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">Get Started</h2>
-          <p className="text-center text-muted-foreground mb-14">As Easy As 1, 2, 3</p>
+          <p className="text-center text-muted-foreground mb-14">
+            30 Minutes of Your Time. 15 Pieces of Content. Live in 14 Days.
+          </p>
         </FadeIn>
         <div className="space-y-6">
           {steps.map((s, i) => (
             <FadeIn key={s.n} delay={i * 0.1}>
               <div className="relative grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm">
-                <div className="absolute top-4 right-4 text-xs font-semibold text-muted-foreground/40">{s.n}</div>
                 <div className="p-4 md:p-5 flex items-center justify-center bg-secondary/20">
                   <div className="w-full"><StepMockup step={i} /></div>
                 </div>
@@ -667,6 +669,7 @@ const processSteps = [
     desc: "30 minutes. No script. No studio. Just you talking about your expertise — once.",
     badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
     dotCls:   "bg-amber-400",
+    titleCls: "text-amber-400",
     descCls:  "text-amber-400/80",
   },
   {
@@ -677,6 +680,7 @@ const processSteps = [
     desc: "Your voice, face and delivery style reproduced by AI. Infinite content from one session.",
     badgeCls: "bg-primary/10 border-primary/30 text-primary",
     dotCls:   "bg-primary",
+    titleCls: "text-primary",
     descCls:  "text-primary/80",
   },
   {
@@ -687,6 +691,7 @@ const processSteps = [
     desc: "Edited, captioned, hooked. Live across Instagram, LinkedIn and YouTube Shorts.",
     badgeCls: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
     dotCls:   "bg-emerald-400",
+    titleCls: "text-emerald-400",
     descCls:  "text-emerald-400/80",
   },
 ];
@@ -759,7 +764,7 @@ const ProcessVideos = () => {
 
             {/* Step description */}
             <div className="px-1">
-              <h3 className="font-heading font-bold text-lg mb-1.5">{s.title}</h3>
+              <h3 className={`font-heading font-bold text-lg mb-1.5 ${s.titleCls}`}>{s.title}</h3>
               <p className={`text-sm leading-relaxed ${s.descCls}`}>{s.desc}</p>
             </div>
           </motion.div>
