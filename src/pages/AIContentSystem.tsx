@@ -670,7 +670,7 @@ const processSteps = [
     badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
     dotCls:   "bg-amber-400",
     titleCls: "text-amber-400",
-    descCls:  "text-amber-400/80",
+    descCls:  "text-foreground/80",
   },
   {
     video: processVideos[1],
@@ -681,7 +681,7 @@ const processSteps = [
     badgeCls: "bg-primary/10 border-primary/30 text-primary",
     dotCls:   "bg-primary",
     titleCls: "text-primary",
-    descCls:  "text-primary/80",
+    descCls:  "text-foreground/80",
   },
   {
     video: processVideos[2],
@@ -692,7 +692,7 @@ const processSteps = [
     badgeCls: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
     dotCls:   "bg-emerald-400",
     titleCls: "text-emerald-400",
-    descCls:  "text-emerald-400/80",
+    descCls:  "text-foreground/80",
   },
 ];
 
