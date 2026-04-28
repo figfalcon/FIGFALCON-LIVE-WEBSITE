@@ -138,12 +138,12 @@ const LandingNavbar = () => {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-3 left-0 right-0 z-50 px-4 md:px-6"
+      className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className={`max-w-5xl mx-auto flex items-center justify-between h-12 px-4 md:px-5 rounded-2xl transition-all duration-300 ${
+      <div className={`flex items-center justify-between px-6 md:px-10 lg:px-16 py-3 md:py-4 transition-all duration-300 ${
         scrolled
-          ? "bg-background/95 backdrop-blur-xl border border-border/50 shadow-xl shadow-background/40"
-          : "bg-background/50 backdrop-blur-md border border-border/20"
+          ? "bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-xl shadow-background/40"
+          : "bg-transparent"
       }`}>
         <a href="#" className="flex items-center gap-2 shrink-0">
           <img src={logo} alt="Figfalcon" className="h-6 md:h-7" />
@@ -177,9 +177,9 @@ const LandingNavbar = () => {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="max-w-5xl mx-auto mt-2 rounded-2xl bg-background/95 backdrop-blur-xl border border-border/40 shadow-xl overflow-hidden"
+            className="w-full bg-background/95 backdrop-blur-xl border-b border-border/40 shadow-xl"
           >
-            <div className="px-5 py-4 flex flex-col gap-1">
+            <div className="px-6 py-4 flex flex-col gap-1">
               {links.map((l) => (
                 <a
                   key={l.href}
@@ -665,9 +665,9 @@ const processSteps = [
     fullLabel: "STEP 01 — RAW RECORDING",
     title: "You Record Once",
     desc: "30 minutes. No script. No studio. Just you talking about your expertise — once.",
-    badgeCls: "bg-secondary/50 border-border/60 text-muted-foreground",
-    dotCls:   "bg-muted-foreground/50",
-    descCls:  "text-muted-foreground/80",
+    badgeCls: "bg-amber-500/10 border-amber-500/30 text-amber-400",
+    dotCls:   "bg-amber-400",
+    descCls:  "text-amber-400/80",
   },
   {
     video: processVideos[1],
@@ -685,13 +685,17 @@ const processSteps = [
     fullLabel: "STEP 03 — READY TO POST",
     title: "Polished and Published",
     desc: "Edited, captioned, hooked. Live across Instagram, LinkedIn and YouTube Shorts.",
-    badgeCls: "bg-secondary/40 border-border/50 text-foreground/80",
-    dotCls:   "bg-foreground/60",
-    descCls:  "text-muted-foreground",
+    badgeCls: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
+    dotCls:   "bg-emerald-400",
+    descCls:  "text-emerald-400/80",
   },
 ];
 
-const ProcessVideos = () => (
+const ProcessVideos = () => {
+  const [thirdActive, setThirdActive] = useState(false);
+  const thirdPoster = `https://img.youtube.com/vi/Dkeh0ZUHU7c/maxresdefault.jpg`;
+
+  return (
   <section className="py-24" id="results">
     <div className="container mx-auto px-6 max-w-5xl">
       <FadeIn>
@@ -722,13 +726,35 @@ const ProcessVideos = () => (
 
             {/* Video — aspect-[9/16] ensures identical sizing across all 3 */}
             <div className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative">
-              <iframe
-                src={s.video.src}
-                title={s.video.title ?? "Video"}
-                className="absolute inset-0 w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {i === 2 && !thirdActive ? (
+                /* Click-to-play poster for the 3rd video */
+                <button
+                  type="button"
+                  onClick={() => setThirdActive(true)}
+                  className="absolute inset-0 w-full h-full group"
+                  aria-label="Play video"
+                >
+                  <img
+                    src={thirdPoster}
+                    alt="Google's Free AI Marketing Tool — Figfalcon"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  {/* Play button overlay */}
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-200 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-primary/90 group-hover:bg-primary transition-colors duration-200 flex items-center justify-center shadow-xl">
+                      <Play className="w-7 h-7 text-white fill-white ml-1" />
+                    </div>
+                  </div>
+                </button>
+              ) : (
+                <iframe
+                  src={i === 2 && thirdActive ? `${s.video.src}?autoplay=1` : s.video.src}
+                  title={s.video.title ?? "Video"}
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
             </div>
 
             {/* Step description */}
@@ -741,7 +767,8 @@ const ProcessVideos = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 /* ─────────────────────────── Client Projects (auto-scroll) ─────────────────────────── */
 
