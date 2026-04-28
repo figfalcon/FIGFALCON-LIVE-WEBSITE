@@ -4,6 +4,7 @@ import { Play, ChevronDown, Check, X, Menu, ShieldCheck, Clock, Zap, Users, Trop
 import { getCalApi } from "@calcom/embed-react";
 import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
+import { PROCESS_VIDEOS } from "@/lib/supabase";
 
 const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
 const CAL_NAMESPACE = "consultation";
@@ -12,23 +13,11 @@ type VideoSlot = { src?: string; poster?: string; title?: string; label?: string
 
 const heroVideo: VideoSlot = { title: "Watch: How the AI Content System Works" };
 
-// Process section — 3 static real videos showing raw → AI clone → polished
+// Process section — self-hosted in Supabase Storage (no YouTube watermark)
 const processVideos: VideoSlot[] = [
-  {
-    src: "https://www.youtube.com/embed/FmApOzxTkbc",
-    title: "The Raw Recording",
-    label: "Step 1 — You Record Once",
-  },
-  {
-    src: "https://www.youtube.com/embed/m98z1j2bC_k",
-    title: "AI Clone Output",
-    label: "Step 2 — We Build Your AI Clone",
-  },
-  {
-    src: "https://www.youtube.com/embed/Dkeh0ZUHU7c",
-    title: "Final Polished Reel",
-    label: "Step 3 — Ready to Post",
-  },
+  PROCESS_VIDEOS.step1,
+  PROCESS_VIDEOS.step2,
+  PROCESS_VIDEOS.step3,
 ];
 
 // Client projects carousel — add real client video URLs here when ready
@@ -697,9 +686,6 @@ const processSteps = [
 ];
 
 const ProcessVideos = () => {
-  const [thirdActive, setThirdActive] = useState(false);
-  const thirdPoster = `https://img.youtube.com/vi/Dkeh0ZUHU7c/maxresdefault.jpg`;
-
   return (
   <section className="py-24" id="results">
     <div className="container mx-auto px-6 max-w-5xl">
@@ -729,37 +715,16 @@ const ProcessVideos = () => {
               <span className="text-xs font-bold uppercase tracking-widest whitespace-nowrap">{s.fullLabel}</span>
             </div>
 
-            {/* Video — aspect-[9/16] ensures identical sizing across all 3 */}
+            {/* Video — self-hosted in Supabase Storage, native <video> with poster */}
             <div className="w-full aspect-[9/16] rounded-2xl overflow-hidden border border-border/50 bg-background relative">
-              {i === 2 && !thirdActive ? (
-                /* Click-to-play poster for the 3rd video */
-                <button
-                  type="button"
-                  onClick={() => setThirdActive(true)}
-                  className="absolute inset-0 w-full h-full group"
-                  aria-label="Play video"
-                >
-                  <img
-                    src={thirdPoster}
-                    alt="Google's Free AI Marketing Tool — Figfalcon"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                  {/* Play button overlay */}
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-200 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-primary/90 group-hover:bg-primary transition-colors duration-200 flex items-center justify-center shadow-xl">
-                      <Play className="w-7 h-7 text-white fill-white ml-1" />
-                    </div>
-                  </div>
-                </button>
-              ) : (
-                <iframe
-                  src={i === 2 && thirdActive ? `${s.video.src}?autoplay=1` : s.video.src}
-                  title={s.video.title ?? "Video"}
-                  className="absolute inset-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              )}
+              <video
+                src={s.video.src}
+                poster={s.video.poster}
+                controls
+                playsInline
+                preload="none"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
             </div>
 
             {/* Step description */}
