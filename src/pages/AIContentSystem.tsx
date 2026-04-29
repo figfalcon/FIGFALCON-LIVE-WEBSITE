@@ -1214,7 +1214,7 @@ const AIContentSystem = () => {
           </FadeIn>
           <FadeIn delay={0.1}>
             <p className="text-center text-muted-foreground text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Coaches and consultants start getting inbound messages within 30 days.<br />Your content runs on every platform, every week — without touching a single app.
+              Coaches and consultants start getting inbound messages within 30 days.<br />Content everywhere your clients are — zero effort from you.
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
