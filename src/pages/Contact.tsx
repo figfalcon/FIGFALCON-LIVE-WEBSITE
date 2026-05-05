@@ -6,7 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 import { useToast } from "@/hooks/use-toast";
 
-const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
+const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 
 const industries = [
   "Technology / SaaS", "Healthcare", "Financial Services", "E-commerce / Retail",

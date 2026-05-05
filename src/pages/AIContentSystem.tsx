@@ -6,7 +6,7 @@ import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
 import { PROCESS_VIDEOS } from "@/lib/supabase";
 
-const CAL_LINK = "figfalcon/consultation-on-ai-helping-your-business";
+const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 const CAL_NAMESPACE = "consultation";
 
 type VideoSlot = { src?: string; poster?: string; title?: string; label?: string };
