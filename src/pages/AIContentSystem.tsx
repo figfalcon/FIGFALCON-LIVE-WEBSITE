@@ -811,8 +811,8 @@ const ClientProjects = () => {
           </p>
         </FadeIn>
         <div
-          className="overflow-hidden"
-          style={{ maskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)" }}
+          className="overflow-hidden mx-auto"
+          style={{ maxWidth: "700px", maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
         >
           <div className="client-marquee-track flex gap-5" style={{ width: "max-content" }}>
             {looped.map((v, i) => (
