@@ -20,14 +20,14 @@ const processVideos: VideoSlot[] = [
   PROCESS_VIDEOS.step3,
 ];
 
-// Client projects carousel — add real client video URLs here when ready
+// Client projects carousel — self-hosted in Supabase Storage
+const BASE = "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/videos";
 const clientProjectVideos: VideoSlot[] = [
-  { title: "Client Project 1", label: "AI Clone" },
-  { title: "Client Project 2", label: "AI Clone" },
-  { title: "Client Project 3", label: "AI Clone" },
-  { title: "Client Project 4", label: "AI Clone" },
-  { title: "Client Project 5", label: "AI Clone" },
-  { title: "Client Project 6", label: "AI Clone" },
+  { title: "Client 1", src: `${BASE}/client-1.mp4` },
+  { title: "Client 2", src: `${BASE}/client-2.mp4` },
+  { title: "Client 3", src: `${BASE}/client-3.mp4` },
+  { title: "Client 4", src: `${BASE}/client-4.mp4` },
+  { title: "Client 5", src: `${BASE}/client-5.mp4` },
 ];
 
 /* ─────────────────────────── Primitives ─────────────────────────── */
@@ -817,9 +817,6 @@ const ClientProjects = () => {
             {looped.map((v, i) => (
               <div key={i} className="shrink-0 w-[220px]">
                 <VideoPlayer video={v} aspect="portrait" />
-                {v.label && (
-                  <div className="mt-2 text-center text-xs text-muted-foreground font-medium">{v.label}</div>
-                )}
               </div>
             ))}
           </div>
