@@ -741,7 +741,7 @@ const HoverVideo = ({ src, poster }: { src: string; poster: string }) => {
 const ProcessVideos = () => {
   return (
   <section className="py-24" id="results">
-    <div className="container mx-auto px-6 max-w-5xl">
+    <div className="container mx-auto px-6 max-w-3xl">
       <FadeIn>
         <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
           <span className="block">One Shoot.</span>
@@ -752,7 +752,7 @@ const ProcessVideos = () => {
         </p>
       </FadeIn>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
         {processSteps.map((s, i) => (
           <motion.div
             key={s.n}
