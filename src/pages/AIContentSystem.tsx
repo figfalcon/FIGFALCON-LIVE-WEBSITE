@@ -21,13 +21,12 @@ const processVideos: VideoSlot[] = [
 ];
 
 // Client projects carousel — self-hosted in Supabase Storage
-const BASE = "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/videos";
+const SVID = "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/videos";
+const STHUMB = "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/thumbnails";
 const clientProjectVideos: VideoSlot[] = [
-  { title: "Client 1", src: `${BASE}/client-1.mp4` },
-  { title: "Client 2", src: `${BASE}/client-2.mp4` },
-  { title: "Client 3", src: `${BASE}/client-3.mp4` },
-  { title: "Client 4", src: `${BASE}/client-4.mp4` },
-  { title: "Client 5", src: `${BASE}/client-5.mp4` },
+  { title: "Client 1", src: `${SVID}/client-1.mp4`, poster: `${STHUMB}/client-1.png` },
+  { title: "Client 2", src: `${SVID}/client-2.mp4`, poster: `${STHUMB}/client-2.png` },
+  { title: "Client 4", src: `${SVID}/client-4.mp4`, poster: `${STHUMB}/client-4.png` },
 ];
 
 /* ─────────────────────────── Primitives ─────────────────────────── */
