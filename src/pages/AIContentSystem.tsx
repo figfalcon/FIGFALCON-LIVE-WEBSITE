@@ -26,9 +26,9 @@ const STHUMB = "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/publi
 const clientProjectVideos: VideoSlot[] = [
   { title: "Client 1", src: `${SVID}/client-1.mp4`, poster: `${STHUMB}/client-1.png` },
   { title: "Client 2", src: `${SVID}/client-2.mp4`, poster: `${STHUMB}/client-2.png` },
-  { title: "Client 3", src: `${SVID}/client-3.mp4` },
+  { title: "Client 3", src: `${SVID}/client-3.mp4`, poster: `${STHUMB}/client-3.png` },
   { title: "Client 4", src: `${SVID}/client-4.mp4`, poster: `${STHUMB}/client-4.png` },
-  { title: "Client 5", src: `${SVID}/client-5.mp4` },
+  { title: "Client 5", src: `${SVID}/client-5.mp4`, poster: `${STHUMB}/client-5.png` },
 ];
 
 /* ─────────────────────────── Primitives ─────────────────────────── */
@@ -816,7 +816,7 @@ const ClientProjects = () => {
         >
           <div className="client-marquee-track flex gap-5" style={{ width: "max-content" }}>
             {looped.map((v, i) => (
-              <div key={i} className="shrink-0 w-[360px]">
+              <div key={i} className="shrink-0 w-[220px]">
                 {v.src
                   ? <HoverVideo src={v.src} poster={v.poster ?? ""} />
                   : <VideoPlayer video={v} aspect="portrait" />}
