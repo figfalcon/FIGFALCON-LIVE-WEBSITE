@@ -816,7 +816,9 @@ const ClientProjects = () => {
           <div className="client-marquee-track flex gap-5" style={{ width: "max-content" }}>
             {looped.map((v, i) => (
               <div key={i} className="shrink-0 w-[220px]">
-                <VideoPlayer video={v} aspect="portrait" />
+                {v.src
+                  ? <HoverVideo src={v.src} poster={v.poster ?? ""} />
+                  : <VideoPlayer video={v} aspect="portrait" />}
               </div>
             ))}
           </div>
