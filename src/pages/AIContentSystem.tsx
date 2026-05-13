@@ -36,7 +36,7 @@ const clientProjectVideos: VideoSlot[] = [
 
 /* ─────────────────────────── Primitives ─────────────────────────── */
 
-const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "video" | "portrait" }) => {
+const VideoPlayer = ({ video, aspect = "video", autoplay = false }: { video: VideoSlot; aspect?: "video" | "portrait"; autoplay?: boolean }) => {
   const aspectClass = aspect === "portrait" ? "aspect-[9/16]" : "aspect-video";
 
   if (video.src) {
@@ -50,6 +50,18 @@ const VideoPlayer = ({ video, aspect = "video" }: { video: VideoSlot; aspect?: "
             className="absolute inset-0 w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+          />
+        ) : autoplay ? (
+          <video
+            src={video.src}
+            poster={video.poster}
+            controls
+            controlsList="nodownload"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           <video src={video.src} poster={video.poster} controls playsInline className="absolute inset-0 w-full h-full object-cover" />
@@ -1227,7 +1239,7 @@ const AIContentSystem = () => {
             </div>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <VideoPlayer video={heroVideo} />
+            <VideoPlayer video={heroVideo} autoplay />
           </FadeIn>
         </div>
       </section>
