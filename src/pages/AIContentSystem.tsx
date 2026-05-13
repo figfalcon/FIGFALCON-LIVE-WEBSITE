@@ -11,7 +11,10 @@ const CAL_NAMESPACE = "consultation";
 
 type VideoSlot = { src?: string; poster?: string; title?: string; label?: string };
 
-const heroVideo: VideoSlot = { title: "Watch: How the AI Content System Works" };
+const heroVideo: VideoSlot = {
+  title: "Watch: How the AI Content System Works",
+  src: "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/videos/vsl.mp4",
+};
 
 // Process section — self-hosted in Supabase Storage (no YouTube watermark)
 const processVideos: VideoSlot[] = [
