@@ -14,6 +14,7 @@ type VideoSlot = { src?: string; poster?: string; title?: string; label?: string
 const heroVideo: VideoSlot = {
   title: "Watch: How the AI Content System Works",
   src: "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/videos/vsl.mp4",
+  poster: "https://tangxgmhvtbvixlvaawh.supabase.co/storage/v1/object/public/media/thumbnails/vsl-poster.jpg",
 };
 
 // Process section — self-hosted in Supabase Storage (no YouTube watermark)
@@ -854,37 +855,37 @@ const ClientProjects = () => {
 
 const allTestimonials = [
   {
-    name: "James M.",
+    name: "James",
     role: "Business Coach, Toronto",
     result: "First inbound client in 5 weeks",
     text: "I was posting twice a week and getting zero traction. Figfalcon built my content system in 14 days. By week 5 I had three people in my DMs asking about my coaching program. First client from content alone closed for $6,000. The system just runs.",
   },
   {
-    name: "Sarah K.",
+    name: "Sarah",
     role: "Real Estate Agent, Vancouver",
     result: "Inbound buyer in week 3",
     text: "I did not want to be on camera. They set me up as a full AI clone. Within three weeks I had a buyer reach out saying they had been watching my content for weeks before contacting me. That is exactly the trust-first lead I wanted.",
   },
   {
-    name: "Daniel R.",
+    name: "Daniel",
     role: "Agency Owner, Calgary",
     result: "6 hours saved every single week",
     text: "I was spending six hours a week trying to keep up with content and it still looked inconsistent. Now I do one 30-minute call a month and I am posting every day across three platforms. I look like I have a full content team. I kind of do.",
   },
   {
-    name: "Priya S.",
+    name: "Priya",
     role: "Business Consultant, Ottawa",
     result: "3x LinkedIn profile views in 30 days",
     text: "My LinkedIn was completely dead. One recording session and within 30 days my profile views tripled and I had two warm leads book intro calls on their own. I never had to chase anyone. The content did it for me.",
   },
   {
-    name: "Marcus T.",
+    name: "Marcus",
     role: "Online Coach, Montreal",
     result: "Booked a speaking gig from a reel",
     text: "I posted content before but it never went anywhere. Within six weeks of Figfalcon running my system I got a DM from an event organiser who had seen my reels. Booked a speaking slot from that. The personal brand does the selling when you are not in the room.",
   },
   {
-    name: "Rachel M.",
+    name: "Rachel",
     role: "Financial Advisor, Edmonton",
     result: "Replaced cold outreach entirely",
     text: "I used to cold call every week to fill my calendar. I stopped completely after month two. Clients now come in saying they have been following my content for a while and already trust me. The quality of conversations is completely different.",
