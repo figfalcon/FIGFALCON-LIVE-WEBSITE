@@ -443,11 +443,11 @@ const Guarantee = () => (
           </div>
           <div className="text-xs uppercase tracking-widest text-primary mb-3">Our Guarantee</div>
           <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-5">
-            <span className="block">100K Views in 60 Days.</span>
+            <span className="block">100K Views in 90 Days.</span>
             <span className="gradient-text block">Or We Work Free Until You Do.</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-4">
-            If your content does not hit 100,000 views within 60 days of going live, we keep working at no charge until it does. No excuses. No renegotiating. We either perform or we earn it.
+            If your content does not hit 100,000 views within 90 days of going live, we keep working at no charge until it does. No excuses. No renegotiating. We either perform or we earn it.
           </p>
           <p className="text-sm text-muted-foreground/80 max-w-xl mx-auto mb-6">
             Views are combined across Instagram Reels, LinkedIn, and YouTube Shorts and tracked in a shared dashboard you can check at any time.
@@ -1119,7 +1119,7 @@ const FAQ = () => {
     },
     {
       q: "What is your guarantee?",
-      a: "We guarantee 100,000 views within 60 days of going live. If we miss that, we keep working at no charge until we hit it. No excuses. No fine print.",
+      a: "We guarantee 100,000 views within 90 days of going live. If we miss that, we keep working at no charge until we hit it. No excuses. No fine print.",
     },
   ];
   const [open, setOpen] = useState<number | null>(null);
