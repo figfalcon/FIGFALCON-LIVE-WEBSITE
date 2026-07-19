@@ -14,7 +14,6 @@ const industries = [
 ];
 
 const companySizes = ["Solo", "2-5", "6-15", "16-50", "50+"];
-const budgets = ["$3,000 - $5,000", "$5,000 - $10,000", "$10,000 - $20,000", "$20,000+"];
 
 // ISO code, flag emoji, country name, dial code
 const countries: { iso: string; flag: string; name: string; dial: string }[] = [
@@ -104,6 +103,10 @@ const Contact = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  const MIN_BUDGET = 20000;
+  const budgetNum = Number(formData.budget);
+  const budgetError = formData.budget !== "" && budgetNum < MIN_BUDGET;
+
   useEffect(() => {
     (async () => {
       const cal = await getCalApi({ namespace: "consultation" });
@@ -116,6 +119,14 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.budget || budgetNum < MIN_BUDGET) {
+      toast({
+        title: "Budget too low",
+        description: "Anything below 20,000 is not acceptable. Please enter 20,000 or above.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
       const country = countries.find(c => c.iso === formData.phoneCountry);
@@ -249,13 +260,18 @@ const Contact = () => {
 
                     <div>
                       <label className="text-sm font-medium mb-1.5 block">Investment Budget</label>
-                      <select
-                        name="budget" value={formData.budget} onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground"
-                      >
-                        <option value="">Select budget range</option>
-                        {budgets.map((b) => <option key={b} value={b}>{b}</option>)}
-                      </select>
+                      <input
+                        name="budget" type="number" inputMode="numeric" min={20000} step={1000}
+                        value={formData.budget} onChange={handleChange}
+                        placeholder="Enter your budget (minimum 20,000)"
+                        aria-invalid={budgetError ? true : undefined}
+                        className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 transition-all text-sm ${
+                          budgetError ? "border-destructive focus:ring-destructive/50" : "border-border/40 focus:ring-primary/50"
+                        }`}
+                      />
+                      {budgetError && (
+                        <p className="mt-1.5 text-xs text-destructive">Anything below 20,000 is not acceptable.</p>
+                      )}
                     </div>
 
                     <div>
