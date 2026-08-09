@@ -146,7 +146,7 @@ const Services = () => {
                     </div>
                   ))}
                 </div>
-                <Link to="/contact" className="btn-primary">
+                <Link to={service.id === "ai-clone" ? "/ai-content-system" : "/contact"} className="btn-primary">
                   Get Started
                 </Link>
               </ScrollReveal>
