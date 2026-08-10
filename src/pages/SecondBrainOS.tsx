@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  Brain, ShieldCheck, Clock, Check, ArrowLeft, ArrowRight, Search, Sparkles,
+  Brain, ShieldCheck, Clock, Check, ArrowRight, Search, Sparkles,
   Database, GraduationCap, FileText, Workflow, Rocket, LogOut, Layers, TrendingDown, Gift, Play,
 } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
@@ -211,9 +211,6 @@ const SecondBrainOS = () => {
             ))}
           </nav>
           <div className="flex items-center gap-4">
-            <Link to="/services" className="hidden sm:inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-4 h-4" /> Services
-            </Link>
             <BookBtn label="Book a Call" />
           </div>
         </div>
