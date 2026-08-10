@@ -200,7 +200,7 @@ const SecondBrainOS = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
+      <header className="absolute top-0 left-0 right-0 z-50">
         <div className="container mx-auto px-6 flex items-center justify-between py-3">
           <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
           <nav className="hidden lg:flex items-center gap-8">
