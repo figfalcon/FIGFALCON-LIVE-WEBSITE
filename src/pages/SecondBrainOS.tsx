@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Brain, RefreshCw, ShieldCheck, Zap, Clock, Check, ArrowLeft } from "lucide-react";
+import { Brain, RefreshCw, ShieldCheck, Zap, Clock, Check, ArrowLeft, Search, Sparkles } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
@@ -21,6 +21,112 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 );
 
 const scrollToBook = () => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" });
+
+// Animated "ask your agency brain" demo — cycles question → searching → answer
+const demoQA = [
+  { q: "Where did we land on Acme's Q3 paid-social strategy?", a: "Shifted budget from feed to Reels after CPMs spiked. Target CPA $42, creative refresh every 2 weeks. Decided Jul 8 — logged by Priya." },
+  { q: "Why did we pause Nolan Co's retargeting?", a: "Audience was too small post-iOS update — pooling with lookalikes instead. Revisit at 5k list size. Note by Marcus, Aug 2." },
+  { q: "What's our onboarding checklist for a new account manager?", a: "12-step path: access grants → client brand docs → campaign history walkthrough → first QBR shadow. Ramps a new AM in 4 days." },
+];
+
+const AgencyBrainDemo = () => {
+  const [idx, setIdx] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [phase, setPhase] = useState<"typing" | "searching" | "answer">("typing");
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    const { q } = demoQA[idx];
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setTyped("");
+    setPhase("typing");
+
+    // type out the question char by char
+    for (let c = 1; c <= q.length; c++) {
+      timers.current.push(setTimeout(() => setTyped(q.slice(0, c)), c * 45));
+    }
+    const doneTyping = q.length * 45;
+    timers.current.push(setTimeout(() => setPhase("searching"), doneTyping + 400));
+    timers.current.push(setTimeout(() => setPhase("answer"), doneTyping + 1900));
+    timers.current.push(setTimeout(() => setIdx((i) => (i + 1) % demoQA.length), doneTyping + 6200));
+
+    return () => timers.current.forEach(clearTimeout);
+  }, [idx]);
+
+  return (
+    <div className="max-w-2xl mx-auto rounded-2xl border border-border/60 bg-background/80 shadow-2xl shadow-primary/5 overflow-hidden font-mono">
+      {/* title bar */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border/40 bg-secondary/20">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-muted-foreground/40" />
+          <span className="w-2.5 h-2.5 rounded-full bg-muted-foreground/40" />
+          <span className="w-2.5 h-2.5 rounded-full bg-muted-foreground/40" />
+          <span className="ml-3 text-xs text-muted-foreground">agency-brain · source of truth</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="text-[10px] font-bold tracking-widest text-accent">LIVE</span>
+        </div>
+      </div>
+
+      {/* query line */}
+      <div className="px-5 py-4 flex items-center gap-3 border-b border-border/30">
+        <Search className="w-4 h-4 text-primary shrink-0" />
+        <span className="text-sm text-foreground flex-1">
+          {typed}
+          {phase === "typing" && <span className="inline-block w-2 h-4 -mb-0.5 bg-primary/80 animate-pulse ml-0.5" />}
+        </span>
+        <span className="text-[10px] text-muted-foreground border border-border/50 rounded px-1.5 py-0.5 shrink-0">↵ ask</span>
+      </div>
+
+      {/* body */}
+      <div className="px-5 py-5 min-h-[150px]">
+        <AnimatePresence mode="wait">
+          {phase === "searching" && (
+            <motion.div
+              key="searching"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex items-center gap-2 text-sm text-muted-foreground"
+            >
+              <Sparkles className="w-4 h-4 text-primary" />
+              searching across your tools
+              <span className="flex gap-0.5">
+                {[0, 1, 2].map((d) => (
+                  <span key={d} className="w-1 h-1 rounded-full bg-primary animate-pulse" style={{ animationDelay: `${d * 0.2}s` }} />
+                ))}
+              </span>
+            </motion.div>
+          )}
+          {phase === "answer" && (
+            <motion.div
+              key="answer"
+              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="flex items-start gap-2.5">
+                <span className="mt-0.5 w-5 h-5 rounded-md bg-primary/15 border border-primary/30 flex items-center justify-center shrink-0">
+                  <Brain className="w-3 h-3 text-primary" />
+                </span>
+                <p className="text-sm text-foreground/90 leading-relaxed">{demoQA[idx].a}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* footer */}
+      <div className="px-5 py-3 border-t border-border/30 flex items-center justify-between">
+        <div className="flex items-center gap-1">
+          <span className="w-6 h-1 rounded-full bg-primary/60" />
+          <span className="w-2 h-1 rounded-full bg-muted-foreground/30" />
+          <span className="w-2 h-1 rounded-full bg-muted-foreground/30" />
+        </div>
+        <span className="text-[10px] text-muted-foreground">real questions · real answers</span>
+      </div>
+    </div>
+  );
+};
 
 const BookBtn = ({ label = "Claim Your Founding-Client Build", large = false }: { label?: string; large?: boolean }) => (
   <button
@@ -128,6 +234,20 @@ const SecondBrainOS = () => {
               <BookBtn large />
               <p className="text-xs text-muted-foreground">Only 2 new agency builds per month. Founding-client rate while it lasts.</p>
             </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Live demo */}
+      <section className="pb-16 md:pb-20">
+        <div className="container mx-auto px-6">
+          <FadeIn>
+            <p className="text-center text-xs font-bold uppercase tracking-[0.3em] text-muted-foreground mb-6">
+              Ask it anything your agency should know
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <AgencyBrainDemo />
           </FadeIn>
         </div>
       </section>
