@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   Brain, ShieldCheck, Clock, Check, ArrowLeft, ArrowRight, Search, Sparkles,
-  Database, GraduationCap, FileText, Workflow, Rocket, LogOut, Layers, TrendingDown, Gift,
+  Database, GraduationCap, FileText, Workflow, Rocket, LogOut, Layers, TrendingDown, Gift, Play,
 } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import Cal from "@calcom/embed-react";
@@ -241,7 +241,15 @@ const SecondBrainOS = () => {
           </FadeIn>
           <FadeIn delay={0.15}>
             <div className="flex flex-col items-center gap-3">
-              <BookBtn large />
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <BookBtn large />
+                <button
+                  onClick={() => scrollTo("system")}
+                  className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all duration-200"
+                >
+                  <Play className="w-4 h-4 fill-current" /> See the system
+                </button>
+              </div>
               <p className="text-xs text-muted-foreground">Only 2 new agency builds per month. Founding-client rate while it lasts.</p>
             </div>
           </FadeIn>
