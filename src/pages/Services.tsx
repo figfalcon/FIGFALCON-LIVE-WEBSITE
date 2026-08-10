@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bot, Mic, Globe, Video, Package, CheckCircle } from "lucide-react";
+import { Bot, Mic, Globe, Video, Brain, Package, CheckCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 
@@ -44,6 +44,17 @@ const services = [
     benefits: ["Consistent content without filming", "Professional quality every time", "Built from a single 20-min recording"],
     result: "Fresh video content every month without you touching a camera",
   },
+  {
+    id: "second-brain",
+    icon: <Brain className="w-7 h-7" />,
+    link: "/second-brain-os",
+    title: "The Agency Second Brain OS",
+    bestFor: "Marketing agencies (10-40 people) drowning in tribal knowledge",
+    desc: "A done-for-you AI \"second brain\" that pulls every process, client detail, and SOP out of your team's heads into one system your whole agency can search — so onboarding drops from months to days and nothing falls through the cracks.",
+    included: ["Team Brain Extraction sessions", "Single Source of Truth build", "AI Search Layer (ask in plain English)", "Onboarding Engine for new hires", "Knowledge Continuity System", "Renewal/QBR auto-draft"],
+    benefits: ["Get the business out of your team's heads", "Onboard new hires in days, not months", "Stop losing retainers to dropped details"],
+    result: "Your whole agency's knowledge in one AI-searchable system you own outright",
+  },
 ];
 
 const bundles = [
@@ -73,6 +84,22 @@ const bundles = [
   },
 ];
 
+const ServiceCard = ({ service }: { service: { id: string; icon: JSX.Element; title: string; bestFor: string; link?: string } }) => {
+  const inner = (
+    <>
+      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
+        {service.icon}
+      </div>
+      <h3 className="font-heading font-semibold mb-2">{service.title}</h3>
+      <p className="text-sm text-muted-foreground">{service.bestFor}</p>
+    </>
+  );
+  const cls = "glass-card-hover p-8 block h-full group";
+  return service.link
+    ? <Link to={service.link} className={cls}>{inner}</Link>
+    : <a href={`#${service.id}`} className={cls}>{inner}</a>;
+};
+
 const Services = () => {
   return (
     <>
@@ -88,26 +115,14 @@ const Services = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             {services.slice(0, 3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
-                    {service.icon}
-                  </div>
-                  <h3 className="font-heading font-semibold mb-2">{service.title}</h3>
-                  <p className="text-sm text-muted-foreground">{service.bestFor}</p>
-                </a>
+                <ServiceCard service={service} />
               </ScrollReveal>
             ))}
           </div>
           <div className="grid lg:grid-cols-2 gap-6 mt-6 lg:w-2/3 mx-auto">
             {services.slice(3).map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <a href={`#${service.id}`} className="glass-card-hover p-8 block h-full group">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
-                    {service.icon}
-                  </div>
-                  <h3 className="font-heading font-semibold mb-2">{service.title}</h3>
-                  <p className="text-sm text-muted-foreground">{service.bestFor}</p>
-                </a>
+                <ServiceCard service={service} />
               </ScrollReveal>
             ))}
           </div>
@@ -136,7 +151,7 @@ const Services = () => {
                     </div>
                   ))}
                 </div>
-                <Link to={service.id === "ai-clone" ? "/ai-content-system" : "/contact"} className="btn-primary">
+                <Link to={(service as { link?: string }).link ?? (service.id === "ai-clone" ? "/ai-content-system" : "/contact")} className="btn-primary">
                   Get Started
                 </Link>
               </ScrollReveal>
