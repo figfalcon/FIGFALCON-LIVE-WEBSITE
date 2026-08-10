@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Target, TrendingUp, Zap, Globe, Bot, Mic, Video, Package, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Target, TrendingUp, Zap, Globe, Bot, Mic, Video, Brain, Package, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const stats = [
@@ -31,7 +31,8 @@ const services = [
   { icon: <Bot className="w-6 h-6" />, title: "Chatbot & Lead Collection", desc: "AI chatbots that capture, qualify, and route leads 24/7 from your website." },
   { icon: <Mic className="w-6 h-6" />, title: "Voice AI Receptionist", desc: "Never miss a call. AI handles inbound calls, books appointments, answers FAQs." },
   { icon: <Globe className="w-6 h-6" />, title: "Website & Funnel Building", desc: "High-converting websites and funnels that capture leads and feed your CRM." },
-  { icon: <Video className="w-6 h-6" />, title: "AI Clone & Video Creation", desc: "Your AI twin creates consistent video content without you filming." },
+  { icon: <Video className="w-6 h-6" />, title: "AI Clone & Video Creation", desc: "Your AI twin creates consistent video content without you filming.", link: "/ai-content-system" },
+  { icon: <Brain className="w-6 h-6" />, title: "The Agency Second Brain OS", desc: "A done-for-you AI second brain that gets your whole agency out of your team's heads.", link: "/second-brain-os" },
   { icon: <Package className="w-6 h-6" />, title: "Bundled Packages", desc: "Starter, Growth, and Authority bundles combining multiple services at value pricing." },
 ];
 
@@ -230,7 +231,7 @@ const Index = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             {services.map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
-                <Link to="/services" className="glass-card-hover p-8 block h-full group">
+                <Link to={(service as { link?: string }).link ?? "/services"} className="glass-card-hover p-8 block h-full group">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
                     {service.icon}
                   </div>
