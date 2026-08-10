@@ -236,7 +236,7 @@ const SecondBrainOS = () => {
           </FadeIn>
           <FadeIn delay={0.1}>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
-              We install a done-for-you AI "second brain" that pulls every process, client detail and SOP into one system your whole agency can actually search — so onboarding drops from months to days, nothing falls through the cracks, and the business stops running through one or two people.
+              A done-for-you AI Second Brain OS for marketing agencies. Every SOP, client detail, and process — out of your team's heads and into one AI system you can actually search.
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
