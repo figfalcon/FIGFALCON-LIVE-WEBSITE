@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bot, Mic, Globe, Mail, Video, Package, CheckCircle } from "lucide-react";
+import { Bot, Mic, Globe, Video, Package, CheckCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 
@@ -35,16 +35,6 @@ const services = [
     result: "Website that captures leads and feeds them into your system",
   },
   {
-    id: "cold-email",
-    icon: <Mail className="w-7 h-7" />,
-    title: "Cold Email System Setup",
-    bestFor: "Marketing agencies, recruitment firms, B2B consultants",
-    desc: "Your complete outbound engine. We handle everything from domain setup and infrastructure to sequences, copy, and automation. Get a predictable lead generation system that fills your pipeline consistently.",
-    included: ["Domain & infrastructure setup", "Email warmup & deliverability", "Sequence copywriting", "Automation workflow design", "Reply handling flow", "Performance tracking"],
-    benefits: ["Predictable lead flow", "Scalable infrastructure", "Optimized sequences"],
-    result: "Predictable outbound lead generation filling your pipeline",
-  },
-  {
     id: "ai-clone",
     icon: <Video className="w-7 h-7" />,
     title: "AI Clone & Video Creation",
@@ -68,18 +58,18 @@ const bundles = [
   {
     name: "Growth Bundle",
     tag: "Best Value",
-    combo: "Website + Chatbot + Voice AI + Cold Email",
+    combo: "Website + Chatbot + Voice AI",
     icp: "Local service business, missing leads after hours, wants full automation",
-    offer: "We automate your entire front desk and outreach in one system. Never miss a call, never miss a lead. Fully done for you and live in under 2 weeks.",
-    services: ["Website & Funnel", "AI Chatbot", "Voice AI Receptionist", "Cold Email System"],
+    offer: "We automate your entire front desk in one system. Never miss a call, never miss a lead. Fully done for you and live in under 2 weeks.",
+    services: ["Website & Funnel", "AI Chatbot", "Voice AI Receptionist"],
   },
   {
     name: "Authority Bundle",
     tag: "Premium",
-    combo: "Website + Chatbot + AI Clone Videos + Cold Email",
+    combo: "Website + Chatbot + AI Clone Videos",
     icp: "Established founder earning $5k-$20k/month, wants to dominate online",
-    offer: "You record yourself once for 20 minutes. We handle the rest. Your website captures leads. Your AI clone produces fresh content. Your cold email brings outbound leads. All built and maintained without you lifting a finger.",
-    services: ["Website & Funnel", "AI Chatbot", "AI Clone Videos", "Cold Email System"],
+    offer: "You record yourself once for 20 minutes. We handle the rest. Your website captures leads. Your AI clone produces fresh content. All built and maintained without you lifting a finger.",
+    services: ["Website & Funnel", "AI Chatbot", "AI Clone Videos"],
   },
 ];
 

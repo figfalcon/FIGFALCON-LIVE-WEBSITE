@@ -26,17 +26,6 @@ const caseStudies = [
       { icon: <DollarSign className="w-4 h-4" />, label: "PIPELINE", value: "25-40%" },
     ],
   },
-  {
-    tag: "B2B SaaS",
-    title: "Cold Email Outreach",
-    improvement: "+60% Improvement",
-    desc: "A SaaS startup had a strong product but inconsistent pipeline. We engineered a cold outreach infrastructure that delivers predictable meetings.",
-    stats: [
-      { icon: <Users className="w-4 h-4" />, label: "MEETINGS", value: "+60%" },
-      { icon: <TrendingUp className="w-4 h-4" />, label: "LEADS", value: "92-95%" },
-      { icon: <DollarSign className="w-4 h-4" />, label: "PIPELINE", value: "20-30%" },
-    ],
-  },
 ];
 
 const CaseStudies = () => {

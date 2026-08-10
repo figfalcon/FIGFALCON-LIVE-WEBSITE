@@ -18,15 +18,6 @@ const posts = [
     featured: true,
   },
   {
-    slug: "cold-email-system-setup-guide",
-    category: "Lead Generation",
-    title: "How to Set Up a Cold Email System That Books Calls on Autopilot",
-    excerpt: "Most cold email fails because it's not a system — it's a one-off blast. Here's the exact infrastructure we build for clients to generate consistent outbound pipeline.",
-    readTime: "7 min read",
-    date: "Apr 10, 2026",
-    featured: false,
-  },
-  {
     slug: "crm-pipeline-setup-for-local-business",
     category: "CRM & Sales",
     title: "CRM Pipeline Setup for Local Service Businesses: Stop Losing Leads in Spreadsheets",

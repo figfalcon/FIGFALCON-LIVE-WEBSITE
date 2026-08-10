@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Target, TrendingUp, Zap, Globe, Mail, Bot, Mic, Video, Package, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Target, TrendingUp, Zap, Globe, Bot, Mic, Video, Package, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const stats = [
@@ -31,7 +31,6 @@ const services = [
   { icon: <Bot className="w-6 h-6" />, title: "Chatbot & Lead Collection", desc: "AI chatbots that capture, qualify, and route leads 24/7 from your website." },
   { icon: <Mic className="w-6 h-6" />, title: "Voice AI Receptionist", desc: "Never miss a call. AI handles inbound calls, books appointments, answers FAQs." },
   { icon: <Globe className="w-6 h-6" />, title: "Website & Funnel Building", desc: "High-converting websites and funnels that capture leads and feed your CRM." },
-  { icon: <Mail className="w-6 h-6" />, title: "Cold Email Outreach Systems", desc: "Complete outbound email infrastructure that generates predictable leads." },
   { icon: <Video className="w-6 h-6" />, title: "AI Clone & Video Creation", desc: "Your AI twin creates consistent video content without you filming." },
   { icon: <Package className="w-6 h-6" />, title: "Bundled Packages", desc: "Starter, Growth, and Authority bundles combining multiple services at value pricing." },
 ];
