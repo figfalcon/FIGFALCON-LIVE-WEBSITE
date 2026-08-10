@@ -445,11 +445,12 @@ const SecondBrainOS = () => {
           </FadeIn>
           <div className="grid lg:grid-cols-5 gap-6">
             {/* Install card */}
-            <FadeIn delay={0.05}>
-              <div className="lg:col-span-3 glass-card p-8 md:p-10 h-full flex flex-col">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 border border-primary/25 rounded-full px-3 py-1">The Agency Brain Install</span>
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">2 builds / month</span>
+            <div className="lg:col-span-3">
+              <FadeIn delay={0.05}>
+              <div className="glass-card p-8 md:p-10 h-full flex flex-col">
+                <div className="flex items-center justify-between gap-3 mb-6">
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 border border-primary/25 rounded-full px-3 py-1 whitespace-nowrap">The Agency Brain Install</span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-widest whitespace-nowrap">2 builds / month</span>
                 </div>
                 <div className="flex items-end gap-3 mb-2">
                   <span className="font-heading font-bold text-5xl">Custom</span>
@@ -466,7 +467,8 @@ const SecondBrainOS = () => {
                 </button>
                 <p className="text-center text-xs text-muted-foreground mt-3">Deposit to start · balance due after your first win</p>
               </div>
-            </FadeIn>
+              </FadeIn>
+            </div>
             {/* Bonuses + guarantee */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               <FadeIn delay={0.1}>
