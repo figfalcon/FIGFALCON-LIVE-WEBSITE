@@ -450,9 +450,9 @@ const AIIntakeLawFirms = () => {
                 </div>
               </div>
               <div className="text-xs uppercase tracking-widest text-primary mb-3">Our Guarantee</div>
-              <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-5">
-                <span className="block">Every Call Answered in Two Rings.</span>
-                <span className="gradient-text block">Miss One, and That Month Is Free.</span>
+              <h2 className="font-heading font-bold text-2xl md:text-4xl leading-tight mb-5">
+                <span className="block md:whitespace-nowrap">Every Call Answered in Two Rings.</span>
+                <span className="gradient-text block md:whitespace-nowrap">Miss One, and That Month Is Free.</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-5">
                 24 hours a day, with a full transcript of every call. We measure it from our own call logs — so the promise is on us, not on your demand.
