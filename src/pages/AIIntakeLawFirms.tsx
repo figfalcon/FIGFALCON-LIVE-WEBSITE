@@ -271,9 +271,9 @@ const HeroCallCard = () => {
 };
 
 const HeroSphere = () => (
-  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] max-w-[130vw] max-h-[130vw] pointer-events-none" aria-hidden>
-    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.22),transparent_62%)]" />
-    <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full opacity-25 motion-safe:animate-[spin_50s_linear_infinite]">
+  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[1100px] h-[1100px] max-w-[210vw] max-h-[210vw] pointer-events-none" aria-hidden>
+    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.18),transparent_60%)]" />
+    <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full opacity-25 motion-safe:animate-[spin_45s_linear_infinite]">
       <g fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5">
         <circle cx="200" cy="200" r="196" />
         <circle cx="200" cy="200" r="150" />
@@ -331,7 +331,7 @@ const AIIntakeLawFirms = () => {
       {/* Hero */}
       <section className="relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 gradient-hero opacity-60" />
-        <Waveform className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-40 opacity-10 pointer-events-none justify-center" />
+        <HeroSphere />
         <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
@@ -369,11 +369,8 @@ const AIIntakeLawFirms = () => {
             </div>
           </FadeIn>
 
-          {/* Glowing sphere + floating live-call card */}
-          <div className="relative mt-16 md:mt-20">
-            <HeroSphere />
-            <div className="relative z-10"><HeroCallCard /></div>
-          </div>
+          {/* Floating live-call card over the rotating dome */}
+          <div className="relative z-10 mt-16 md:mt-20"><HeroCallCard /></div>
         </div>
       </section>
 
