@@ -254,7 +254,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 flex items-center justify-between py-3.5">
           <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
           <nav className="hidden lg:flex items-center gap-8">
-            {[["Hear it work", "listen"], ["What you're losing", "numbers"], ["How it works", "how"], ["Guarantee", "guarantee"]].map(([label, id]) => (
+            {[["What you're losing", "numbers"], ["Hear it work", "listen"], ["How it works", "how"], ["Guarantee", "guarantee"]].map(([label, id]) => (
               <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
             ))}
           </nav>
