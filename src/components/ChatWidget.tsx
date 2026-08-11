@@ -8,7 +8,7 @@ interface Message {
   text: string;
 }
 
-const WEBHOOK_URL = "https://n8n.srv813240.hstgr.cloud/webhook/a7eb072d-4470-4384-b98e-840cbf55da98";
+const WEBHOOK_URL = "https://n8n-with-ai-assistant-q76o.srv1883884.hstgr.cloud/webhook/a7eb072d-4470-4384-b98e-840cbf55da98";
 
 const getSessionId = () => {
   if (typeof window === "undefined") return "";
