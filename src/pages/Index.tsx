@@ -29,7 +29,7 @@ const problems = [
 
 const services = [
   { icon: <Bot className="w-6 h-6" />, title: "Chatbot & Lead Collection", desc: "AI chatbots that capture, qualify, and route leads 24/7 from your website." },
-  { icon: <Mic className="w-6 h-6" />, title: "Voice AI Receptionist", desc: "Never miss a call. AI handles inbound calls, books appointments, answers FAQs." },
+  { icon: <Mic className="w-6 h-6" />, title: "Voice AI Receptionist", desc: "Never miss a call. AI handles inbound calls, books appointments, answers FAQs.", link: "/ai-intake-law-firms" },
   { icon: <Globe className="w-6 h-6" />, title: "Website & Funnel Building", desc: "High-converting websites and funnels that capture leads and feed your CRM." },
   { icon: <Video className="w-6 h-6" />, title: "AI Clone & Video Creation", desc: "Your AI twin creates consistent video content without you filming.", link: "/ai-content-system" },
   { icon: <Brain className="w-6 h-6" />, title: "The Agency Second Brain OS", desc: "A done-for-you AI second brain that gets your whole agency out of your team's heads.", link: "/second-brain-os" },

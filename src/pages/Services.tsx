@@ -17,6 +17,7 @@ const services = [
   {
     id: "voice-ai",
     icon: <Mic className="w-7 h-7" />,
+    link: "/ai-intake-law-firms",
     title: "Voice AI Receptionist",
     bestFor: "Dental clinics, law firms, med spas, physiotherapy, real estate offices",
     desc: "Never miss a call again. Our AI voice receptionist handles inbound calls, answers FAQs, books appointments, and routes urgent calls — 24/7. Stop paying a receptionist $3,000-$5,000/month when AI can handle it better.",

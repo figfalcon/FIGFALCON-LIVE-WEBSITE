@@ -1,0 +1,506 @@
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+import {
+  Phone, Mic, Calendar, MessageSquare, ShieldCheck, Clock, Check, ChevronDown,
+  Play, ArrowRight, FileText, Database, Languages, PhoneMissed,
+} from "lucide-react";
+import Cal, { getCalApi } from "@calcom/embed-react";
+import logo from "@/assets/figfalcon-logo.png";
+
+// ─── Swap-in constants (update these before launch) ────────────────────────────
+const DEMO_NUMBER = "+1 (555) 000-0000";           // TODO: replace with live Retell AI demo line
+const DEMO_TEL = "+15550000000";                    // tel: form, digits only
+const SLOTS_LEFT = 2;                                // must be literally true
+const FOUNDING_CLOSE = "12 September";               // must be literally true
+const CAL_LINK = "figfalcon/figfalcon-strategy-call";
+const CAL_NAMESPACE = "consultation";
+
+const track = (event: string) => {
+  (window as unknown as { dataLayer?: { push: (o: object) => void } }).dataLayer?.push({ event });
+};
+
+const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+  <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}>
+    {children}
+  </motion.div>
+);
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{children}</p>
+);
+
+// Phone CTA — tel link, brand primary
+const PhoneCTA = ({ big = false, sub }: { big?: boolean; sub?: string }) => (
+  <div className="flex flex-col items-center gap-2">
+    <a
+      href={`tel:${DEMO_TEL}`}
+      onClick={() => track("demo_call_click")}
+      className={`inline-flex items-center gap-3 font-bold rounded-full bg-primary text-white hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 ${
+        big ? "px-10 py-5 text-2xl md:text-3xl" : "px-8 py-4 text-base"
+      }`}
+    >
+      <Phone className={big ? "w-7 h-7" : "w-5 h-5"} /> {DEMO_NUMBER}
+    </a>
+    {sub && <p className="text-xs text-muted-foreground text-center max-w-sm">{sub}</p>}
+  </div>
+);
+
+// ─── Animated waveform (CSS bars) ──────────────────────────────────────────────
+const Waveform = ({ className = "" }: { className?: string }) => (
+  <div className={`flex items-center gap-1 ${className}`} aria-hidden>
+    {Array.from({ length: 40 }).map((_, i) => (
+      <span
+        key={i}
+        className="w-1 rounded-full bg-gradient-to-t from-primary to-accent motion-safe:animate-[wave_1.2s_ease-in-out_infinite]"
+        style={{ height: `${20 + Math.abs(Math.sin(i * 0.9)) * 60}%`, animationDelay: `${i * 0.05}s` }}
+      />
+    ))}
+  </div>
+);
+
+// ─── Loss calculator ───────────────────────────────────────────────────────────
+const useCountUp = (target: number) => {
+  const [val, setVal] = useState(target);
+  const raf = useRef<number>();
+  const from = useRef(target);
+  useEffect(() => {
+    const start = from.current;
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min((t - t0) / 400, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round((start + (target - start) * eased) / 100) * 100);
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+      else from.current = target;
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => { if (raf.current) cancelAnimationFrame(raf.current); };
+  }, [target]);
+  return val;
+};
+
+const Slider = ({ label, min, max, step, value, onChange, fmt }: {
+  label: string; min: number; max: number; step: number; value: number; onChange: (v: number) => void; fmt: (v: number) => string;
+}) => (
+  <div>
+    <div className="flex items-center justify-between mb-2">
+      <label className="text-sm text-muted-foreground">{label}</label>
+      <span className="font-mono font-semibold text-foreground">{fmt(value)}</span>
+    </div>
+    <input
+      type="range" min={min} max={max} step={step} value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      className="w-full accent-primary h-2 cursor-pointer"
+      aria-label={label}
+    />
+  </div>
+);
+
+const LossCalculator = () => {
+  const [calls, setCalls] = useState(42);
+  const [fee, setFee] = useState(3500);
+  const [rate, setRate] = useState(30);
+  const [touched, setTouched] = useState(false);
+  const loss = calls * 0.35 * (rate / 100) * fee * 12;
+  const shown = useCountUp(Math.round(loss / 100) * 100);
+  const onAny = (fn: (v: number) => void) => (v: number) => { if (!touched) { setTouched(true); track("calculator_used"); } fn(v); };
+
+  return (
+    <div className="glass-card p-8 md:p-10 max-w-2xl mx-auto">
+      <div className="space-y-6 mb-8">
+        <Slider label="Inbound calls per month" min={10} max={400} step={1} value={calls} onChange={onAny(setCalls)} fmt={(v) => `${v}`} />
+        <Slider label="Average fee per signed matter" min={500} max={50000} step={250} value={fee} onChange={onAny(setFee)} fmt={(v) => `$${v.toLocaleString()}`} />
+        <Slider label="Your sign rate" min={5} max={80} step={1} value={rate} onChange={onAny(setRate)} fmt={(v) => `${v}%`} />
+      </div>
+      <p className="text-xs text-muted-foreground mb-6">Defaults are the published averages for solo and small firms.</p>
+      <div className="text-center border-t border-border/40 pt-8">
+        <p className="text-sm text-muted-foreground mb-2">You are losing approximately</p>
+        <p className="font-heading font-bold gradient-text text-5xl md:text-7xl mb-2">${shown.toLocaleString()}<span className="text-2xl text-muted-foreground"> / year</span></p>
+        <p className="text-sm text-muted-foreground mb-8">to calls that nobody answers.</p>
+        <PhoneCTA sub="Hear what your callers get instead." />
+      </div>
+    </div>
+  );
+};
+
+// ─── Data ──────────────────────────────────────────────────────────────────────
+const proof = [
+  ["35%", "of calls to small firms go unanswered during business hours", "https://www.legalnavigator.ai/post/silent-lines-new-study-shows-35-of-calls-to-law-firms-now-go-unanswered", "Legal Navigator, 2026"],
+  ["80%", "of voicemail callers hang up without leaving a message", "https://www.legalsoft.com/blog/law-firm-client-intake-statistics", "Legal Soft, 2026"],
+  ["70%", "of cases go to whoever has the first live conversation", "https://www.legalsoft.com/blog/law-firm-client-intake-statistics", "Legal Soft, 2026"],
+  ["$332,000", "lost per firm, per year, to missed intake calls", "https://www.voicecharm.ai/blog/law-firm-missed-calls", "VoiceCharm, 2026"],
+];
+
+const clips = [
+  { title: "Car accident intake", len: "1:02", desc: "Caller describes a collision. The agent captures the date, injuries, whether police attended, and the other party's insurer — then books a consult for Tuesday at 2pm." },
+  { title: "9:47 PM, Saturday", len: "0:41", desc: "The office is closed. The agent answers on the second ring, takes the matter details, and texts the attorney before the caller hangs up." },
+  { title: "Conflict check", len: "0:36", desc: "The agent asks for the opposing party's name, flags a possible conflict, and routes the call to a human instead of booking it." },
+];
+
+const doesItems = [
+  [Phone, "Answers in two rings. Always.", "Not \"usually.\" Not \"during business hours.\" Every call, including the one at 9pm on Sunday after a car accident."],
+  [ShieldCheck, "Runs your conflict questions before anything gets booked.", "It asks for the opposing party by name and flags a match instead of walking you into a problem."],
+  [Check, "Qualifies the matter before it touches your calendar.", "Practice area, date of incident, jurisdiction, injuries. You open your calendar to a briefed consult, not a mystery."],
+  [Calendar, "Books straight into your calendar.", "The caller picks a slot while they're still on the phone — while they still want a lawyer. Not a callback. Not a message."],
+  [MessageSquare, "Texts you inside 60 seconds.", "Name, matter type, phone number, and the full transcript. On your phone before you've left the courtroom."],
+  [Database, "Pushes everything to your CRM.", "Clio, Lawmatics, or a webhook to whatever you run. Nothing gets re-typed and nothing gets lost."],
+] as const;
+
+const steps = [
+  ["Day 1", "I build it.", "Trained on your website, your practice areas, your intake questions. You do nothing."],
+  ["Day 3", "You read it.", "I send you the full script. Change anything you want. Takes about twenty minutes."],
+  ["Day 5", "It goes live.", "On your number. Your callers notice nothing except that somebody finally picked up."],
+];
+
+const included = [
+  "A 24/7 AI intake line that answers in two rings",
+  "Your conflict questions, your practice areas, your intake script",
+  "Consults booked directly into your calendar",
+  "An SMS to you within 60 seconds of every call",
+  "A full transcript of every call, searchable",
+  "CRM push to Clio, Lawmatics, or your webhook",
+  "Spanish-language handling",
+  "A monthly intake report",
+];
+
+const bonuses = [
+  [FileText, "The Intake Audit", "$500", "Five test calls to your firm across three days, logged with timestamps. You find out exactly what a caller hears when they try to reach you — before you decide anything."],
+  [MessageSquare, "Your Custom Intake Script", "$600", "Written from your own website, your practice areas, and your Google reviews. Not a template with your name pasted in."],
+  [PhoneMissed, "Missed-Call Text-Back", "$400", "Anyone who hangs up before the AI answers gets an SMS within sixty seconds. The ones who almost called you still get caught."],
+  [Languages, "Spanish-Language Greeting", "$500", "Configured for your market. In Texas, Florida and Arizona this is not a nice-to-have."],
+  [FileText, "Thirty Days of Transcripts + Intake Report", "$300", "Every call, searchable. Plus a one-page monthly report showing what came in, what got booked, and what would have been voicemail."],
+] as const;
+
+const objections: [string, React.ReactNode][] = [
+  ["\"We already use an answering service.\"", "Then you're paying every month for someone to take a message and hang up. Mine asks your conflict questions, qualifies the matter, and books the consult into your calendar while the caller is still on the line. Send me what you pay now and I'll tell you honestly whether switching is worth it."],
+  ["\"Can AI really handle legal intake?\"", <>Call it and decide for yourself: <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="text-primary underline">{DEMO_NUMBER}</a>. It does not give legal advice and it does not pretend to be a lawyer. It captures who, what, when and where, and books the consult — the same job your front desk does on its best day.</>],
+  ["\"Is this confidential?\"", "The agent collects contact details and matter type. That's the same information a receptionist writes on a message pad. It gives no legal advice and forms no attorney-client relationship. The transcripts are yours, and I delete them on request."],
+  ["\"What happens when it can't answer something?\"", "It says so, and either transfers to whoever you nominate or takes a message and texts you within sixty seconds. It never guesses. Listen to the conflict-check clip above — that's the behaviour, recorded."],
+  ["\"What if my clients hate talking to a machine?\"", "Any caller can say \"representative\" at any point and be transferred. And the honest comparison isn't AI versus your paralegal. It's AI versus the voicemail they're getting right now at 6pm on a Friday."],
+  ["\"Do I have to change my phone number?\"", "No. We forward your existing line, or give you a tracking number that rings straight through to your office. Your cards, your letterhead and your Google listing stay exactly as they are."],
+  ["\"How fast can this be live?\"", "Five business days from the day you say go."],
+  ["\"What does it cost?\"", <>It depends on how many calls your firm actually takes — I don't sell a one-size package. Call the demo number first. If you like what you hear, book fifteen minutes and I'll quote you on your real volume.</>],
+];
+
+const notFor = [
+  ["Under 30 inbound calls a month.", "The maths doesn't work in your favour yet. Come back when the phone rings more."],
+  ["More than ten attorneys.", "You need an intake department and a proper vendor, not me."],
+  ["Corporate, M&A, IP, or securities.", "Your work comes from referrals and relationships, not from strangers calling a number they found on Google. Nothing here applies to you."],
+  ["Looking for the cheapest option.", "I'm not it, and we'd both regret it."],
+];
+
+// ─── Media placeholders ────────────────────────────────────────────────────────
+const AudioPlaceholder = ({ title, len, desc }: { title: string; len: string; desc: string }) => (
+  <div className="glass-card p-6 h-full">
+    <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center gap-2 text-sm">
+        <span className="w-8 h-8 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-3.5 h-3.5 text-primary fill-primary" /></span>
+        <span className="font-semibold">{title}</span>
+      </div>
+      <span className="text-xs font-mono text-muted-foreground">{len}</span>
+    </div>
+    <Waveform className="h-8 mb-4 opacity-70" />
+    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+    <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 mt-3">Audio clip — drop file here</p>
+  </div>
+);
+
+// ─── Objection accordion row ───────────────────────────────────────────────────
+const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="glass-card overflow-hidden">
+      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between p-5 text-left">
+        <span className="font-semibold pr-4 text-ink">{q}</span>
+        <ChevronDown className={`w-5 h-5 shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+            <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const AIIntakeLawFirms = () => {
+  const [showBar, setShowBar] = useState(false);
+  useEffect(() => {
+    (async () => { const cal = await getCalApi({ namespace: CAL_NAMESPACE }); cal("ui", { hideEventTypeDetails: false, theme: "dark" }); })();
+    const onScroll = () => setShowBar(window.scrollY > window.innerHeight * 0.25);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const onDepth = () => { if ((window.scrollY + window.innerHeight) / document.body.scrollHeight > 0.75) { track("scroll_75"); window.removeEventListener("scroll", onDepth); } };
+    window.addEventListener("scroll", onDepth, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("scroll", onDepth); };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background text-foreground pb-16 md:pb-0">
+      <style>{`@keyframes wave { 0%,100% { transform: scaleY(0.4);} 50% { transform: scaleY(1);} }`}</style>
+
+      {/* Nav — no links, logo + phone */}
+      <header className="absolute top-0 left-0 right-0 z-40">
+        <div className="container mx-auto px-6 flex items-center justify-between py-4">
+          <Link to="/" className="flex items-center gap-2"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
+          <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30">
+            <Phone className="w-4 h-4" /> Call the demo
+          </a>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden">
+        <div className="absolute inset-0 gradient-hero opacity-60" />
+        <Waveform className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-40 opacity-10 pointer-events-none justify-center" />
+        <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
+          {/* Option A default. B/C for A-B testing:
+             B: "You paid $300 for that click." / "Then nobody picked up."
+             C: "The first attorney who answers signs the case 70% of the time." / "Right now, that isn't you." */}
+          <FadeIn>
+            <h1 className="font-heading font-bold text-4xl md:text-6xl leading-[1.05] tracking-tight mb-6">
+              35% of calls to your firm go to voicemail.
+              <span className="gradient-text block">80% of those callers never call back.</span>
+            </h1>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
+              An AI intake line that answers in two rings, runs your conflict questions, qualifies the matter, and books the consult — nights, weekends, and while you're in court.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <PhoneCTA big sub="Ask it about a car accident case. Try to book a consult." />
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <div className="flex flex-col items-center gap-3 mt-8">
+              <button disabled className="inline-flex items-center gap-2 text-sm font-medium px-6 py-3 rounded-full border border-border/60 text-muted-foreground opacity-70 cursor-not-allowed" title="Browser call — coming soon">
+                <Mic className="w-4 h-4" /> Or talk to it right here → Start call in browser
+              </button>
+              <button onClick={() => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Or book 15 minutes →</button>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Proof band */}
+      <section className="py-14 bg-secondary/20 border-y border-border/40">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {proof.map(([num, desc, href, cite], i) => (
+              <FadeIn key={i} delay={i * 0.06}>
+                <div>
+                  <p className="font-heading font-bold text-4xl md:text-5xl gradient-text mb-2">{num}</p>
+                  <p className="text-sm text-muted-foreground leading-snug mb-2">{desc}</p>
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="text-[11px] text-muted-foreground/70 hover:text-primary underline">{cite}</a>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Calculator */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6">
+          <FadeIn>
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <Eyebrow>The loss calculator</Eyebrow>
+              <h2 className="font-heading font-bold text-3xl md:text-5xl leading-[1.1] mb-4">What is your phone <span className="gradient-text">costing you?</span></h2>
+              <p className="text-muted-foreground">Drag these to your real numbers. The maths is the industry average for firms your size — the loss is yours.</p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.1}><LossCalculator /></FadeIn>
+        </div>
+      </section>
+
+      {/* Listen */}
+      <section className="py-20 md:py-24 bg-secondary/10">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-12">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h2></FadeIn>
+          <div className="grid md:grid-cols-3 gap-5">
+            {clips.map((c, i) => <FadeIn key={i} delay={i * 0.08}><AudioPlaceholder {...c} /></FadeIn>)}
+          </div>
+        </div>
+      </section>
+
+      {/* Video */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-10">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="aspect-video rounded-2xl border border-border/50 bg-secondary/20 flex flex-col items-center justify-center gap-3">
+              <span className="w-16 h-16 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-7 h-7 text-primary fill-primary ml-1" /></span>
+              <p className="text-sm text-muted-foreground">60-second call recording — drop video here</p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* What it does */}
+      <section className="py-20 md:py-24 bg-secondary/10">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">What it <span className="gradient-text">actually does.</span></h2></FadeIn>
+          <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
+            {doesItems.map(([Icon, head, body], i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="flex gap-4">
+                  <span className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0"><Icon className="w-5 h-5" /></span>
+                  <div>
+                    <h3 className="font-heading font-semibold mb-1.5">{head}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">Five days. <span className="gradient-text">Twenty minutes of your time.</span></h2></FadeIn>
+          <div className="grid md:grid-cols-3 gap-8 mb-10">
+            {steps.map(([day, head, body], i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div>
+                  <div className="flex items-center gap-3 mb-4"><span className="text-xs font-bold uppercase tracking-widest text-primary">{day}</span></div>
+                  <h3 className="font-heading font-semibold text-lg mb-2">{head}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+          <FadeIn delay={0.2}>
+            <div className="glass-card p-6 border border-primary/20 max-w-3xl mx-auto text-center">
+              <p className="font-heading font-semibold mb-1">You keep your existing phone number.</p>
+              <p className="text-sm text-muted-foreground">We either forward your line to the AI, or give you a tracking number that rings straight through to your office. Your letterhead, your business cards and your Google listing never change.</p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Included + bonus stack */}
+      <section className="py-20 md:py-24 bg-secondary/10">
+        <div className="container mx-auto px-6 max-w-5xl grid lg:grid-cols-2 gap-6">
+          <FadeIn>
+            <div className="glass-card p-8 h-full">
+              <h3 className="font-heading font-bold text-xl mb-6">What you get</h3>
+              <ul className="space-y-3">
+                {included.map((t, i) => <li key={i} className="flex items-start gap-2.5 text-sm"><Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /><span className="text-foreground/90">{t}</span></li>)}
+              </ul>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="glass-card p-8 h-full">
+              <h3 className="font-heading font-bold text-xl mb-6">And these, free, for founding clients</h3>
+              <div className="space-y-5">
+                {bonuses.map(([Icon, name, val, desc], i) => (
+                  <div key={i}>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="flex items-center gap-2 font-semibold text-sm"><Icon className="w-4 h-4 text-primary" /> {name}</span>
+                      <span className="text-sm shrink-0 ml-3"><span className="line-through text-muted-foreground/60">{val}</span> <span className="text-accent font-bold">FREE</span></span>
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed pl-6">{desc}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 pt-5 border-t border-border/40 flex items-center justify-between">
+                <span className="font-heading font-semibold">Total value</span>
+                <span className="font-heading font-bold text-2xl gradient-text">$2,300</span>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Guarantee */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6 max-w-2xl">
+          <FadeIn>
+            <div className="rounded-2xl border-2 border-primary/40 bg-secondary/10 p-8 md:p-10 text-center">
+              <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-5"><ShieldCheck className="w-7 h-7 text-primary" /></div>
+              <h2 className="font-heading font-bold text-2xl md:text-3xl mb-4">The guarantee</h2>
+              <p className="text-muted-foreground leading-relaxed mb-3">Every call to your firm gets answered within two rings, 24 hours a day, with a full transcript.</p>
+              <p className="font-heading font-semibold text-lg gradient-text">Miss even one, and that month is free.</p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Objections */}
+      <section className="py-20 md:py-24 bg-secondary/10">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-12">The things you're <span className="gradient-text">already thinking.</span></h2></FadeIn>
+          <div className="space-y-3">
+            {objections.map(([q, a], i) => <FadeIn key={i} delay={i * 0.03}><ObjRow q={q} a={a} /></FadeIn>)}
+          </div>
+        </div>
+      </section>
+
+      {/* Who this is not for */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <FadeIn>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-4">This isn't for <span className="gradient-text">every firm.</span></h2>
+            <p className="text-muted-foreground mb-10">I take three new firms a month, because I build each intake line myself. So I'd rather be straight with you about who this doesn't work for.</p>
+          </FadeIn>
+          <div className="space-y-5">
+            {notFor.map(([head, body], i) => (
+              <FadeIn key={i} delay={i * 0.06}>
+                <div className="flex gap-3">
+                  <span className="text-destructive text-lg leading-none mt-0.5">✕</span>
+                  <div><p className="font-semibold mb-0.5">{head}</p><p className="text-sm text-muted-foreground">{body}</p></div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+          <FadeIn delay={0.3}><p className="mt-10 font-heading font-semibold text-lg">Still here? Then you're exactly who I built this for.</p></FadeIn>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 bg-secondary/20 border-t border-border/40">
+        <div className="container mx-auto px-6 max-w-3xl text-center">
+          <FadeIn>
+            <h2 className="font-heading font-bold text-4xl md:text-5xl mb-8">Stop reading. <span className="gradient-text">Call it.</span></h2>
+            <PhoneCTA big sub="It takes ninety seconds and you'll know immediately whether this is worth fifteen minutes of your time." />
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="mt-4 mb-10"><button onClick={() => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Or book the fifteen minutes →</button></div>
+          </FadeIn>
+        </div>
+        <div id="book" className="container mx-auto px-6 max-w-4xl scroll-mt-20">
+          <FadeIn delay={0.15}>
+            <div className="rounded-2xl overflow-hidden border border-border/40 shadow-xl mb-4">
+              <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ width: "100%", height: "100%", overflow: "scroll" }} config={{ layout: "month_view", theme: "dark" }} />
+            </div>
+            <p className="text-center text-xs text-muted-foreground">{SLOTS_LEFT} founding slots left this month. Founding terms close {FOUNDING_CLOSE}.</p>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-border/40">
+        <div className="container mx-auto px-6 flex items-center justify-center"><img src={logo} alt="Figfalcon" className="h-6 opacity-70" /></div>
+      </footer>
+
+      {/* Sticky mobile call bar */}
+      <AnimatePresence>
+        {showBar && (
+          <motion.a
+            href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")}
+            initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
+            className="md:hidden fixed bottom-0 inset-x-0 z-50 flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 shadow-2xl"
+          >
+            <Phone className="w-5 h-5" /> Call the demo
+          </motion.a>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default AIIntakeLawFirms;
