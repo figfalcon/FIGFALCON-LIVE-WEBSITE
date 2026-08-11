@@ -36,11 +36,11 @@ const PhoneCTA = ({ big = false, sub }: { big?: boolean; sub?: string }) => (
     <a
       href={`tel:${DEMO_TEL}`}
       onClick={() => track("demo_call_click")}
-      className={`inline-flex items-center gap-3 font-bold rounded-full bg-primary text-white hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 ${
-        big ? "px-10 py-5 text-2xl md:text-3xl" : "px-8 py-4 text-base"
+      className={`inline-flex items-center gap-2.5 font-bold rounded-full bg-primary text-white hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 ${
+        big ? "px-8 py-4 text-lg md:text-xl" : "px-6 py-3 text-base"
       }`}
     >
-      <Phone className={big ? "w-7 h-7" : "w-5 h-5"} /> {DEMO_NUMBER}
+      <Phone className={big ? "w-5 h-5" : "w-4 h-4"} /> {DEMO_NUMBER}
     </a>
     {sub && <p className="text-xs text-muted-foreground text-center max-w-sm">{sub}</p>}
   </div>
@@ -160,7 +160,7 @@ const included = [
   "An SMS to you within 60 seconds of every call",
   "A full transcript of every call, searchable",
   "CRM push to Clio, Lawmatics, or your webhook",
-  "Spanish-language handling",
+  "Every-language handling — 30+ languages, automatic",
   "A monthly intake report",
 ];
 
@@ -168,7 +168,7 @@ const bonuses = [
   [FileText, "The Intake Audit", "$500", "Five test calls to your firm across three days, logged with timestamps. You find out exactly what a caller hears when they try to reach you — before you decide anything."],
   [MessageSquare, "Your Custom Intake Script", "$600", "Written from your own website, your practice areas, and your Google reviews. Not a template with your name pasted in."],
   [PhoneMissed, "Missed-Call Text-Back", "$400", "Anyone who hangs up before the AI answers gets an SMS within sixty seconds. The ones who almost called you still get caught."],
-  [Languages, "Spanish-Language Greeting", "$500", "Configured for your market. In Texas, Florida and Arizona this is not a nice-to-have."],
+  [Languages, "Every Language, Handled", "$500", "Your caller speaks — the agent answers in their language automatically. Spanish, Mandarin, Vietnamese, Arabic and more. In Texas, Florida and Arizona this is not a nice-to-have."],
   [FileText, "Thirty Days of Transcripts + Intake Report", "$300", "Every call, searchable. Plus a one-page monthly report showing what came in, what got booked, and what would have been voicemail."],
 ] as const;
 
@@ -228,9 +228,10 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
 
 const AIIntakeLawFirms = () => {
   const [showBar, setShowBar] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     (async () => { const cal = await getCalApi({ namespace: CAL_NAMESPACE }); cal("ui", { hideEventTypeDetails: false, theme: "dark" }); })();
-    const onScroll = () => setShowBar(window.scrollY > window.innerHeight * 0.25);
+    const onScroll = () => { setShowBar(window.scrollY > window.innerHeight * 0.25); setScrolled(window.scrollY > 20); };
     window.addEventListener("scroll", onScroll, { passive: true });
     const onDepth = () => { if ((window.scrollY + window.innerHeight) / document.body.scrollHeight > 0.75) { track("scroll_75"); window.removeEventListener("scroll", onDepth); } };
     window.addEventListener("scroll", onDepth, { passive: true });
@@ -239,13 +240,25 @@ const AIIntakeLawFirms = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-16 md:pb-0">
-      <style>{`@keyframes wave { 0%,100% { transform: scaleY(0.4);} 50% { transform: scaleY(1);} }`}</style>
+      <style>{`
+        @keyframes wave { 0%,100% { transform: scaleY(0.4);} 50% { transform: scaleY(1);} }
+        @keyframes guarantee-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary)/0.4), 0 0 20px hsl(var(--primary)/0.2); }
+          50%      { box-shadow: 0 0 0 12px hsl(var(--primary)/0), 0 0 40px hsl(var(--primary)/0.4); }
+        }
+        .guarantee-glow { animation: guarantee-pulse 2.5s ease-in-out infinite; }
+      `}</style>
 
-      {/* Nav — no links, logo + phone */}
-      <header className="absolute top-0 left-0 right-0 z-40">
-        <div className="container mx-auto px-6 flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center gap-2"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
-          <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30">
+      {/* Nav — anchor links + phone */}
+      <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/85 backdrop-blur-xl border-b border-border/40" : ""}`}>
+        <div className="container mx-auto px-6 flex items-center justify-between py-3.5">
+          <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
+          <nav className="hidden lg:flex items-center gap-8">
+            {[["The numbers", "numbers"], ["How it works", "how"], ["What's included", "included"], ["FAQ", "faq"]].map(([label, id]) => (
+              <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
+            ))}
+          </nav>
+          <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30 shrink-0">
             <Phone className="w-4 h-4" /> Call the demo
           </a>
         </div>
@@ -256,11 +269,16 @@ const AIIntakeLawFirms = () => {
         <div className="absolute inset-0 gradient-hero opacity-60" />
         <Waveform className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-40 opacity-10 pointer-events-none justify-center" />
         <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
+          <FadeIn>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
+              <Phone className="w-3.5 h-3.5" /> AI intake line for US law firms
+            </div>
+          </FadeIn>
           {/* Option A default. B/C for A-B testing:
              B: "You paid $300 for that click." / "Then nobody picked up."
              C: "The first attorney who answers signs the case 70% of the time." / "Right now, that isn't you." */}
-          <FadeIn>
-            <h1 className="font-heading font-bold text-4xl md:text-6xl leading-[1.05] tracking-tight mb-6">
+          <FadeIn delay={0.05}>
+            <h1 className="font-heading font-bold text-[clamp(2.2rem,1rem+4.5vw,4rem)] leading-[1.05] tracking-tight mb-6">
               35% of calls to your firm go to voicemail.
               <span className="gradient-text block">80% of those callers never call back.</span>
             </h1>
@@ -281,11 +299,18 @@ const AIIntakeLawFirms = () => {
               <button onClick={() => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Or book 15 minutes →</button>
             </div>
           </FadeIn>
+          <FadeIn delay={0.25}>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-10 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Live in 5 days</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Keep your existing number</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Two-rings guarantee</span>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* Proof band */}
-      <section className="py-14 bg-secondary/20 border-y border-border/40">
+      <section id="numbers" className="py-14 bg-secondary/20 border-y border-border/40 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {proof.map(([num, desc, href, cite], i) => (
@@ -338,19 +363,17 @@ const AIIntakeLawFirms = () => {
         </div>
       </section>
 
-      {/* What it does */}
+      {/* What it does — bento */}
       <section className="py-20 md:py-24 bg-secondary/10">
         <div className="container mx-auto px-6 max-w-5xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">What it <span className="gradient-text">actually does.</span></h2></FadeIn>
-          <div className="grid md:grid-cols-2 gap-x-10 gap-y-8">
+          <div className="grid md:grid-cols-3 gap-4 auto-rows-fr">
             {doesItems.map(([Icon, head, body], i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="flex gap-4">
-                  <span className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0"><Icon className="w-5 h-5" /></span>
-                  <div>
-                    <h3 className="font-heading font-semibold mb-1.5">{head}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
-                  </div>
+                <div className={`glass-card-hover p-6 h-full ${i === 0 ? "md:col-span-2 md:row-span-1" : ""} ${i === 0 ? "bg-gradient-to-br from-primary/10 via-transparent to-transparent border-primary/25" : ""}`}>
+                  <span className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-4"><Icon className="w-5 h-5" /></span>
+                  <h3 className="font-heading font-semibold mb-1.5">{head}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
                 </div>
               </FadeIn>
             ))}
@@ -359,7 +382,7 @@ const AIIntakeLawFirms = () => {
       </section>
 
       {/* How it works */}
-      <section className="py-20 md:py-24">
+      <section id="how" className="py-20 md:py-24 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-5xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">Five days. <span className="gradient-text">Twenty minutes of your time.</span></h2></FadeIn>
           <div className="grid md:grid-cols-3 gap-8 mb-10">
@@ -383,7 +406,7 @@ const AIIntakeLawFirms = () => {
       </section>
 
       {/* Included + bonus stack */}
-      <section className="py-20 md:py-24 bg-secondary/10">
+      <section id="included" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-5xl grid lg:grid-cols-2 gap-6">
           <FadeIn>
             <div className="glass-card p-8 h-full">
@@ -417,21 +440,31 @@ const AIIntakeLawFirms = () => {
       </section>
 
       {/* Guarantee */}
-      <section className="py-20 md:py-24">
-        <div className="container mx-auto px-6 max-w-2xl">
+      <section className="py-16 md:py-20 bg-secondary/10">
+        <div className="container mx-auto px-6 max-w-3xl">
           <FadeIn>
-            <div className="rounded-2xl border-2 border-primary/40 bg-secondary/10 p-8 md:p-10 text-center">
-              <div className="w-14 h-14 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-5"><ShieldCheck className="w-7 h-7 text-primary" /></div>
-              <h2 className="font-heading font-bold text-2xl md:text-3xl mb-4">The guarantee</h2>
-              <p className="text-muted-foreground leading-relaxed mb-3">Every call to your firm gets answered within two rings, 24 hours a day, with a full transcript.</p>
-              <p className="font-heading font-semibold text-lg gradient-text">Miss even one, and that month is free.</p>
+            <div className="glass-card p-8 md:p-10 border border-primary/30 ring-1 ring-primary/10 text-center">
+              <div className="flex justify-center mb-5">
+                <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center guarantee-glow">
+                  <ShieldCheck className="w-8 h-8 text-primary" />
+                </div>
+              </div>
+              <div className="text-xs uppercase tracking-widest text-primary mb-3">Our Guarantee</div>
+              <h2 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-5">
+                <span className="block">Every Call Answered in Two Rings.</span>
+                <span className="gradient-text block">Miss One, and That Month Is Free.</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-5">
+                24 hours a day, with a full transcript of every call. We measure it from our own call logs — so the promise is on us, not on your demand.
+              </p>
+              <p className="text-sm font-semibold text-foreground">No answering service offers this. Because most cannot back it up.</p>
             </div>
           </FadeIn>
         </div>
       </section>
 
       {/* Objections */}
-      <section className="py-20 md:py-24 bg-secondary/10">
+      <section id="faq" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-3xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-12">The things you're <span className="gradient-text">already thinking.</span></h2></FadeIn>
           <div className="space-y-3">
