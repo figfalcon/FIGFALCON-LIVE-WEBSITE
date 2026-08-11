@@ -254,7 +254,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 flex items-center justify-between py-3.5">
           <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
           <nav className="hidden lg:flex items-center gap-8">
-            {[["The numbers", "numbers"], ["How it works", "how"], ["What's included", "included"], ["FAQ", "faq"]].map(([label, id]) => (
+            {[["Hear it work", "listen"], ["What you're losing", "numbers"], ["How it works", "how"], ["Guarantee", "guarantee"]].map(([label, id]) => (
               <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
             ))}
           </nav>
@@ -341,7 +341,7 @@ const AIIntakeLawFirms = () => {
       </section>
 
       {/* Listen */}
-      <section className="py-20 md:py-24 bg-secondary/10">
+      <section id="listen" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-6xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-12">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h2></FadeIn>
           <div className="grid md:grid-cols-3 gap-5">
@@ -440,7 +440,7 @@ const AIIntakeLawFirms = () => {
       </section>
 
       {/* Guarantee */}
-      <section className="py-16 md:py-20 bg-secondary/10">
+      <section id="guarantee" className="py-16 md:py-20 bg-secondary/10 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-3xl">
           <FadeIn>
             <div className="glass-card p-8 md:p-10 border border-primary/30 ring-1 ring-primary/10 text-center">
