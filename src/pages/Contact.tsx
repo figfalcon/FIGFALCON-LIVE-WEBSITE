@@ -132,7 +132,7 @@ const Contact = () => {
       const country = countries.find(c => c.iso === formData.phoneCountry);
       const dial = country?.dial ?? "";
       const fullPhone = formData.phone ? `${dial} ${formData.phone}`.trim() : "";
-      const res = await fetch("https://n8n.srv813240.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
+      const res = await fetch("https://n8n-with-ai-assistant-q76o.srv1883884.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
