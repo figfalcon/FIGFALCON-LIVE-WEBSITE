@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
-  Phone, Mic, Calendar, MessageSquare, ShieldCheck, Clock, Check, ChevronDown,
+  Phone, Calendar, MessageSquare, ShieldCheck, Check, ChevronDown,
   Play, ArrowRight, FileText, Database, Languages, PhoneMissed,
 } from "lucide-react";
 import Cal, { getCalApi } from "@calcom/embed-react";
@@ -226,6 +226,70 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
   );
 };
 
+// ─── Hero: glowing sphere + floating live-call card ────────────────────────────
+const heroPrompts = [
+  { icon: Phone, label: "Test a call", line: "\"I was in a car accident yesterday and I'm not sure what to do…\"" },
+  { icon: Calendar, label: "Book a consult", line: "\"Can I see the attorney Tuesday at 2pm?\"" },
+  { icon: ShieldCheck, label: "Conflict check", line: "\"The other driver was James Bennett.\"" },
+];
+
+const HeroCallCard = () => {
+  const [i, setI] = useState(0);
+  useEffect(() => { const t = setInterval(() => setI((v) => (v + 1) % heroPrompts.length), 3000); return () => clearInterval(t); }, []);
+  const P = heroPrompts[i];
+  return (
+    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.35 }} className="relative mx-auto max-w-lg">
+      <motion.div
+        animate={{ y: [0, -10, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        className="glass-card p-5 md:p-6 border border-primary/25 shadow-2xl shadow-primary/10 backdrop-blur-xl text-left"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="text-xs text-muted-foreground font-mono">your AI intake line · live</span>
+          </div>
+          <Waveform className="h-4 w-24 opacity-60 justify-end" />
+        </div>
+        <div className="min-h-[52px] mb-4">
+          <AnimatePresence mode="wait">
+            <motion.p key={i} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.35 }} className="text-sm text-foreground/90 font-mono leading-relaxed">{P.line}</motion.p>
+          </AnimatePresence>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-5">
+          {heroPrompts.map((p, idx) => (
+            <span key={idx} className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors duration-300 ${idx === i ? "border-primary/50 bg-primary/15 text-primary" : "border-border/50 text-muted-foreground"}`}>
+              <p.icon className="w-3.5 h-3.5" /> {p.label}
+            </span>
+          ))}
+        </div>
+        <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="flex items-center justify-center gap-2 w-full bg-primary text-white font-bold rounded-xl py-3 hover:opacity-90 active:scale-[0.98] transition-all">
+          <Phone className="w-4 h-4" /> Call it now — {DEMO_NUMBER}
+        </a>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const HeroSphere = () => (
+  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] max-w-[130vw] max-h-[130vw] pointer-events-none" aria-hidden>
+    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.22),transparent_62%)]" />
+    <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full opacity-25 motion-safe:animate-[spin_50s_linear_infinite]">
+      <g fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5">
+        <circle cx="200" cy="200" r="196" />
+        <circle cx="200" cy="200" r="150" />
+        <circle cx="200" cy="200" r="104" />
+        <circle cx="200" cy="200" r="58" />
+        {Array.from({ length: 8 }).map((_, k) => (
+          <ellipse key={k} cx="200" cy="200" rx={196} ry={196 - k * 24} />
+        ))}
+        {Array.from({ length: 12 }).map((_, k) => (
+          <line key={k} x1="200" y1="4" x2="200" y2="396" transform={`rotate(${k * 15} 200 200)`} />
+        ))}
+      </g>
+    </svg>
+  </div>
+);
+
 const AIIntakeLawFirms = () => {
   const [showBar, setShowBar] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -289,23 +353,27 @@ const AIIntakeLawFirms = () => {
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
-            <PhoneCTA big sub="Ask it about a car accident case. Try to book a consult." />
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <div className="flex flex-col items-center gap-3 mt-8">
-              <button disabled className="inline-flex items-center gap-2 text-sm font-medium px-6 py-3 rounded-full border border-border/60 text-muted-foreground opacity-70 cursor-not-allowed" title="Browser call — coming soon">
-                <Mic className="w-4 h-4" /> Or talk to it right here → Start call in browser
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <PhoneCTA big />
+              <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all">
+                <Play className="w-4 h-4 fill-current" /> See how it works
               </button>
-              <button onClick={() => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Or book 15 minutes →</button>
             </div>
+            <p className="text-xs text-muted-foreground mt-3">Ask it about a car accident case. Try to book a consult.</p>
           </FadeIn>
           <FadeIn delay={0.25}>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-10 text-xs text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Live in 5 days</span>
               <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Keep your existing number</span>
               <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Two-rings guarantee</span>
             </div>
           </FadeIn>
+
+          {/* Glowing sphere + floating live-call card */}
+          <div className="relative mt-16 md:mt-20">
+            <HeroSphere />
+            <div className="relative z-10"><HeroCallCard /></div>
+          </div>
         </div>
       </section>
 
