@@ -21,6 +21,7 @@ public/thumbnails/
 
 # Scripts with credentials
 scripts/setup-db.mjs
+API & Token.txt
 
 # Editor directories and files
 .vscode/*
