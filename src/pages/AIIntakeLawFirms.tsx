@@ -20,8 +20,8 @@ const track = (event: string) => {
   (window as unknown as { dataLayer?: { push: (o: object) => void } }).dataLayer?.push({ event });
 };
 
-const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
-  <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}>
+const FadeIn = ({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) => (
+  <motion.div className={className} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}>
     {children}
   </motion.div>
 );
@@ -246,36 +246,40 @@ const LeadForm = () => {
       <h3 className="font-heading font-semibold text-xl mb-1">Request a fit call</h3>
       <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">Full Name <span className="text-destructive">*</span></label>
-          <input name="name" value={formData.name} onChange={handleChange} required placeholder="Jordan Lee"
-            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">Email address <span className="text-destructive">*</span></label>
-          <input name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="jordan@firm.com"
-            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Full Name <span className="text-destructive">*</span></label>
+            <input name="name" value={formData.name} onChange={handleChange} required placeholder="Jordan Lee"
+              className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Email address <span className="text-destructive">*</span></label>
+            <input name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="jordan@firm.com"
+              className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+          </div>
         </div>
         <div>
           <label className="text-sm font-medium mb-1.5 block">Company Name <span className="text-destructive">*</span></label>
           <input name="company" value={formData.company} onChange={handleChange} required placeholder="Lee & Associates"
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
         </div>
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">Phone number</label>
-          <div className="flex gap-2">
-            <select name="phoneCountry" value={formData.phoneCountry} onChange={handleChange} aria-label="Country code"
-              className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[100px]">
-              {leadCountries.map((c) => <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>)}
-            </select>
-            <input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="(305) 555-0142"
-              className="flex-1 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Phone number</label>
+            <div className="flex gap-2">
+              <select name="phoneCountry" value={formData.phoneCountry} onChange={handleChange} aria-label="Country code"
+                className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[92px]">
+                {leadCountries.map((c) => <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>)}
+              </select>
+              <input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="(305) 555-0142"
+                className="flex-1 min-w-0 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+            </div>
           </div>
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">Website <span className="text-destructive">*</span></label>
-          <input name="website" value={formData.website} onChange={handleChange} required placeholder="https://yourfirm.com"
-            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Website <span className="text-destructive">*</span></label>
+            <input name="website" value={formData.website} onChange={handleChange} required placeholder="https://yourfirm.com"
+              className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+          </div>
         </div>
         <div>
           <label className="text-sm font-medium mb-1.5 block">Whats your monthly Consult capacity <span className="text-destructive">*</span></label>
@@ -503,8 +507,8 @@ const AIIntakeLawFirms = () => {
       {/* Fit call — split layout: offer recap left, lead form right */}
       <section id="fit" className="py-20 md:py-24 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <FadeIn>
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-start">
+            <FadeIn className="lg:col-span-2">
               <Eyebrow>Next step</Eyebrow>
               <h2 className="font-heading font-bold text-3xl md:text-5xl leading-[1.1] mb-5">
                 See if we can fill your <span className="gradient-text">consult calendar.</span>
@@ -525,7 +529,7 @@ const AIIntakeLawFirms = () => {
                 ))}
               </ul>
             </FadeIn>
-            <FadeIn delay={0.1}><LeadForm /></FadeIn>
+            <FadeIn delay={0.1} className="lg:col-span-3"><LeadForm /></FadeIn>
           </div>
         </div>
       </section>
