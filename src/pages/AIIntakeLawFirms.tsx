@@ -352,7 +352,7 @@ const pipelineBlocks = [
 const pipelineLegend = [
   ["1000+", "Call answered"],
   ["800+", "AI qualifies"],
-  ["300+", "Consult booked"],
+  ["50+", "Consult booked"],
 ] as const;
 
 const ConsultCalendarCard = () => (
