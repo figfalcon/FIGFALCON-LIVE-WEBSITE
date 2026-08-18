@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   Phone, Calendar, MessageSquare, ShieldCheck, Check, ChevronDown,
   Play, ArrowRight, FileText, Database, Languages, PhoneMissed,
+  Settings2, PenLine, Zap,
 } from "lucide-react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
@@ -42,19 +43,6 @@ const ScrollCTA = ({ target, label, big = false, sub }: { target: string; label:
       <ArrowRight className={big ? "w-5 h-5" : "w-4 h-4"} /> {label}
     </button>
     {sub && <p className="text-xs text-muted-foreground text-center max-w-sm">{sub}</p>}
-  </div>
-);
-
-// ─── Animated waveform (CSS bars) ──────────────────────────────────────────────
-const Waveform = ({ className = "" }: { className?: string }) => (
-  <div className={`flex items-center gap-1 ${className}`} aria-hidden>
-    {Array.from({ length: 40 }).map((_, i) => (
-      <span
-        key={i}
-        className="w-1 rounded-full bg-gradient-to-t from-primary to-accent motion-safe:animate-[wave_1.2s_ease-in-out_infinite]"
-        style={{ height: `${20 + Math.abs(Math.sin(i * 0.9)) * 60}%`, animationDelay: `${i * 0.05}s` }}
-      />
-    ))}
   </div>
 );
 
@@ -131,12 +119,6 @@ const proof = [
   ["$332,000", "lost per firm, per year, to missed intake calls", "https://www.voicecharm.ai/blog/law-firm-missed-calls", "VoiceCharm, 2026"],
 ];
 
-const clips = [
-  { title: "Car accident intake", len: "1:02", desc: "Caller describes a collision. The agent captures the date, injuries, whether police attended, and the other party's insurer — then books a consult for Tuesday at 2pm." },
-  { title: "9:47 PM, Saturday", len: "0:41", desc: "The office is closed. The agent answers on the second ring, takes the matter details, and texts the attorney before the caller hangs up." },
-  { title: "Conflict check", len: "0:36", desc: "The agent asks for the opposing party's name, flags a possible conflict, and routes the call to a human instead of booking it." },
-];
-
 const doesItems = [
   [Phone, "Answers in two rings. Always.", "Not \"usually.\" Not \"during business hours.\" Every call, including the one at 9pm on Sunday after a car accident."],
   [ShieldCheck, "Runs your conflict questions before anything gets booked.", "It asks for the opposing party by name and flags a match instead of walking you into a problem."],
@@ -147,10 +129,10 @@ const doesItems = [
 ] as const;
 
 const steps = [
-  ["Day 1", "I build it.", "Trained on your website, your practice areas, your intake questions. You do nothing."],
-  ["Day 3", "You read it.", "I send you the full script. Change anything you want. Takes about twenty minutes."],
-  ["Day 5", "It goes live.", "On your number. Your callers notice nothing except that somebody finally picked up."],
-];
+  [Settings2, "Day 1", "I build it.", "Trained on your website, your practice areas, your intake questions. You do nothing."],
+  [PenLine, "Day 3", "You read it.", "I send you the full script. Change anything you want. Takes about twenty minutes."],
+  [Zap, "Day 5", "It goes live.", "On your number. Your callers notice nothing except that somebody finally picked up."],
+] as const;
 
 const included = [
   "A 24/7 AI intake line that answers in two rings",
@@ -173,11 +155,10 @@ const bonuses = [
 
 const objections: [string, React.ReactNode][] = [
   ["\"We already use an answering service.\"", "Then you're paying every month for someone to take a message and hang up. Mine asks your conflict questions, qualifies the matter, and books the consult into your calendar while the caller is still on the line. Send me what you pay now and I'll tell you honestly whether switching is worth it."],
-  ["\"Can AI really handle legal intake?\"", "Yes — and it stays inside its lane. It does not give legal advice and it does not pretend to be a lawyer. It captures who, what, when and where, and books the consult — the same job your front desk does on its best day. Listen to the clips above and judge for yourself."],
+  ["\"Can AI really handle legal intake?\"", "Yes — and it stays inside its lane. It does not give legal advice and it does not pretend to be a lawyer. It captures who, what, when and where, and books the consult — the same job your front desk does on its best day. Watch it handle a real call below and judge for yourself."],
   ["\"Is this confidential?\"", "The agent collects contact details and matter type. That's the same information a receptionist writes on a message pad. It gives no legal advice and forms no attorney-client relationship. The transcripts are yours, and I delete them on request."],
-  ["\"What happens when it can't answer something?\"", "It says so, and either transfers to whoever you nominate or takes a message and texts you within sixty seconds. It never guesses. Listen to the conflict-check clip above — that's the behaviour, recorded."],
+  ["\"What happens when it can't answer something?\"", "It says so, and either transfers to whoever you nominate or takes a message and texts you within sixty seconds. It never guesses. Watch the call recording below — that's the behaviour, in practice."],
   ["\"What if my clients hate talking to a machine?\"", "Any caller can say \"representative\" at any point and be transferred. And the honest comparison isn't AI versus your paralegal. It's AI versus the voicemail they're getting right now at 6pm on a Friday."],
-  ["\"Do I have to change my phone number?\"", "No. We forward your existing line, or give you a tracking number that rings straight through to your office. Your cards, your letterhead and your Google listing stay exactly as they are."],
   ["\"How fast can this be live?\"", "Five business days from the day you say go."],
   ["\"What does it cost?\"", "It depends on how many calls your firm actually takes — I don't sell a one-size package. Book fifteen minutes below and I'll quote you on your real volume."],
 ];
@@ -303,22 +284,6 @@ const LeadForm = () => {
   );
 };
 
-// ─── Media placeholders ────────────────────────────────────────────────────────
-const AudioPlaceholder = ({ title, len, desc }: { title: string; len: string; desc: string }) => (
-  <div className="glass-card p-6 h-full">
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-2 text-sm">
-        <span className="w-8 h-8 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-3.5 h-3.5 text-primary fill-primary" /></span>
-        <span className="font-semibold">{title}</span>
-      </div>
-      <span className="text-xs font-mono text-muted-foreground">{len}</span>
-    </div>
-    <Waveform className="h-8 mb-4 opacity-70" />
-    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-    <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 mt-3">Audio clip — drop file here</p>
-  </div>
-);
-
 // ─── Objection accordion row ───────────────────────────────────────────────────
 const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
@@ -406,7 +371,6 @@ const AIIntakeLawFirms = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-16 md:pb-0">
       <style>{`
-        @keyframes wave { 0%,100% { transform: scaleY(0.4);} 50% { transform: scaleY(1);} }
         @keyframes guarantee-pulse {
           0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary)/0.4), 0 0 20px hsl(var(--primary)/0.2); }
           50%      { box-shadow: 0 0 0 12px hsl(var(--primary)/0), 0 0 40px hsl(var(--primary)/0.4); }
@@ -523,18 +487,8 @@ const AIIntakeLawFirms = () => {
         </div>
       </section>
 
-      {/* Listen */}
+      {/* Listen + watch — merged proof section */}
       <section id="listen" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-12">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h2></FadeIn>
-          <div className="grid md:grid-cols-3 gap-5">
-            {clips.map((c, i) => <FadeIn key={i} delay={i * 0.08}><AudioPlaceholder {...c} /></FadeIn>)}
-          </div>
-        </div>
-      </section>
-
-      {/* Video */}
-      <section className="py-20 md:py-24">
         <div className="container mx-auto px-6 max-w-4xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-10">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
           <FadeIn delay={0.1}>
@@ -542,6 +496,9 @@ const AIIntakeLawFirms = () => {
               <span className="w-16 h-16 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-7 h-7 text-primary fill-primary ml-1" /></span>
               <p className="text-sm text-muted-foreground">60-second call recording — drop video here</p>
             </div>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <h3 className="font-heading font-bold text-2xl md:text-3xl text-center leading-[1.1] mt-14">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h3>
           </FadeIn>
         </div>
       </section>
@@ -567,17 +524,21 @@ const AIIntakeLawFirms = () => {
       {/* How it works */}
       <section id="how" className="py-20 md:py-24 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-5xl">
-          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">Five days. <span className="gradient-text">Twenty minutes of your time.</span></h2></FadeIn>
-          <div className="grid md:grid-cols-3 gap-8 mb-10">
-            {steps.map(([day, head, body], i) => (
-              <FadeIn key={i} delay={i * 0.08}>
-                <div>
-                  <div className="flex items-center gap-3 mb-4"><span className="text-xs font-bold uppercase tracking-widest text-primary">{day}</span></div>
-                  <h3 className="font-heading font-semibold text-lg mb-2">{head}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
-                </div>
-              </FadeIn>
-            ))}
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-[1.15] mb-14 max-w-2xl mx-auto">Five days. <span className="gradient-text">Twenty minutes of your time.</span></h2></FadeIn>
+          <div className="relative">
+            <div className="hidden md:block absolute top-7 left-[16.6%] right-[16.6%] h-px bg-gradient-to-r from-primary/50 via-primary/20 to-primary/50" aria-hidden />
+            <div className="grid md:grid-cols-3 gap-8 mb-10">
+              {steps.map(([Icon, day, head, body], i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <div className="glass-card-hover p-6 h-full relative">
+                    <span className="w-14 h-14 rounded-full bg-background border border-primary/30 flex items-center justify-center text-primary mb-5 shadow-lg shadow-primary/10"><Icon className="w-6 h-6" /></span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-primary block mb-2">{day}</span>
+                    <h3 className="font-heading font-semibold text-lg mb-2">{head}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
           </div>
         </div>
       </section>
