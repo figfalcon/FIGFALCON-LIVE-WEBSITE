@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/Header";
@@ -22,7 +22,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 const queryClient = new QueryClient();
 
 // Routes that render without the shared Header/Footer/ChatWidget (standalone landing pages)
-const BARE_ROUTES = ["/ai-content-system", "/second-brain-os", "/ai-intake-law-firms"];
+const BARE_ROUTES = ["/ai-content-system", "/second-brain-os", "/ai-voice-agent"];
 
 const AppShell = () => {
   const { pathname } = useLocation();
@@ -40,7 +40,8 @@ const AppShell = () => {
       <Route path="/terms" element={<Terms />} />
       <Route path="/ai-content-system" element={<AIContentSystem />} />
       <Route path="/second-brain-os" element={<SecondBrainOS />} />
-      <Route path="/ai-intake-law-firms" element={<AIIntakeLawFirms />} />
+      <Route path="/ai-voice-agent" element={<AIIntakeLawFirms />} />
+      <Route path="/ai-intake-law-firms" element={<Navigate to="/ai-voice-agent" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

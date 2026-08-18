@@ -228,7 +228,7 @@ const LeadForm = () => {
           phoneDialCode: dial,
           phoneLocal: formData.phone,
           submittedAt: new Date().toISOString(),
-          source: "figfalcon.com/ai-intake-law-firms",
+          source: "figfalcon.com/ai-voice-agent",
         }),
       });
       if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
