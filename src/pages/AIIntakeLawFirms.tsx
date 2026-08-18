@@ -452,11 +452,11 @@ const AIIntakeLawFirms = () => {
             </div>
           </FadeIn>
           <FadeIn delay={0.05}>
-            <h1 className="font-heading font-bold leading-[1.15] tracking-tight mb-6">
-              <span className="block text-[clamp(1rem,0.7rem+1.5vw,1.875rem)] text-foreground/75 mb-1.5">
+            <h1 className="font-heading leading-[1.2] mb-6">
+              <span className="block font-medium tracking-normal text-[clamp(0.95rem,0.7rem+1.3vw,1.5rem)] text-muted-foreground mb-2">
                 35% of calls go to voicemail.
               </span>
-              <span className="gradient-text block text-[clamp(1.75rem,1rem+3.5vw,3.75rem)]">
+              <span className="gradient-text block font-bold tracking-tight text-[clamp(1.75rem,1rem+3.5vw,3.75rem)]">
                 80% never call back.
               </span>
             </h1>
