@@ -339,68 +339,58 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
   );
 };
 
-// ─── Hero: glowing sphere + floating live-call card ────────────────────────────
-const heroPrompts = [
-  { icon: Phone, label: "Incoming call", line: "\"I was in a car accident yesterday and I'm not sure what to do…\"" },
-  { icon: Calendar, label: "Book a consult", line: "\"Can I see the attorney Tuesday at 2pm?\"" },
-  { icon: ShieldCheck, label: "Conflict check", line: "\"The other driver was James Bennett.\"" },
-];
+// ─── Hero: consult calendar pipeline card ──────────────────────────────────────
+const heroChips = [
+  ["01", "Estate planning", "Wills, trusts & directives"],
+  ["02", "Family law", "Divorce, custody, support"],
+  ["03", "Tax advisory", "EAs, CPAs & small firms"],
+] as const;
 
-const HeroCallCard = () => {
-  const [i, setI] = useState(0);
-  useEffect(() => { const t = setInterval(() => setI((v) => (v + 1) % heroPrompts.length), 3000); return () => clearInterval(t); }, []);
-  const P = heroPrompts[i];
-  return (
-    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.35 }} className="relative mx-auto max-w-lg">
-      <motion.div
-        animate={{ y: [0, -10, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-        className="glass-card p-5 md:p-6 border border-primary/25 shadow-2xl shadow-primary/10 backdrop-blur-xl text-left"
-      >
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-xs text-muted-foreground font-mono">your AI intake line · live</span>
-          </div>
-          <Waveform className="h-4 w-24 opacity-60 justify-end" />
-        </div>
-        <div className="min-h-[52px] mb-4">
-          <AnimatePresence mode="wait">
-            <motion.p key={i} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.35 }} className="text-sm text-foreground/90 font-mono leading-relaxed">{P.line}</motion.p>
-          </AnimatePresence>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-5">
-          {heroPrompts.map((p, idx) => (
-            <span key={idx} className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border transition-colors duration-300 ${idx === i ? "border-primary/50 bg-primary/15 text-primary" : "border-border/50 text-muted-foreground"}`}>
-              <p.icon className="w-3.5 h-3.5" /> {p.label}
-            </span>
+const pipelineDays = ["MON", "TUE", "WED", "THU", "FRI"] as const;
+const pipelineBlocks = [
+  { day: 0, label: "Tax consult", top: 42, height: 46 },
+  { day: 1, label: "Estate plan", top: 8, height: 62 },
+  { day: 2, label: "Family law", top: 30, height: 50 },
+  { day: 3, label: "Trust review", top: 4, height: 66 },
+  { day: 4, label: "New intake", top: 22, height: 52 },
+] as const;
+
+const pipelineLegend = [
+  ["01", "Meta demand"],
+  ["02", "AI filter"],
+  ["03", "Booked"],
+] as const;
+
+const ConsultCalendarCard = () => (
+  <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="glass-card p-5 md:p-6 border border-border/50 shadow-2xl shadow-primary/5">
+    <div className="flex items-center justify-between mb-5">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Live pipeline</span>
+      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/30">
+        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" /> Qualified
+      </span>
+    </div>
+    <h3 className="font-heading font-semibold text-lg mb-4">Consult calendar</h3>
+    <div className="grid grid-cols-5 gap-2 mb-4">
+      {pipelineDays.map((d, i) => (
+        <div key={d} className="relative h-32 rounded-lg bg-secondary/30 border border-border/30 overflow-hidden">
+          <span className="absolute top-1.5 left-1/2 -translate-x-1/2 text-[9px] font-bold uppercase tracking-wider text-muted-foreground/70">{d}</span>
+          {pipelineBlocks.filter((b) => b.day === i).map((b) => (
+            <div key={b.label} className="absolute inset-x-1 rounded-md p-1.5 flex items-end shadow-md shadow-primary/20" style={{ top: `${b.top}%`, height: `${b.height}%`, background: "var(--gradient-primary)" }}>
+              <span className="text-[9px] font-semibold text-white leading-tight">{b.label}</span>
+            </div>
           ))}
         </div>
-        <button onClick={() => { track("cta_click_fit"); document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" }); }} className="flex items-center justify-center gap-2 w-full bg-primary text-white font-bold rounded-xl py-3 hover:opacity-90 active:scale-[0.98] transition-all">
-          <ArrowRight className="w-4 h-4" /> Get this for your firm
-        </button>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-const HeroSphere = () => (
-  <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 w-[1100px] h-[1100px] max-w-[210vw] max-h-[210vw] pointer-events-none" aria-hidden>
-    <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,hsl(var(--primary)/0.18),transparent_60%)]" />
-    <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full opacity-25 motion-safe:animate-[spin_45s_linear_infinite]">
-      <g fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5">
-        <circle cx="200" cy="200" r="196" />
-        <circle cx="200" cy="200" r="150" />
-        <circle cx="200" cy="200" r="104" />
-        <circle cx="200" cy="200" r="58" />
-        {Array.from({ length: 8 }).map((_, k) => (
-          <ellipse key={k} cx="200" cy="200" rx={196} ry={196 - k * 24} />
-        ))}
-        {Array.from({ length: 12 }).map((_, k) => (
-          <line key={k} x1="200" y1="4" x2="200" y2="396" transform={`rotate(${k * 15} 200 200)`} />
-        ))}
-      </g>
-    </svg>
-  </div>
+      ))}
+    </div>
+    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/30">
+      {pipelineLegend.map(([n, label]) => (
+        <div key={n} className="text-center">
+          <p className="text-[10px] font-mono text-primary mb-0.5">{n}</p>
+          <p className="text-[11px] font-medium text-muted-foreground">{label}</p>
+        </div>
+      ))}
+    </div>
+  </motion.div>
 );
 
 const AIIntakeLawFirms = () => {
@@ -442,48 +432,46 @@ const AIIntakeLawFirms = () => {
       </header>
 
       {/* Hero */}
-      <section className="relative pt-28 pb-20 md:pt-36 md:pb-24 overflow-hidden">
-        <div className="absolute inset-0 gradient-hero opacity-60" />
-        <HeroSphere />
-        <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
-          <FadeIn>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-              <Phone className="w-3.5 h-3.5" /> AI intake for small professional-services firms
+      <section className="relative pt-28 pb-20 md:pt-32 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0 gradient-hero opacity-40" />
+        <div className="container mx-auto px-6 relative z-10 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <FadeIn>
+                <Eyebrow>Consult acquisition system</Eyebrow>
+              </FadeIn>
+              <FadeIn delay={0.05}>
+                <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(2rem,1rem+3.2vw,3.25rem)] mb-6">
+                  Fill your consult calendar with <span className="gradient-text">qualified local demand.</span>
+                </h1>
+              </FadeIn>
+              <FadeIn delay={0.1}>
+                <p className="text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed">
+                  We help professional services firms become the local market leader in their category by filling their calendar with qualified consults — so growth is not left to referrals.
+                </p>
+              </FadeIn>
+              <FadeIn delay={0.15}>
+                <div className="flex flex-wrap items-center gap-3 mb-10">
+                  <ScrollCTA target="fit" label="Get Started" big />
+                  <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all">
+                    <Play className="w-4 h-4 fill-current" /> See how it works
+                  </button>
+                </div>
+              </FadeIn>
+              <FadeIn delay={0.2}>
+                <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border/30">
+                  {heroChips.map(([n, label, desc]) => (
+                    <div key={n}>
+                      <p className="text-[10px] font-mono text-primary mb-1.5">{n}</p>
+                      <p className="text-sm font-semibold mb-0.5">{label}</p>
+                      <p className="text-xs text-muted-foreground leading-snug">{desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </FadeIn>
             </div>
-          </FadeIn>
-          <FadeIn delay={0.05}>
-            <h1 className="font-heading leading-[1.15] mb-6">
-              <span className="block font-medium tracking-normal text-[clamp(1.375rem,0.8rem+2.6vw,2.75rem)] text-foreground mb-0.5">
-                35% of calls go to voicemail.
-              </span>
-              <span className="gradient-text block font-bold tracking-tight text-[clamp(1.75rem,1rem+3.5vw,3.75rem)]">
-                80% never call back.
-              </span>
-            </h1>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
-              An AI voice employee that answers in two rings, qualifies the matter, and books the consult straight onto your calendar — nights, weekends, and while you're in court.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <ScrollCTA target="fit" label="Get Started" big />
-              <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all">
-                <Play className="w-4 h-4 fill-current" /> See how it works
-              </button>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.25}>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Live in 5 days</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Keep your existing number</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-accent" /> Two-rings guarantee</span>
-            </div>
-          </FadeIn>
-
-          {/* Floating live-call card over the rotating dome */}
-          <div className="relative z-10 mt-16 md:mt-20"><HeroCallCard /></div>
+            <FadeIn delay={0.25}><ConsultCalendarCard /></FadeIn>
+          </div>
         </div>
       </section>
 
