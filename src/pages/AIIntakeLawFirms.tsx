@@ -38,7 +38,7 @@ const ScrollCTA = ({ target, label, big = false, sub }: { target: string; label:
         big ? "px-8 py-4 text-lg md:text-xl" : "px-6 py-3 text-base"
       }`}
     >
-      <Calendar className={big ? "w-5 h-5" : "w-4 h-4"} /> {label}
+      <ArrowRight className={big ? "w-5 h-5" : "w-4 h-4"} /> {label}
     </button>
     {sub && <p className="text-xs text-muted-foreground text-center max-w-sm">{sub}</p>}
   </div>
@@ -468,9 +468,13 @@ const AIIntakeLawFirms = () => {
             </div>
           </FadeIn>
           <FadeIn delay={0.05}>
-            <h1 className="font-heading font-bold text-[clamp(2rem,1rem+3.4vw,3.5rem)] leading-[1.1] tracking-tight mb-6">
-              35% of calls go to voicemail.
-              <span className="gradient-text block">80% never call back.</span>
+            <h1 className="font-heading font-bold leading-[1.15] tracking-tight mb-6">
+              <span className="block text-[clamp(1rem,0.7rem+1.5vw,1.875rem)] text-foreground/75 mb-1.5">
+                35% of calls go to voicemail.
+              </span>
+              <span className="gradient-text block text-[clamp(1.75rem,1rem+3.5vw,3.75rem)]">
+                80% never call back.
+              </span>
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
