@@ -342,17 +342,17 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
 // ─── Hero: consult calendar pipeline card ──────────────────────────────────────
 const pipelineDays = ["MON", "TUE", "WED", "THU", "FRI"] as const;
 const pipelineBlocks = [
-  { day: 0, label: "Tax consult", top: 56, height: 41 },
-  { day: 1, label: "Estate plan", top: 3, height: 94 },
-  { day: 2, label: "Family law", top: 56, height: 41 },
-  { day: 3, label: "Trust review", top: 3, height: 94 },
-  { day: 4, label: "New intake", top: 56, height: 41 },
+  { day: 0, label: "Consult call", top: 56, height: 41 },
+  { day: 1, label: "Discovery call", top: 3, height: 94 },
+  { day: 2, label: "Intake call", top: 56, height: 41 },
+  { day: 3, label: "Strategy call", top: 3, height: 94 },
+  { day: 4, label: "Booked call", top: 56, height: 41 },
 ] as const;
 
 const pipelineLegend = [
-  ["01", "Meta demand"],
-  ["02", "AI filter"],
-  ["03", "Booked"],
+  ["01", "Call answered"],
+  ["02", "AI qualifies"],
+  ["03", "Consult booked"],
 ] as const;
 
 const ConsultCalendarCard = () => (
