@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // ─── Swap-in constants (update these before launch) ────────────────────────────
 const SLOTS_LEFT = 2;                                // must be literally true
+const SHOW_GUARANTEE = false;                        // flip to true to bring the guarantee section back
 const FOUNDING_CLOSE = "12 September";               // must be literally true
 const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 const CAL_NAMESPACE = "consultation";
@@ -188,9 +189,8 @@ const notFor = [
   ["Looking for the cheapest option.", "I'm not it, and we'd both regret it."],
 ];
 
-// ─── Lead capture form — fields copied from /contact ───────────────────────────
-const practiceAreas = ["Legal Practice", "Tax / Accounting", "Financial or Business Advisory", "Consulting", "Other Professional Services"];
-const firmSizes = ["Solo", "2-5 practitioners", "6-10 practitioners", "11-15 staff", "15+ staff"];
+// ─── Lead capture form — matches the Cal.com booking form field-for-field ──────
+const consultCapacities = ["1-5 consults/mo", "6-15 consults/mo", "16-30 consults/mo", "30+ consults/mo"];
 const leadCountries: { iso: string; flag: string; dial: string }[] = [
   { iso: "US", flag: "🇺🇸", dial: "+1" },
   { iso: "CA", flag: "🇨🇦", dial: "+1" },
@@ -198,16 +198,13 @@ const leadCountries: { iso: string; flag: string; dial: string }[] = [
   { iso: "AU", flag: "🇦🇺", dial: "+61" },
   { iso: "IN", flag: "🇮🇳", dial: "+91" },
 ];
-const MIN_BUDGET = 500; // temporary lower floor
 
 const LeadForm = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "", email: "", company: "", phone: "", phoneCountry: "US", industry: "", companySize: "", budget: "", challenge: "",
+    name: "", email: "", company: "", phone: "", phoneCountry: "US", website: "", consultCapacity: "", notes: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const budgetNum = Number(formData.budget);
-  const budgetError = formData.budget !== "" && budgetNum < MIN_BUDGET;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -215,10 +212,6 @@ const LeadForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.budget && budgetNum < MIN_BUDGET) {
-      toast({ title: "Budget too low", description: `Anything below $${MIN_BUDGET.toLocaleString()}/mo is not a fit yet.`, variant: "destructive" });
-      return;
-    }
     setSubmitting(true);
     track("lead_form_submit");
     try {
@@ -240,7 +233,7 @@ const LeadForm = () => {
       });
       if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
       toast({ title: "Request received!", description: "We'll respond within 24 hours to see if we're a fit." });
-      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "US", industry: "", companySize: "", budget: "", challenge: "" });
+      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "US", website: "", consultCapacity: "", notes: "" });
     } catch {
       toast({ title: "Submission failed", description: "Something went wrong. Please try again or email agency@figfalcon.com.", variant: "destructive" });
     } finally {
@@ -254,17 +247,22 @@ const LeadForm = () => {
       <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Full name <span className="text-destructive">*</span></label>
+          <label className="text-sm font-medium mb-1.5 block">Full Name <span className="text-destructive">*</span></label>
           <input name="name" value={formData.name} onChange={handleChange} required placeholder="Jordan Lee"
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Work email <span className="text-destructive">*</span></label>
+          <label className="text-sm font-medium mb-1.5 block">Email address <span className="text-destructive">*</span></label>
           <input name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="jordan@firm.com"
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Phone</label>
+          <label className="text-sm font-medium mb-1.5 block">Company Name <span className="text-destructive">*</span></label>
+          <input name="company" value={formData.company} onChange={handleChange} required placeholder="Lee & Associates"
+            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Phone number</label>
           <div className="flex gap-2">
             <select name="phoneCountry" value={formData.phoneCountry} onChange={handleChange} aria-label="Country code"
               className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[100px]">
@@ -275,40 +273,22 @@ const LeadForm = () => {
           </div>
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Firm name</label>
-          <input name="company" value={formData.company} onChange={handleChange} placeholder="Lee & Associates"
+          <label className="text-sm font-medium mb-1.5 block">Website <span className="text-destructive">*</span></label>
+          <input name="website" value={formData.website} onChange={handleChange} required placeholder="https://yourfirm.com"
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Practice type</label>
-            <select name="industry" value={formData.industry} onChange={handleChange}
-              className="w-full px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground">
-              <option value="">Select one</option>
-              {practiceAreas.map((p) => <option key={p} value={p}>{p}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-1.5 block">Firm size</label>
-            <select name="companySize" value={formData.companySize} onChange={handleChange}
-              className="w-full px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground">
-              <option value="">Select one</option>
-              {firmSizes.map((s) => <option key={s} value={s}>{s}</option>)}
-            </select>
-          </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Whats your monthly Consult capacity <span className="text-destructive">*</span></label>
+          <select name="consultCapacity" value={formData.consultCapacity} onChange={handleChange} required
+            className="w-full px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground">
+            <option value="">Select one</option>
+            {consultCapacities.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Monthly investment budget</label>
-          <input name="budget" type="number" inputMode="numeric" min={MIN_BUDGET} step={100} value={formData.budget} onChange={handleChange}
-            placeholder={`Minimum $${MIN_BUDGET.toLocaleString()}/mo`}
-            aria-invalid={budgetError ? true : undefined}
-            className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 transition-all text-sm ${budgetError ? "border-destructive focus:ring-destructive/50" : "border-border/40 focus:ring-primary/50"}`} />
-          {budgetError && <p className="mt-1.5 text-xs text-destructive">Anything below ${MIN_BUDGET.toLocaleString()}/mo isn't a fit yet.</p>}
-        </div>
-        <div>
-          <label className="text-sm font-medium mb-1.5 block">How many calls are you missing right now?</label>
-          <textarea name="challenge" value={formData.challenge} onChange={handleChange} rows={3}
-            placeholder="Example: roughly 10-15 calls a month go to voicemail after hours"
+          <label className="text-sm font-medium mb-1.5 block">Additional notes</label>
+          <textarea name="notes" value={formData.notes} onChange={handleChange} rows={3}
+            placeholder="Please share anything that will help prepare for our meeting."
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm resize-none" />
         </div>
         <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
@@ -447,7 +427,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 flex items-center justify-between py-3.5">
           <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
           <nav className="hidden lg:flex items-center gap-8">
-            {[["What you're losing", "numbers"], ["Hear it work", "listen"], ["How it works", "how"], ["Guarantee", "guarantee"]].map(([label, id]) => (
+            {[["What you're losing", "numbers"], ["Hear it work", "listen"], ["How it works", "how"], ...(SHOW_GUARANTEE ? [["Guarantee", "guarantee"]] : [])].map(([label, id]) => (
               <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
             ))}
           </nav>
@@ -657,29 +637,31 @@ const AIIntakeLawFirms = () => {
         </div>
       </section>
 
-      {/* Guarantee */}
-      <section id="guarantee" className="py-16 md:py-20 bg-secondary/10 scroll-mt-16">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <FadeIn>
-            <div className="glass-card p-8 md:p-10 border border-primary/30 ring-1 ring-primary/10 text-center">
-              <div className="flex justify-center mb-5">
-                <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center guarantee-glow">
-                  <ShieldCheck className="w-8 h-8 text-primary" />
+      {/* Guarantee — hidden for now, SHOW_GUARANTEE flag flips it back on */}
+      {SHOW_GUARANTEE && (
+        <section id="guarantee" className="py-16 md:py-20 bg-secondary/10 scroll-mt-16">
+          <div className="container mx-auto px-6 max-w-3xl">
+            <FadeIn>
+              <div className="glass-card p-8 md:p-10 border border-primary/30 ring-1 ring-primary/10 text-center">
+                <div className="flex justify-center mb-5">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center guarantee-glow">
+                    <ShieldCheck className="w-8 h-8 text-primary" />
+                  </div>
                 </div>
+                <div className="text-xs uppercase tracking-widest text-primary mb-3">Our Guarantee</div>
+                <h2 className="font-heading font-bold text-2xl md:text-4xl leading-tight mb-5">
+                  <span className="block md:whitespace-nowrap">Every Call Answered in Two Rings.</span>
+                  <span className="gradient-text block md:whitespace-nowrap">Miss One, and That Month Is Free.</span>
+                </h2>
+                <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-5">
+                  24 hours a day, with a full transcript of every call. We measure it from our own call logs — so the promise is on us, not on your demand.
+                </p>
+                <p className="text-sm font-semibold text-foreground">No answering service offers this. Because most cannot back it up.</p>
               </div>
-              <div className="text-xs uppercase tracking-widest text-primary mb-3">Our Guarantee</div>
-              <h2 className="font-heading font-bold text-2xl md:text-4xl leading-tight mb-5">
-                <span className="block md:whitespace-nowrap">Every Call Answered in Two Rings.</span>
-                <span className="gradient-text block md:whitespace-nowrap">Miss One, and That Month Is Free.</span>
-              </h2>
-              <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto mb-5">
-                24 hours a day, with a full transcript of every call. We measure it from our own call logs — so the promise is on us, not on your demand.
-              </p>
-              <p className="text-sm font-semibold text-foreground">No answering service offers this. Because most cannot back it up.</p>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+            </FadeIn>
+          </div>
+        </section>
+      )}
 
       {/* Objections */}
       <section id="faq" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
