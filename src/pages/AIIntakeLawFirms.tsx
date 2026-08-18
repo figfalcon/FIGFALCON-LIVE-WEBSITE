@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
+import { useToast } from "@/hooks/use-toast";
 
 // ─── Swap-in constants (update these before launch) ────────────────────────────
 const DEMO_NUMBER = "+1 (555) 000-0000";           // TODO: replace with live Retell AI demo line
@@ -190,6 +191,145 @@ const notFor = [
   ["Looking for the cheapest option.", "I'm not it, and we'd both regret it."],
 ];
 
+// ─── Who this is built for — the four sub-niches ───────────────────────────────
+const niches = [
+  ["Personal Injury", "Auto accident, slip & fall, product liability — the accident just happened and the caller is dialing three other firms this hour."],
+  ["Family Law", "Divorce, custody, support — crisis calls that hit nights and weekends, exactly when the front desk is closed."],
+  ["Estate Planning", "Wills, trusts, probate — deadline-boxed after a death or life event, and referrals alone can't keep the calendar full."],
+  ["Tax Advisory", "IRS notices, liens, audit response — panicked callers who'll dial a national tax-relief mill if your line doesn't pick up first."],
+] as const;
+
+// ─── Lead capture form — fields copied from /contact, practice area swapped to ICP ──
+const practiceAreas = ["Personal Injury", "Family Law", "Estate Planning", "Tax Advisory / Resolution", "Other Legal or Tax Practice"];
+const firmSizes = ["Solo", "2-5 attorneys", "6-10 attorneys", "11-15 staff", "15+ staff"];
+const leadCountries: { iso: string; flag: string; dial: string }[] = [
+  { iso: "US", flag: "🇺🇸", dial: "+1" },
+  { iso: "CA", flag: "🇨🇦", dial: "+1" },
+  { iso: "GB", flag: "🇬🇧", dial: "+44" },
+  { iso: "AU", flag: "🇦🇺", dial: "+61" },
+  { iso: "IN", flag: "🇮🇳", dial: "+91" },
+];
+const MIN_BUDGET = 900; // first-client retainer floor, per Offer Sheet
+
+const LeadForm = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "", email: "", company: "", phone: "", phoneCountry: "US", industry: "", companySize: "", budget: "", challenge: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const budgetNum = Number(formData.budget);
+  const budgetError = formData.budget !== "" && budgetNum < MIN_BUDGET;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.budget && budgetNum < MIN_BUDGET) {
+      toast({ title: "Budget too low", description: `Anything below $${MIN_BUDGET.toLocaleString()}/mo is not a fit yet.`, variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    track("lead_form_submit");
+    try {
+      const country = leadCountries.find((c) => c.iso === formData.phoneCountry);
+      const dial = country?.dial ?? "";
+      const fullPhone = formData.phone ? `${dial} ${formData.phone}`.trim() : "";
+      const res = await fetch("https://n8n-with-ai-assistant-q76o.srv1883884.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          phone: fullPhone,
+          phoneCountryIso: formData.phoneCountry,
+          phoneDialCode: dial,
+          phoneLocal: formData.phone,
+          submittedAt: new Date().toISOString(),
+          source: "figfalcon.com/ai-intake-law-firms",
+        }),
+      });
+      if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
+      toast({ title: "Request received!", description: "We'll respond within 24 hours to see if we're a fit." });
+      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "US", industry: "", companySize: "", budget: "", challenge: "" });
+    } catch {
+      toast({ title: "Submission failed", description: "Something went wrong. Please try again or email agency@figfalcon.com.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="glass-card p-6 md:p-8">
+      <h3 className="font-heading font-semibold text-xl mb-1">Request a fit call</h3>
+      <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond to practices that match our focus niches and capacity model.</p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Full name <span className="text-destructive">*</span></label>
+          <input name="name" value={formData.name} onChange={handleChange} required placeholder="Jordan Lee"
+            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Work email <span className="text-destructive">*</span></label>
+          <input name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="jordan@firm.com"
+            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Phone</label>
+          <div className="flex gap-2">
+            <select name="phoneCountry" value={formData.phoneCountry} onChange={handleChange} aria-label="Country code"
+              className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[100px]">
+              {leadCountries.map((c) => <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>)}
+            </select>
+            <input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="(305) 555-0142"
+              className="flex-1 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+          </div>
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Firm name</label>
+          <input name="company" value={formData.company} onChange={handleChange} placeholder="Lee & Associates"
+            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm" />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Practice type</label>
+            <select name="industry" value={formData.industry} onChange={handleChange}
+              className="w-full px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground">
+              <option value="">Select one</option>
+              {practiceAreas.map((p) => <option key={p} value={p}>{p}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1.5 block">Firm size</label>
+            <select name="companySize" value={formData.companySize} onChange={handleChange}
+              className="w-full px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground">
+              <option value="">Select one</option>
+              {firmSizes.map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">Monthly ad spend capacity</label>
+          <input name="budget" type="number" inputMode="numeric" min={MIN_BUDGET} step={100} value={formData.budget} onChange={handleChange}
+            placeholder={`Minimum $${MIN_BUDGET.toLocaleString()}/mo`}
+            aria-invalid={budgetError ? true : undefined}
+            className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 transition-all text-sm ${budgetError ? "border-destructive focus:ring-destructive/50" : "border-border/40 focus:ring-primary/50"}`} />
+          {budgetError && <p className="mt-1.5 text-xs text-destructive">Anything below ${MIN_BUDGET.toLocaleString()}/mo isn't a fit yet.</p>}
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1.5 block">What does a full consult calendar look like for you?</label>
+          <textarea name="challenge" value={formData.challenge} onChange={handleChange} rows={3}
+            placeholder="Example: 8-12 estate planning consults per month in Miami-Dade"
+            className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm resize-none" />
+        </div>
+        <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
+          {submitting ? "Sending..." : "Get Started"}
+        </button>
+      </form>
+    </div>
+  );
+};
+
 // ─── Media placeholders ────────────────────────────────────────────────────────
 const AudioPlaceholder = ({ title, len, desc }: { title: string; len: string; desc: string }) => (
   <div className="glass-card p-6 h-full">
@@ -322,9 +462,14 @@ const AIIntakeLawFirms = () => {
               <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
             ))}
           </nav>
-          <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30 shrink-0">
-            <Phone className="w-4 h-4" /> Call the demo
-          </a>
+          <div className="flex items-center gap-3 shrink-0">
+            <button onClick={() => document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" })} className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full border border-primary/40 text-primary hover:bg-primary/10 transition-all">
+              Get Started
+            </button>
+            <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30">
+              <Phone className="w-4 h-4" /> Call the demo
+            </a>
+          </div>
         </div>
       </header>
 
@@ -335,7 +480,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-              <Phone className="w-3.5 h-3.5" /> AI intake line for US law firms
+              <Phone className="w-3.5 h-3.5" /> AI intake + booked consults for US law &amp; tax firms
             </div>
           </FadeIn>
           {/* Option A default. B/C for A-B testing:
@@ -348,9 +493,16 @@ const AIIntakeLawFirms = () => {
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
-              An AI intake line that answers in two rings, runs your conflict questions, qualifies the matter, and books the consult — nights, weekends, and while you're in court.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
+              Small firms lose clients two ways — calls that slip to voicemail, and referral pipelines that go quiet. Our AI intake line answers in two rings, qualifies the matter, and books the consult; our content, outreach and ads keep the calendar full when referrals dry up.
             </p>
+          </FadeIn>
+          <FadeIn delay={0.12}>
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-9">
+              {niches.map(([name]) => (
+                <span key={name} className="text-xs font-semibold px-3 py-1.5 rounded-full border border-border/50 bg-secondary/30 text-foreground/80">{name}</span>
+              ))}
+            </div>
           </FadeIn>
           <FadeIn delay={0.15}>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -391,8 +543,45 @@ const AIIntakeLawFirms = () => {
         </div>
       </section>
 
+      {/* Fit call — split layout: offer recap left, lead form right */}
+      <section id="fit" className="py-20 md:py-24 scroll-mt-16">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+            <FadeIn>
+              <Eyebrow>Next step</Eyebrow>
+              <h2 className="font-heading font-bold text-3xl md:text-5xl leading-[1.1] mb-5">
+                See if we can fill your <span className="gradient-text">consult calendar.</span>
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
+                Best fit: solo to ~10 attorney firms in personal injury, family law, estate planning, or tax advisory — with budget to run real media on top of the engagement, typically $1,000+/mo in ad spend.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  "Primary metric: booked, qualified consults",
+                  "Built for owner-operated firms in TX, FL, GA, AZ",
+                  "Clear KPIs — booked consults, show-up rate, cost per consult — before any kickoff",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5 text-sm">
+                    <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /><span className="text-foreground/90">{t}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {niches.map(([name, desc]) => (
+                  <div key={name} className="glass-card p-4">
+                    <p className="font-heading font-semibold text-sm mb-1">{name}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.1}><LeadForm /></FadeIn>
+          </div>
+        </div>
+      </section>
+
       {/* Calculator */}
-      <section className="py-20 md:py-24">
+      <section className="py-20 md:py-24 bg-secondary/10">
         <div className="container mx-auto px-6">
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto mb-10">
