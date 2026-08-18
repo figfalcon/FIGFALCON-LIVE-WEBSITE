@@ -350,9 +350,9 @@ const pipelineBlocks = [
 ] as const;
 
 const pipelineLegend = [
-  ["01", "Call answered"],
-  ["02", "AI qualifies"],
-  ["03", "Consult booked"],
+  ["1000+", "Call answered"],
+  ["800+", "AI qualifies"],
+  ["300+", "Consult booked"],
 ] as const;
 
 const ConsultCalendarCard = () => (
@@ -362,8 +362,8 @@ const ConsultCalendarCard = () => (
     style={{ background: "var(--gradient-card)" }}
   >
     <div className="flex items-center justify-between mb-6">
-      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live pipeline</span>
-      <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full bg-primary/15 text-primary border border-primary/30">
+      <span className="text-xs font-bold uppercase tracking-widest text-accent">Live pipeline</span>
+      <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full bg-accent/15 text-accent border border-accent/30">
         Qualified
       </span>
     </div>
@@ -383,8 +383,8 @@ const ConsultCalendarCard = () => (
     <div className="grid grid-cols-3 gap-2 pt-6 border-t border-white/5">
       {pipelineLegend.map(([n, label]) => (
         <div key={n} className="text-center">
-          <p className="text-xs font-mono text-primary mb-1">{n}</p>
-          <p className="text-sm font-medium text-muted-foreground">{label}</p>
+          <p className="font-heading font-bold text-lg text-primary mb-1">{n}</p>
+          <p className="text-xs font-medium text-muted-foreground leading-snug">{label}</p>
         </div>
       ))}
     </div>
