@@ -198,7 +198,7 @@ const leadCountries: { iso: string; flag: string; dial: string }[] = [
   { iso: "AU", flag: "🇦🇺", dial: "+61" },
   { iso: "IN", flag: "🇮🇳", dial: "+91" },
 ];
-const MIN_BUDGET = 900; // first-client retainer floor, per Offer Sheet
+const MIN_BUDGET = 500; // temporary lower floor
 
 const LeadForm = () => {
   const { toast } = useToast();
