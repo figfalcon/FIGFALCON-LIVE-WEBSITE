@@ -340,19 +340,13 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
 };
 
 // ─── Hero: consult calendar pipeline card ──────────────────────────────────────
-const heroChips = [
-  ["01", "Estate planning", "Wills, trusts & directives"],
-  ["02", "Family law", "Divorce, custody, support"],
-  ["03", "Tax advisory", "EAs, CPAs & small firms"],
-] as const;
-
 const pipelineDays = ["MON", "TUE", "WED", "THU", "FRI"] as const;
 const pipelineBlocks = [
-  { day: 0, label: "Tax consult", top: 42, height: 46 },
-  { day: 1, label: "Estate plan", top: 8, height: 62 },
-  { day: 2, label: "Family law", top: 30, height: 50 },
-  { day: 3, label: "Trust review", top: 4, height: 66 },
-  { day: 4, label: "New intake", top: 22, height: 52 },
+  { day: 0, label: "Tax consult", top: 56, height: 41 },
+  { day: 1, label: "Estate plan", top: 3, height: 94 },
+  { day: 2, label: "Family law", top: 56, height: 41 },
+  { day: 3, label: "Trust review", top: 3, height: 94 },
+  { day: 4, label: "New intake", top: 56, height: 41 },
 ] as const;
 
 const pipelineLegend = [
@@ -362,31 +356,35 @@ const pipelineLegend = [
 ] as const;
 
 const ConsultCalendarCard = () => (
-  <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }} className="glass-card p-5 md:p-6 border border-border/50 shadow-2xl shadow-primary/5">
-    <div className="flex items-center justify-between mb-5">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Live pipeline</span>
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/30">
-        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" /> Qualified
+  <motion.div
+    initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+    className="rounded-3xl border border-white/5 p-7 md:p-9 shadow-2xl shadow-primary/15 aspect-square flex flex-col"
+    style={{ background: "var(--gradient-card)" }}
+  >
+    <div className="flex items-center justify-between mb-6">
+      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Live pipeline</span>
+      <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full bg-primary/15 text-primary border border-primary/30">
+        Qualified
       </span>
     </div>
-    <h3 className="font-heading font-semibold text-lg mb-4">Consult calendar</h3>
-    <div className="grid grid-cols-5 gap-2 mb-4">
+    <h3 className="font-heading font-semibold text-2xl mb-6">Consult calendar</h3>
+    <div className="grid grid-cols-5 gap-2.5 mb-6 flex-1">
       {pipelineDays.map((d, i) => (
-        <div key={d} className="relative h-32 rounded-lg bg-secondary/30 border border-border/30 overflow-hidden">
-          <span className="absolute top-1.5 left-1/2 -translate-x-1/2 text-[9px] font-bold uppercase tracking-wider text-muted-foreground/70">{d}</span>
+        <div key={d} className="relative rounded-lg bg-white/[0.03] border border-white/5 overflow-hidden">
+          <span className="absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">{d}</span>
           {pipelineBlocks.filter((b) => b.day === i).map((b) => (
-            <div key={b.label} className="absolute inset-x-1 rounded-md p-1.5 flex items-end shadow-md shadow-primary/20" style={{ top: `${b.top}%`, height: `${b.height}%`, background: "var(--gradient-primary)" }}>
-              <span className="text-[9px] font-semibold text-white leading-tight">{b.label}</span>
+            <div key={b.label} className="absolute inset-x-1.5 rounded-md p-2 flex items-end shadow-md shadow-primary/20" style={{ top: `${b.top}%`, height: `${b.height}%`, background: "var(--gradient-primary)" }}>
+              <span className="text-[10px] font-semibold text-white leading-tight">{b.label}</span>
             </div>
           ))}
         </div>
       ))}
     </div>
-    <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/30">
+    <div className="grid grid-cols-3 gap-2 pt-6 border-t border-white/5">
       {pipelineLegend.map(([n, label]) => (
         <div key={n} className="text-center">
-          <p className="text-[10px] font-mono text-primary mb-0.5">{n}</p>
-          <p className="text-[11px] font-medium text-muted-foreground">{label}</p>
+          <p className="text-xs font-mono text-primary mb-1">{n}</p>
+          <p className="text-sm font-medium text-muted-foreground">{label}</p>
         </div>
       ))}
     </div>
@@ -451,22 +449,11 @@ const AIIntakeLawFirms = () => {
                 </p>
               </FadeIn>
               <FadeIn delay={0.15}>
-                <div className="flex flex-wrap items-center gap-3 mb-10">
+                <div className="flex flex-wrap items-center gap-3">
                   <ScrollCTA target="fit" label="Get Started" big />
                   <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all">
                     <Play className="w-4 h-4 fill-current" /> See how it works
                   </button>
-                </div>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <div className="grid grid-cols-3 gap-4 pt-8 border-t border-border/30">
-                  {heroChips.map(([n, label, desc]) => (
-                    <div key={n}>
-                      <p className="text-[10px] font-mono text-primary mb-1.5">{n}</p>
-                      <p className="text-sm font-semibold mb-0.5">{label}</p>
-                      <p className="text-xs text-muted-foreground leading-snug">{desc}</p>
-                    </div>
-                  ))}
                 </div>
               </FadeIn>
             </div>
