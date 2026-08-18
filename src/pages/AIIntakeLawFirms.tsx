@@ -487,24 +487,8 @@ const AIIntakeLawFirms = () => {
         </div>
       </section>
 
-      {/* Listen + watch — merged proof section */}
-      <section id="listen" className="py-20 md:py-24 bg-secondary/10 scroll-mt-16">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-10">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
-          <FadeIn delay={0.1}>
-            <div className="aspect-video rounded-2xl border border-border/50 bg-secondary/20 flex flex-col items-center justify-center gap-3">
-              <span className="w-16 h-16 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-7 h-7 text-primary fill-primary ml-1" /></span>
-              <p className="text-sm text-muted-foreground">60-second call recording — drop video here</p>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <h3 className="font-heading font-bold text-2xl md:text-3xl text-center leading-[1.1] mt-14">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h3>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* What it does — bento */}
-      <section className="py-20 md:py-24 bg-secondary/10">
+      <section className="py-20 md:py-24">
         <div className="container mx-auto px-6 max-w-5xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-14">What it <span className="gradient-text">actually does.</span></h2></FadeIn>
           <div className="grid md:grid-cols-3 gap-4 auto-rows-fr">
@@ -518,6 +502,22 @@ const AIIntakeLawFirms = () => {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Listen + watch — merged proof section */}
+      <section id="listen" className="py-20 md:py-24 scroll-mt-16">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-4">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
+          <FadeIn delay={0.05}>
+            <h3 className="font-heading font-bold text-2xl md:text-3xl text-center leading-[1.1] mb-10">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h3>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="aspect-video rounded-2xl border border-border/50 bg-secondary/20 flex flex-col items-center justify-center gap-3">
+              <span className="w-16 h-16 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><Play className="w-7 h-7 text-primary fill-primary ml-1" /></span>
+              <p className="text-sm text-muted-foreground">60-second call recording — drop video here</p>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
