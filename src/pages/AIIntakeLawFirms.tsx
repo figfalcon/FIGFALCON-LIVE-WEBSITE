@@ -10,8 +10,6 @@ import logo from "@/assets/figfalcon-logo.png";
 import { useToast } from "@/hooks/use-toast";
 
 // ─── Swap-in constants (update these before launch) ────────────────────────────
-const DEMO_NUMBER = "+1 (555) 000-0000";           // TODO: replace with live Retell AI demo line
-const DEMO_TEL = "+15550000000";                    // tel: form, digits only
 const SLOTS_LEFT = 2;                                // must be literally true
 const FOUNDING_CLOSE = "12 September";               // must be literally true
 const CAL_LINK = "figfalcon/figfalcon-strategy-call";
@@ -31,18 +29,17 @@ const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   <p className="text-xs font-bold uppercase tracking-[0.3em] text-primary mb-4">{children}</p>
 );
 
-// Phone CTA — tel link, brand primary
-const PhoneCTA = ({ big = false, sub }: { big?: boolean; sub?: string }) => (
+// Scroll CTA — jumps to the lead form or the booking calendar, brand primary
+const ScrollCTA = ({ target, label, big = false, sub }: { target: string; label: string; big?: boolean; sub?: string }) => (
   <div className="flex flex-col items-center gap-2">
-    <a
-      href={`tel:${DEMO_TEL}`}
-      onClick={() => track("demo_call_click")}
+    <button
+      onClick={() => { track(`cta_click_${target}`); document.getElementById(target)?.scrollIntoView({ behavior: "smooth" }); }}
       className={`inline-flex items-center gap-2.5 font-bold rounded-full bg-primary text-white hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 ${
         big ? "px-8 py-4 text-lg md:text-xl" : "px-6 py-3 text-base"
       }`}
     >
-      <Phone className={big ? "w-5 h-5" : "w-4 h-4"} /> {DEMO_NUMBER}
-    </a>
+      <Calendar className={big ? "w-5 h-5" : "w-4 h-4"} /> {label}
+    </button>
     {sub && <p className="text-xs text-muted-foreground text-center max-w-sm">{sub}</p>}
   </div>
 );
@@ -119,7 +116,7 @@ const LossCalculator = () => {
         <p className="text-sm text-muted-foreground mb-2">You are losing approximately</p>
         <p className="font-heading font-bold gradient-text text-5xl md:text-7xl mb-2">${shown.toLocaleString()}<span className="text-2xl text-muted-foreground"> / year</span></p>
         <p className="text-sm text-muted-foreground mb-8">to calls that nobody answers.</p>
-        <PhoneCTA sub="Hear what your callers get instead." />
+        <ScrollCTA target="fit" label="See if we're a fit" sub="Takes two minutes." />
       </div>
     </div>
   );
@@ -175,13 +172,13 @@ const bonuses = [
 
 const objections: [string, React.ReactNode][] = [
   ["\"We already use an answering service.\"", "Then you're paying every month for someone to take a message and hang up. Mine asks your conflict questions, qualifies the matter, and books the consult into your calendar while the caller is still on the line. Send me what you pay now and I'll tell you honestly whether switching is worth it."],
-  ["\"Can AI really handle legal intake?\"", <>Call it and decide for yourself: <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="text-primary underline">{DEMO_NUMBER}</a>. It does not give legal advice and it does not pretend to be a lawyer. It captures who, what, when and where, and books the consult — the same job your front desk does on its best day.</>],
+  ["\"Can AI really handle legal intake?\"", "Yes — and it stays inside its lane. It does not give legal advice and it does not pretend to be a lawyer. It captures who, what, when and where, and books the consult — the same job your front desk does on its best day. Listen to the clips above and judge for yourself."],
   ["\"Is this confidential?\"", "The agent collects contact details and matter type. That's the same information a receptionist writes on a message pad. It gives no legal advice and forms no attorney-client relationship. The transcripts are yours, and I delete them on request."],
   ["\"What happens when it can't answer something?\"", "It says so, and either transfers to whoever you nominate or takes a message and texts you within sixty seconds. It never guesses. Listen to the conflict-check clip above — that's the behaviour, recorded."],
   ["\"What if my clients hate talking to a machine?\"", "Any caller can say \"representative\" at any point and be transferred. And the honest comparison isn't AI versus your paralegal. It's AI versus the voicemail they're getting right now at 6pm on a Friday."],
   ["\"Do I have to change my phone number?\"", "No. We forward your existing line, or give you a tracking number that rings straight through to your office. Your cards, your letterhead and your Google listing stay exactly as they are."],
   ["\"How fast can this be live?\"", "Five business days from the day you say go."],
-  ["\"What does it cost?\"", <>It depends on how many calls your firm actually takes — I don't sell a one-size package. Call the demo number first. If you like what you hear, book fifteen minutes and I'll quote you on your real volume.</>],
+  ["\"What does it cost?\"", "It depends on how many calls your firm actually takes — I don't sell a one-size package. Book fifteen minutes below and I'll quote you on your real volume."],
 ];
 
 const notFor = [
@@ -254,7 +251,7 @@ const LeadForm = () => {
   return (
     <div className="glass-card p-6 md:p-8">
       <h3 className="font-heading font-semibold text-xl mb-1">Request a fit call</h3>
-      <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond to practices that match our focus niches and capacity model.</p>
+      <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="text-sm font-medium mb-1.5 block">Full name <span className="text-destructive">*</span></label>
@@ -301,7 +298,7 @@ const LeadForm = () => {
           </div>
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">Monthly ad spend capacity</label>
+          <label className="text-sm font-medium mb-1.5 block">Monthly investment budget</label>
           <input name="budget" type="number" inputMode="numeric" min={MIN_BUDGET} step={100} value={formData.budget} onChange={handleChange}
             placeholder={`Minimum $${MIN_BUDGET.toLocaleString()}/mo`}
             aria-invalid={budgetError ? true : undefined}
@@ -309,9 +306,9 @@ const LeadForm = () => {
           {budgetError && <p className="mt-1.5 text-xs text-destructive">Anything below ${MIN_BUDGET.toLocaleString()}/mo isn't a fit yet.</p>}
         </div>
         <div>
-          <label className="text-sm font-medium mb-1.5 block">What does a full consult calendar look like for you?</label>
+          <label className="text-sm font-medium mb-1.5 block">How many calls are you missing right now?</label>
           <textarea name="challenge" value={formData.challenge} onChange={handleChange} rows={3}
-            placeholder="Example: 8-12 estate planning consults per month in Miami-Dade"
+            placeholder="Example: roughly 10-15 calls a month go to voicemail after hours"
             className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm resize-none" />
         </div>
         <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
@@ -360,7 +357,7 @@ const ObjRow = ({ q, a }: { q: string; a: React.ReactNode }) => {
 
 // ─── Hero: glowing sphere + floating live-call card ────────────────────────────
 const heroPrompts = [
-  { icon: Phone, label: "Test a call", line: "\"I was in a car accident yesterday and I'm not sure what to do…\"" },
+  { icon: Phone, label: "Incoming call", line: "\"I was in a car accident yesterday and I'm not sure what to do…\"" },
   { icon: Calendar, label: "Book a consult", line: "\"Can I see the attorney Tuesday at 2pm?\"" },
   { icon: ShieldCheck, label: "Conflict check", line: "\"The other driver was James Bennett.\"" },
 ];
@@ -394,9 +391,9 @@ const HeroCallCard = () => {
             </span>
           ))}
         </div>
-        <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="flex items-center justify-center gap-2 w-full bg-primary text-white font-bold rounded-xl py-3 hover:opacity-90 active:scale-[0.98] transition-all">
-          <Phone className="w-4 h-4" /> Call it now — {DEMO_NUMBER}
-        </a>
+        <button onClick={() => { track("cta_click_fit"); document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" }); }} className="flex items-center justify-center gap-2 w-full bg-primary text-white font-bold rounded-xl py-3 hover:opacity-90 active:scale-[0.98] transition-all">
+          <ArrowRight className="w-4 h-4" /> Get this for your firm
+        </button>
       </motion.div>
     </motion.div>
   );
@@ -445,7 +442,7 @@ const AIIntakeLawFirms = () => {
         .guarantee-glow { animation: guarantee-pulse 2.5s ease-in-out infinite; }
       `}</style>
 
-      {/* Nav — anchor links + phone */}
+      {/* Nav — anchor links + get started */}
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled ? "bg-background/85 backdrop-blur-xl border-b border-border/40" : ""}`}>
         <div className="container mx-auto px-6 flex items-center justify-between py-3.5">
           <Link to="/" className="flex items-center gap-2 shrink-0"><img src={logo} alt="Figfalcon" className="h-6 md:h-7" /></Link>
@@ -454,14 +451,9 @@ const AIIntakeLawFirms = () => {
               <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</button>
             ))}
           </nav>
-          <div className="flex items-center gap-3 shrink-0">
-            <button onClick={() => document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" })} className="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-full border border-primary/40 text-primary hover:bg-primary/10 transition-all">
-              Get Started
-            </button>
-            <a href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30">
-              <Phone className="w-4 h-4" /> Call the demo
-            </a>
-          </div>
+          <button onClick={() => { track("cta_click_fit"); document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" }); }} className="inline-flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-full bg-primary text-white hover:opacity-90 transition-all shadow-lg shadow-primary/30 shrink-0">
+            Get Started
+          </button>
         </div>
       </header>
 
@@ -475,28 +467,24 @@ const AIIntakeLawFirms = () => {
               <Phone className="w-3.5 h-3.5" /> AI intake for small professional-services firms
             </div>
           </FadeIn>
-          {/* Option A default. B/C for A-B testing:
-             B: "You paid $300 for that click." / "Then nobody picked up."
-             C: "The first attorney who answers signs the case 70% of the time." / "Right now, that isn't you." */}
           <FadeIn delay={0.05}>
-            <h1 className="font-heading font-bold text-[clamp(2.2rem,1rem+4.5vw,4rem)] leading-[1.05] tracking-tight mb-6">
-              35% of calls to your firm go to voicemail.
-              <span className="gradient-text block">80% of those callers never call back.</span>
+            <h1 className="font-heading font-bold text-[clamp(2rem,1rem+3.4vw,3.5rem)] leading-[1.1] tracking-tight mb-6">
+              35% of calls go to voicemail.
+              <span className="gradient-text block">80% never call back.</span>
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
-              Small professional-services firms lose clients two ways — calls that slip to voicemail, and referral pipelines that go quiet. Our AI intake line answers in two rings, qualifies the matter, and books the consult; our content, outreach and ads keep the calendar full when referrals dry up.
+              An AI voice employee that answers in two rings, qualifies the matter, and books the consult straight onto your calendar — nights, weekends, and while you're in court.
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <PhoneCTA big />
+              <ScrollCTA target="fit" label="Get Started" big />
               <button onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })} className="inline-flex items-center gap-2 font-bold rounded-full border border-border/60 bg-secondary/30 text-foreground px-8 py-4 text-base hover:bg-secondary/50 active:scale-95 transition-all">
                 <Play className="w-4 h-4 fill-current" /> See how it works
               </button>
             </div>
-            <p className="text-xs text-muted-foreground mt-3">Ask it about a car accident case. Try to book a consult.</p>
           </FadeIn>
           <FadeIn delay={0.25}>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-xs text-muted-foreground">
@@ -538,7 +526,7 @@ const AIIntakeLawFirms = () => {
                 See if we can fill your <span className="gradient-text">consult calendar.</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
-                Best fit: solo to ~15-practitioner professional-services firms with budget to run real media on top of the engagement, typically $1,000+/mo in ad spend.
+                Best fit: solo to ~15-practitioner professional-services firms who want every call answered and booked, without hiring a receptionist.
               </p>
               <ul className="space-y-3">
                 {[
@@ -628,12 +616,6 @@ const AIIntakeLawFirms = () => {
               </FadeIn>
             ))}
           </div>
-          <FadeIn delay={0.2}>
-            <div className="glass-card p-6 border border-primary/20 max-w-3xl mx-auto text-center">
-              <p className="font-heading font-semibold mb-1">You keep your existing phone number.</p>
-              <p className="text-sm text-muted-foreground">We either forward your line to the AI, or give you a tracking number that rings straight through to your office. Your letterhead, your business cards and your Google listing never change.</p>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
@@ -730,11 +712,8 @@ const AIIntakeLawFirms = () => {
       <section className="py-24 bg-secondary/20 border-t border-border/40">
         <div className="container mx-auto px-6 max-w-3xl text-center">
           <FadeIn>
-            <h2 className="font-heading font-bold text-4xl md:text-5xl mb-8">Stop reading. <span className="gradient-text">Call it.</span></h2>
-            <PhoneCTA big sub="It takes ninety seconds and you'll know immediately whether this is worth fifteen minutes of your time." />
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <div className="mt-4 mb-10"><button onClick={() => document.getElementById("book")?.scrollIntoView({ behavior: "smooth" })} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Or book the fifteen minutes →</button></div>
+            <h2 className="font-heading font-bold text-4xl md:text-5xl mb-4">Stop reading. <span className="gradient-text">Book it.</span></h2>
+            <p className="text-muted-foreground max-w-md mx-auto mb-10">Fifteen minutes and you'll know immediately whether this is worth doing.</p>
           </FadeIn>
         </div>
         <div id="book" className="container mx-auto px-6 max-w-4xl scroll-mt-20">
@@ -752,16 +731,16 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 flex items-center justify-center"><img src={logo} alt="Figfalcon" className="h-6 opacity-70" /></div>
       </footer>
 
-      {/* Sticky mobile call bar */}
+      {/* Sticky mobile CTA bar */}
       <AnimatePresence>
         {showBar && (
-          <motion.a
-            href={`tel:${DEMO_TEL}`} onClick={() => track("demo_call_click")}
+          <motion.button
+            onClick={() => { track("cta_click_fit"); document.getElementById("fit")?.scrollIntoView({ behavior: "smooth" }); }}
             initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }}
             className="md:hidden fixed bottom-0 inset-x-0 z-50 flex items-center justify-center gap-2 bg-primary text-white font-bold py-4 shadow-2xl"
           >
-            <Phone className="w-5 h-5" /> Call the demo
-          </motion.a>
+            Get Started
+          </motion.button>
         )}
       </AnimatePresence>
     </div>
