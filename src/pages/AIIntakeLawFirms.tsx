@@ -446,7 +446,7 @@ const AIIntakeLawFirms = () => {
       {/* Fit call — split layout: offer recap left, lead form right */}
       <section id="fit" className="py-20 md:py-24 scroll-mt-16">
         <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-12 items-start">
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-20 items-start">
             <FadeIn className="lg:col-span-2">
               <Eyebrow>Next step</Eyebrow>
               <h2 className="font-heading font-bold text-3xl md:text-5xl leading-[1.1] mb-5">
@@ -477,10 +477,10 @@ const AIIntakeLawFirms = () => {
       <section className="py-20 md:py-24 bg-secondary/10">
         <div className="container mx-auto px-6">
           <FadeIn>
-            <div className="text-center max-w-2xl mx-auto mb-10">
+            <div className="text-center mb-10">
               <Eyebrow>The loss calculator</Eyebrow>
-              <h2 className="font-heading font-bold text-3xl md:text-5xl leading-[1.1] mb-4">What is your phone <span className="gradient-text">costing you?</span></h2>
-              <p className="text-muted-foreground">Drag these to your real numbers. The maths is the industry average for firms your size — the loss is yours.</p>
+              <h2 className="font-heading font-bold whitespace-nowrap text-[clamp(1.5rem,1rem+2.8vw,3rem)] leading-[1.1] mb-4">What is your phone <span className="gradient-text">costing you?</span></h2>
+              <p className="text-muted-foreground max-w-lg mx-auto">Drag these to your real numbers. The maths is the industry average for firms your size — the loss is yours.</p>
             </div>
           </FadeIn>
           <FadeIn delay={0.1}><LossCalculator /></FadeIn>
@@ -510,7 +510,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 max-w-4xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-4">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
           <FadeIn delay={0.05}>
-            <h3 className="font-heading font-bold text-2xl md:text-3xl text-center leading-[1.1] mb-10">Don't take my word for it. <span className="gradient-text">Listen to it work.</span></h3>
+            <p className="text-center text-base md:text-lg text-white mb-10">Don't take my word for it. Listen to it work.</p>
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="aspect-video rounded-2xl border border-border/50 bg-secondary/20 flex flex-col items-center justify-center gap-3">
