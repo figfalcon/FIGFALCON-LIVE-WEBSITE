@@ -186,22 +186,14 @@ const objections: [string, React.ReactNode][] = [
 
 const notFor = [
   ["Under 30 inbound calls a month.", "The maths doesn't work in your favour yet. Come back when the phone rings more."],
-  ["More than ten attorneys.", "You need an intake department and a proper vendor, not me."],
+  ["More than ten practitioners.", "You need an intake department and a proper vendor, not me."],
   ["Corporate, M&A, IP, or securities.", "Your work comes from referrals and relationships, not from strangers calling a number they found on Google. Nothing here applies to you."],
   ["Looking for the cheapest option.", "I'm not it, and we'd both regret it."],
 ];
 
-// ─── Who this is built for — the four sub-niches ───────────────────────────────
-const niches = [
-  ["Personal Injury", "Auto accident, slip & fall, product liability — the accident just happened and the caller is dialing three other firms this hour."],
-  ["Family Law", "Divorce, custody, support — crisis calls that hit nights and weekends, exactly when the front desk is closed."],
-  ["Estate Planning", "Wills, trusts, probate — deadline-boxed after a death or life event, and referrals alone can't keep the calendar full."],
-  ["Tax Advisory", "IRS notices, liens, audit response — panicked callers who'll dial a national tax-relief mill if your line doesn't pick up first."],
-] as const;
-
-// ─── Lead capture form — fields copied from /contact, practice area swapped to ICP ──
-const practiceAreas = ["Personal Injury", "Family Law", "Estate Planning", "Tax Advisory / Resolution", "Other Legal or Tax Practice"];
-const firmSizes = ["Solo", "2-5 attorneys", "6-10 attorneys", "11-15 staff", "15+ staff"];
+// ─── Lead capture form — fields copied from /contact ───────────────────────────
+const practiceAreas = ["Legal Practice", "Tax / Accounting", "Financial or Business Advisory", "Consulting", "Other Professional Services"];
+const firmSizes = ["Solo", "2-5 practitioners", "6-10 practitioners", "11-15 staff", "15+ staff"];
 const leadCountries: { iso: string; flag: string; dial: string }[] = [
   { iso: "US", flag: "🇺🇸", dial: "+1" },
   { iso: "CA", flag: "🇨🇦", dial: "+1" },
@@ -480,7 +472,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 relative z-10 max-w-3xl text-center">
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-              <Phone className="w-3.5 h-3.5" /> AI intake + booked consults for US law &amp; tax firms
+              <Phone className="w-3.5 h-3.5" /> AI intake for small professional-services firms
             </div>
           </FadeIn>
           {/* Option A default. B/C for A-B testing:
@@ -493,16 +485,9 @@ const AIIntakeLawFirms = () => {
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
-              Small firms lose clients two ways — calls that slip to voicemail, and referral pipelines that go quiet. Our AI intake line answers in two rings, qualifies the matter, and books the consult; our content, outreach and ads keep the calendar full when referrals dry up.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-9 leading-relaxed">
+              Small professional-services firms lose clients two ways — calls that slip to voicemail, and referral pipelines that go quiet. Our AI intake line answers in two rings, qualifies the matter, and books the consult; our content, outreach and ads keep the calendar full when referrals dry up.
             </p>
-          </FadeIn>
-          <FadeIn delay={0.12}>
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-9">
-              {niches.map(([name]) => (
-                <span key={name} className="text-xs font-semibold px-3 py-1.5 rounded-full border border-border/50 bg-secondary/30 text-foreground/80">{name}</span>
-              ))}
-            </div>
           </FadeIn>
           <FadeIn delay={0.15}>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -553,27 +538,20 @@ const AIIntakeLawFirms = () => {
                 See if we can fill your <span className="gradient-text">consult calendar.</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-8 max-w-md">
-                Best fit: solo to ~10 attorney firms in personal injury, family law, estate planning, or tax advisory — with budget to run real media on top of the engagement, typically $1,000+/mo in ad spend.
+                Best fit: solo to ~15-practitioner professional-services firms with budget to run real media on top of the engagement, typically $1,000+/mo in ad spend.
               </p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3">
                 {[
-                  "Primary metric: booked, qualified consults",
-                  "Built for owner-operated firms in TX, FL, GA, AZ",
+                  "Primary metric: booked, qualified consultations",
+                  "Built for owner-operated firms, not corporate departments",
                   "Clear KPIs — booked consults, show-up rate, cost per consult — before any kickoff",
+                  "No lead dumps, no guaranteed outcomes — just a full calendar",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-2.5 text-sm">
                     <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /><span className="text-foreground/90">{t}</span>
                   </li>
                 ))}
               </ul>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {niches.map(([name, desc]) => (
-                  <div key={name} className="glass-card p-4">
-                    <p className="font-heading font-semibold text-sm mb-1">{name}</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
-                  </div>
-                ))}
-              </div>
             </FadeIn>
             <FadeIn delay={0.1}><LeadForm /></FadeIn>
           </div>
