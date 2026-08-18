@@ -510,7 +510,7 @@ const AIIntakeLawFirms = () => {
         <div className="container mx-auto px-6 max-w-4xl">
           <FadeIn><h2 className="font-heading font-bold text-3xl md:text-5xl text-center leading-[1.1] mb-4">Sixty seconds, <span className="gradient-text">start to finish.</span></h2></FadeIn>
           <FadeIn delay={0.05}>
-            <p className="text-center text-base md:text-lg text-white mb-10">Don't take my word for it. Listen to it work.</p>
+            <p className="text-center text-muted-foreground mb-10">Don't take my word for it. Listen to it work.</p>
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="aspect-video rounded-2xl border border-border/50 bg-secondary/20 flex flex-col items-center justify-center gap-3">

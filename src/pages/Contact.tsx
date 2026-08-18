@@ -8,12 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 
-const industries = [
-  "Technology / SaaS", "Healthcare", "Financial Services", "E-commerce / Retail",
-  "Manufacturing", "Real Estate", "Professional Services", "Education", "Media / Entertainment", "Other",
-];
-
-const companySizes = ["Solo", "2-5", "6-15", "16-50", "50+"];
+const consultCapacities = ["1-5 consults/mo", "6-15 consults/mo", "16-30 consults/mo", "30+ consults/mo"];
 
 // ISO code, flag emoji, country name, dial code
 const countries: { iso: string; flag: string; name: string; dial: string }[] = [
@@ -98,14 +93,10 @@ const whatHappensNext = [
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    name: "", email: "", company: "", phone: "", phoneCountry: "IN", industry: "", companySize: "", budget: "", challenge: "",
+    name: "", email: "", company: "", phone: "", phoneCountry: "IN", website: "", consultCapacity: "", notes: "",
   });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  const MIN_BUDGET = 20000;
-  const budgetNum = Number(formData.budget);
-  const budgetError = formData.budget !== "" && budgetNum < MIN_BUDGET;
 
   useEffect(() => {
     (async () => {
@@ -119,14 +110,6 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.budget || budgetNum < MIN_BUDGET) {
-      toast({
-        title: "Budget too low",
-        description: "Anything below 20,000 is not acceptable. Please enter 20,000 or above.",
-        variant: "destructive",
-      });
-      return;
-    }
     setSubmitting(true);
     try {
       const country = countries.find(c => c.iso === formData.phoneCountry);
@@ -147,10 +130,10 @@ const Contact = () => {
       });
       if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you within 24 hours with an initial assessment.",
+        title: "Request received!",
+        description: "We'll respond within 24 hours to see if we're a fit.",
       });
-      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "IN", industry: "", companySize: "", budget: "", challenge: "" });
+      setFormData({ name: "", email: "", company: "", phone: "", phoneCountry: "IN", website: "", consultCapacity: "", notes: "" });
     } catch (err) {
       toast({
         title: "Submission failed",
@@ -181,111 +164,93 @@ const Contact = () => {
             <div className="lg:col-span-3">
               <ScrollReveal>
                 <div className="glass-card p-8">
-                  <h3 className="font-heading font-semibold text-xl mb-2">Get Free AI Voice Agent Demo</h3>
-                  <p className="text-sm text-muted-foreground mb-6">See how our AI agents can transform your operations.</p>
+                  <h3 className="font-heading font-semibold text-xl mb-2">Request a fit call</h3>
+                  <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid md:grid-cols-2 gap-5">
                       <div>
-                        <label className="text-sm font-medium mb-1.5 block">Name <span className="text-destructive">*</span></label>
+                        <label className="text-sm font-medium mb-1.5 block">Full Name <span className="text-destructive">*</span></label>
                         <input
                           name="name" value={formData.name} onChange={handleChange} required
-                          placeholder="Your name"
+                          placeholder="Jordan Lee"
                           className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium mb-1.5 block">Email <span className="text-destructive">*</span></label>
+                        <label className="text-sm font-medium mb-1.5 block">Email address <span className="text-destructive">*</span></label>
                         <input
                           name="email" type="email" value={formData.email} onChange={handleChange} required
-                          placeholder="you@company.com"
+                          placeholder="jordan@firm.com"
                           className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium mb-1.5 block">Company <span className="text-destructive">*</span></label>
+                      <label className="text-sm font-medium mb-1.5 block">Company Name <span className="text-destructive">*</span></label>
                       <input
                         name="company" value={formData.company} onChange={handleChange} required
-                        placeholder="Your company name"
+                        placeholder="Lee & Associates"
                         className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
                       />
                     </div>
 
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Phone Number</label>
-                      <div className="flex gap-2">
-                        <select
-                          name="phoneCountry"
-                          value={formData.phoneCountry}
-                          onChange={handleChange}
-                          aria-label="Country code"
-                          className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[130px]"
-                        >
-                          {countries.map(c => (
-                            <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>
-                          ))}
-                        </select>
+                    <div className="grid md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="text-sm font-medium mb-1.5 block">Phone number</label>
+                        <div className="flex gap-2">
+                          <select
+                            name="phoneCountry"
+                            value={formData.phoneCountry}
+                            onChange={handleChange}
+                            aria-label="Country code"
+                            className="px-3 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground shrink-0 w-[110px]"
+                          >
+                            {countries.map(c => (
+                              <option key={c.iso} value={c.iso}>{c.flag} {c.dial}</option>
+                            ))}
+                          </select>
+                          <input
+                            name="phone" type="tel" value={formData.phone} onChange={handleChange}
+                            placeholder="(305) 555-0142"
+                            className="flex-1 min-w-0 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1.5 block">Website <span className="text-destructive">*</span></label>
                         <input
-                          name="phone" type="tel" value={formData.phone} onChange={handleChange}
-                          placeholder="Your phone"
-                          className="flex-1 px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+                          name="website" value={formData.website} onChange={handleChange} required
+                          placeholder="https://yourfirm.com"
+                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
                         />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-5">
-                      <div>
-                        <label className="text-sm font-medium mb-1.5 block">Industry / Business Type</label>
+                    <div>
+                      <label className="text-sm font-medium mb-1.5 block">Whats your monthly Consult capacity <span className="text-destructive">*</span></label>
                       <select
-                          name="industry" value={formData.industry} onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground"
-                        >
-                          <option value="">Select your industry</option>
-                          {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-1.5 block">Company Size</label>
-                      <select
-                          name="companySize" value={formData.companySize} onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground"
-                        >
-                          <option value="">Select company size</option>
-                          {companySizes.map((s) => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                      </div>
+                        name="consultCapacity" value={formData.consultCapacity} onChange={handleChange} required
+                        className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm appearance-none [&>option]:bg-card [&>option]:text-foreground"
+                      >
+                        <option value="">Select one</option>
+                        {consultCapacities.map((c) => <option key={c} value={c}>{c}</option>)}
+                      </select>
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium mb-1.5 block">Investment Budget</label>
-                      <input
-                        name="budget" type="number" inputMode="numeric" min={20000} step={1000}
-                        value={formData.budget} onChange={handleChange}
-                        placeholder="Enter your budget (minimum 20,000)"
-                        aria-invalid={budgetError ? true : undefined}
-                        className={`w-full px-4 py-3 rounded-lg bg-secondary/50 border text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 transition-all text-sm ${
-                          budgetError ? "border-destructive focus:ring-destructive/50" : "border-border/40 focus:ring-primary/50"
-                        }`}
-                      />
-                      {budgetError && (
-                        <p className="mt-1.5 text-xs text-destructive">Anything below 20,000 is not acceptable.</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Current Business Challenge</label>
+                      <label className="text-sm font-medium mb-1.5 block">Additional notes</label>
                       <textarea
-                        name="challenge" value={formData.challenge} onChange={handleChange}
-                        placeholder="Tell us about your biggest operational challenge..."
+                        name="notes" value={formData.notes} onChange={handleChange}
+                        placeholder="Please share anything that will help prepare for our meeting."
                         rows={4}
                         className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm resize-none"
                       />
                     </div>
 
                     <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">
-                      {submitting ? "Sending..." : "Surprise Me"}
+                      {submitting ? "Sending..." : "Get Started"}
                     </button>
                   </form>
                 </div>
