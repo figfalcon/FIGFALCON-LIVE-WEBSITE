@@ -404,12 +404,13 @@ const AIIntakeLawFirms = () => {
               </FadeIn>
               <FadeIn delay={0.05}>
                 <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(2rem,1rem+3.2vw,3.25rem)] mb-6">
-                  Never lose another client to a <span className="gradient-text">missed call.</span>
+                  <span className="block">Never lose another</span>
+                  <span className="block">client to a <span className="gradient-text">voicemail.</span></span>
                 </h1>
               </FadeIn>
               <FadeIn delay={0.1}>
                 <p className="text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed">
-                  An AI voice receptionist that answers in two rings, qualifies the caller, and books the consult straight onto your calendar — nights, weekends, and while you're with a client.
+                  An AI voice receptionist that answers in two rings, qualifies the caller, and books the consult straight onto your calendar. Runs 24/7, even while you're with a client.
                 </p>
               </FadeIn>
               <FadeIn delay={0.15}>
