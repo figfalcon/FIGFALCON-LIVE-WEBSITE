@@ -400,16 +400,16 @@ const AIIntakeLawFirms = () => {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <FadeIn>
-                <Eyebrow>Consult acquisition system</Eyebrow>
+                <Eyebrow>AI voice receptionist</Eyebrow>
               </FadeIn>
               <FadeIn delay={0.05}>
                 <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(2rem,1rem+3.2vw,3.25rem)] mb-6">
-                  Fill your consult calendar with <span className="gradient-text">qualified local demand.</span>
+                  Never lose another client to a <span className="gradient-text">missed call.</span>
                 </h1>
               </FadeIn>
               <FadeIn delay={0.1}>
                 <p className="text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed">
-                  We help professional services firms become the local market leader in their category by filling their calendar with qualified consults — so growth is not left to referrals.
+                  An AI voice receptionist that answers in two rings, qualifies the caller, and books the consult straight onto your calendar — nights, weekends, and while you're with a client.
                 </p>
               </FadeIn>
               <FadeIn delay={0.15}>
