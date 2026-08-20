@@ -442,7 +442,7 @@ const OfferStack = () => {
             </div>
             <div className="divide-y divide-border/30">
               {deliverables.map((d, i) => (
-                <div key={i} className="flex items-start gap-4 px-6 py-7">
+                <div key={i} className="flex items-start gap-4 px-6 py-[25px]">
                   <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <div className="font-semibold text-sm text-foreground">{d.item}</div>
