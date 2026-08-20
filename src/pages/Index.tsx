@@ -1,345 +1,63 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight, Target, TrendingUp, Zap, Globe, Bot, Mic, Video, Brain, AlertTriangle, CheckCircle, Sparkles } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Cal from "@calcom/embed-react";
+import { ArrowRight, Bot, Brain, CheckCircle, ChevronDown, ClipboardCheck, MessageSquare, Mic, Play, Search, ShieldCheck, Sparkles, Video, Volume2, Zap } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
-const stats = [
-  { icon: <Target className="w-5 h-5 text-primary" />, value: "5,000+", label: "Appointments Booked" },
-  { icon: <TrendingUp className="w-5 h-5 text-primary" />, value: "$1M+", label: "Pipeline Value Generated" },
-  { icon: <Zap className="w-5 h-5 text-accent" />, value: "45%", label: "Avg Efficiency Improvement" },
-];
-
-const problems = [
-  {
-    title: "Leads Slipping Through Cracks",
-    breakdown: "Forms go unchecked for hours. Inbound traffic converts but nobody responds in time. High-value leads vanish before anyone follows up.",
-    fix: "Automated lead capture and instant response systems that engage every prospect within seconds.",
-  },
-  {
-    title: "Manual Follow-Ups Killing Scale",
-    breakdown: "Your team is stuck in spreadsheets and CRM tabs. Every follow-up requires human attention. Growth is capped by headcount.",
-    fix: "AI-powered nurture sequences that run autonomously, freeing your team to focus on closing, not chasing.",
-  },
-  {
-    title: "No Automation Layer",
-    breakdown: "Tools are disconnected. Data doesn't flow. There's no system, just scattered manual processes stitched together.",
-    fix: "Integrated operations infrastructure connecting your funnel, CRM, and booking calendar into one seamless machine.",
-  },
-];
-
+const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 const services = [
-  { icon: <Bot className="w-6 h-6" />, title: "Chatbot & Lead Collection", desc: "AI chatbots that capture, qualify, and route leads 24/7 from your website." },
   { icon: <Mic className="w-6 h-6" />, title: "Voice AI Receptionist", desc: "Never miss a call. AI handles inbound calls, books appointments, answers FAQs.", link: "/ai-voice-agent" },
-  { icon: <Globe className="w-6 h-6" />, title: "Website & Funnel Building", desc: "High-converting websites and funnels that capture leads and feed your CRM." },
   { icon: <Video className="w-6 h-6" />, title: "AI Clone & Video Creation", desc: "Your AI twin creates consistent video content without you filming.", link: "/ai-content-system" },
   { icon: <Brain className="w-6 h-6" />, title: "The Agency Second Brain OS", desc: "A done-for-you AI second brain that gets your whole agency out of your team's heads.", link: "/second-brain-os" },
 ];
-
-const processSteps = [
-  {
-    step: "01",
-    title: "Growth Infrastructure Audit",
-    desc: "We map your current funnel, CRM, and lead flow. Identify bottlenecks, automation gaps, and conversion leaks.",
-    items: ["Pipeline Analysis", "Funnel Audit", "Automation Gap Review", "Custom Strategy Blueprint"],
-  },
-  {
-    step: "02",
-    title: "Funnel + Automation Architecture",
-    desc: "We design and build your custom growth system from capture pages to CRM pipelines to AI powered follow up sequences.",
-    items: ["Landing Page Build", "CRM Pipeline Setup", "Automation Workflows", "AI Integration"],
-  },
-  {
-    step: "03",
-    title: "System Deployment & Scaling",
-    desc: "Your infrastructure goes live. We monitor, optimize, and refine until your pipeline runs predictably.",
-    items: ["Staged Rollout", "Performance Monitoring", "Ongoing Optimization", "Scaling Support"],
-  },
+const stages = [
+  { icon: Play, title: "Create demand", body: "Clear content and compliant paid campaigns built around the conversations your ideal clients are already having." },
+  { icon: MessageSquare, title: "Start the conversation", body: "Managed outreach gives the right prospects a direct, relevant reason to talk—without generic volume blasts." },
+  { icon: Volume2, title: "Respond and qualify", body: "AI voice responds immediately, follows your qualification rules, and gives every enquiry a clear next step." },
+  { icon: CheckCircle, title: "Book the consult", body: "Qualified prospects land on your calendar with the context your team needs to take the conversation forward." },
 ];
+const faqs = [
+  ["What happens in a Consult Recovery Audit?", "We map where demand, response, qualification, and booking are breaking down, then give you practical priorities for fixing them."],
+  ["Does this replace my staff?", "No. The system handles repetitive response and booking work so your team can focus on the conversations and client work that require their expertise."],
+  ["What does a qualified consultation mean?", "The criteria are agreed with you before launch—such as service fit, urgency, location, budget, or capacity—then used consistently in the booking flow."],
+  ["Can you run campaigns for regulated professional services?", "Yes, within the applicable platform, professional, and advertising rules. We use educational, offer-led creative and do not promise outcomes."],
+  ["Why is ad spend separate?", "Your media budget goes directly toward reaching prospective clients. It stays separate from FigFalcon's management fee so both the work and spend are transparent."],
+  ["What happens after the audit?", "If there is a meaningful gap to close and your firm has the capacity and budget to act on it, we outline how the Consult Recovery System can be installed for you."],
+] as const;
+const scrollToBooking = () => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-const Index = () => {
-  return (
-    <>
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center pt-32 md:pt-36 pb-12 overflow-hidden">
-        <div className="absolute inset-0 gradient-hero" />
-        <div className="absolute inset-0 gradient-glow" />
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 left-0 w-72 h-72 bg-accent/20 rounded-full blur-[100px]" />
-        <div className="absolute inset-0 grid-pattern opacity-30" />
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center lg:items-start"
-            >
-              <div className="section-badge mb-6">
-                <Sparkles className="w-4 h-4 text-primary" />
-                Your Operations & Growth Partner
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-[1.15] mb-6 text-center lg:text-left">
-                Run Your Business<br />
-                <span className="gradient-text">Without Operational Chaos</span>
-              </h1>
-              <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-lg leading-relaxed text-center lg:text-left mx-auto lg:mx-0">
-                We handle the systems, automation, and backend operations so you can focus on growth, clients, and delivery.
-              </p>
-              <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
-                <Link to="/contact" className="btn-primary">
-                  Let's Automate Your Growth
-                </Link>
-                <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4 border border-border/60">
-                  See Our Results
-                </Link>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-muted-foreground justify-center lg:justify-start flex-wrap">
-                <span className="flex items-center gap-2"><span className="glow-dot" /> Done-for-you systems</span>
-                <span className="flex items-center gap-2"><span className="glow-dot" /> Custom automation</span>
-                <span className="flex items-center gap-2"><span className="glow-dot" /> Structured growth</span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center"
-            >
-              <div className="glass-card p-8 sm:p-10 w-full max-w-[494px] relative">
-                {/* Systems Active floating badge */}
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: [0, -6, 0] }}
-                  transition={{ delay: 0.4, y: { delay: 1, duration: 2.5, repeat: Infinity, ease: "easeInOut" } }}
-                  className="absolute -top-4 right-6 glass-card px-4 py-2 rounded-xl flex items-center gap-2 text-sm border"
-                  style={{ borderColor: '#397eee' }}
-                >
-                  <div>
-                    <div className="font-heading font-semibold" style={{ color: '#397eee' }}>Systems Active</div>
-                    <div className="text-xs" style={{ color: '#397eee' }}>Automation running</div>
-                  </div>
-                </motion.div>
-
-                <div className="flex items-center justify-between mb-6 mt-2">
-                  <h3 className="font-heading font-bold text-xl">Client Results</h3>
-                  <span className="text-xs text-accent font-medium px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">Live Data</span>
-                </div>
-                <div className="space-y-4">
-                  {stats.map((stat, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + i * 0.15 }}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-secondary/50 border border-border/30"
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        {stat.icon}
-                      </div>
-                      <div>
-                        <div className="stat-number text-2xl font-bold">{stat.value}</div>
-                        <div className="text-sm text-muted-foreground">{stat.label}</div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Bar */}
-      <section className="py-12 border-y border-border/30">
-        <div className="container mx-auto px-6">
-          <p className="text-center text-xs text-muted-foreground uppercase tracking-widest mb-8">
-            Trusted by disruptive B2B companies to scale operations without the chaos
-          </p>
-          <div className="flex items-center gap-4">
-            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
-              <ArrowRight className="w-4 h-4 rotate-180" />
-            </button>
-            <div className="flex-1 overflow-hidden">
-              <div className="trust-slider flex items-center gap-16 whitespace-nowrap">
-                {["InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen", "InnovateLabs", "ScaleUp Inc", "GrowthCo", "DataDrive", "CloudPeak", "NextGen"].map((name, i) => (
-                  <span key={i} className="font-heading font-bold text-lg text-muted-foreground/60 shrink-0">{name}</span>
-                ))}
-              </div>
-            </div>
-            <button className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors shrink-0">
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Problems Section */}
-      <section className="py-24 relative">
-        <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-[100px]" />
-        <div className="container mx-auto px-6 relative z-10">
-          <ScrollReveal className="text-center mb-16">
-            <div className="section-badge mx-auto mb-4">The Real Problem</div>
-            <h2 className="section-heading mb-4">
-              Operations Problems Are{" "}
-              <span className="gradient-text">Growth Problems</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Most businesses don't lack leads. They lack the systems to capture, convert, and scale efficiently.
-            </p>
-          </ScrollReveal>
-
-          <div className="grid lg:grid-cols-3 gap-6">
-            {problems.map((problem, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="glass-card-hover p-8 h-full">
-                  <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center mb-4">
-                    <AlertTriangle className="w-5 h-5 text-destructive" />
-                  </div>
-                  <h3 className="font-heading font-semibold text-lg mb-4">{problem.title}</h3>
-                  <div className="mb-4">
-                    <span className="text-xs font-semibold text-destructive/80 uppercase tracking-wider">The Breakdown</span>
-                    <p className="text-sm text-muted-foreground mt-2">{problem.breakdown}</p>
-                  </div>
-                  <div>
-                    <span className="text-xs font-semibold text-accent uppercase tracking-wider">The System Fix</span>
-                    <p className="text-sm text-muted-foreground mt-2">{problem.fix}</p>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-24 relative">
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-[120px]" />
-        <div className="container mx-auto px-6 relative z-10">
-          <ScrollReveal className="text-center mb-16">
-            <div className="section-badge mx-auto mb-4">What We Build For You</div>
-            <h2 className="section-heading mb-4">
-              Done-for-You <span className="gradient-text">Growth Systems</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              We build and manage operational systems that save you time, reduce chaos, and increase efficiency without adding complexity.
-            </p>
-          </ScrollReveal>
-
-          <div className="grid lg:grid-cols-3 gap-6">
-            {services.filter((service) => service.title !== "Chatbot & Lead Collection" && service.title !== "Website & Funnel Building").map((service, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <Link to={(service as { link?: string }).link ?? "/services"} className="glass-card-hover p-8 block h-full group">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
-                    {service.icon}
-                  </div>
-                  <h3 className="font-heading font-semibold text-lg mb-2">{service.title}</h3>
-                  <p className="text-sm text-muted-foreground">{service.desc}</p>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
-          <ScrollReveal className="text-center mb-16">
-            <div className="section-badge mx-auto mb-4">Our Process</div>
-            <h2 className="section-heading mb-4">
-              How We Engineer{" "}
-              <span className="gradient-text">Your Growth</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              A systematic approach to building revenue infrastructure. No outsourcing. No templates. Custom architecture for your business.
-            </p>
-          </ScrollReveal>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {processSteps.map((step, i) => (
-              <ScrollReveal key={i} delay={i * 0.15}>
-                <div className="glass-card p-8 h-full relative overflow-hidden">
-                  <span className="absolute top-4 right-4 text-6xl font-heading font-bold text-primary/5">{step.step}</span>
-                  <div className="relative z-10">
-                    <div className="text-sm font-semibold text-primary mb-2">Step {step.step}</div>
-                    <h3 className="font-heading font-semibold text-xl mb-3">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-6">{step.desc}</p>
-                    <div className="space-y-2">
-                      {step.items.map((item, j) => (
-                        <div key={j} className="flex items-center gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-accent shrink-0" />
-                          <span className="text-muted-foreground">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonial */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-6 relative z-10">
-          <ScrollReveal className="text-center mb-12">
-            <div className="section-badge mx-auto mb-4">Client Results</div>
-            <h2 className="section-heading mb-4">
-              Systems That Deliver <span className="gradient-text">Results</span>
-            </h2>
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <div className="glass-card p-10 max-w-3xl mx-auto text-center">
-              <blockquote className="text-xl md:text-2xl font-heading leading-relaxed mb-8 text-foreground/90">
-                "Finally, a system that runs without me. The automation handles lead capture, follow-up, and booking. I just show up to qualified calls."
-              </blockquote>
-              <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">SC</div>
-                  <div className="text-left">
-                    <div className="font-semibold text-sm">Sarah Chen</div>
-                    <div className="text-xs text-muted-foreground">Founder, Growth Advisory Co</div>
-                  </div>
-                </div>
-                <span className="sm:ml-4 text-xs text-accent font-medium px-2 py-1 rounded-full bg-accent/10 border border-accent/20">
-                  Pipeline on autopilot
-                </span>
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 gradient-hero" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px]" />
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <ScrollReveal>
-              <h2 className="section-heading mb-6">
-                Let's Build Your{" "}
-                <span className="gradient-text">Growth Systems</span>
-              </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Book your Immediate AI Demo Call. We'll audit your operations, map automation opportunities, and design a custom system for predictable results. Not a sales call, a strategy conversation.
-            </p>
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <Link to="/contact" className="btn-primary text-lg px-8 py-4">
-                Let's Automate Your Growth
-              </Link>
-              <Link to="/case-studies" className="btn-secondary text-lg px-8 py-4">
-                View Case Studies
-              </Link>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-    </>
-  );
+const DemandEngine = () => {
+  const reduceMotion = useReducedMotion();
+  return <div className="glass-card w-full max-w-lg p-6 sm:p-8 relative overflow-hidden" aria-label="Demand Engine: content, outreach, and paid demand become booked consultations">
+    <div className="absolute inset-0 gradient-hero opacity-60" /><div className="relative"><div className="flex items-center justify-between mb-7"><span className="text-xs uppercase tracking-[0.2em] font-semibold text-primary">Consult Recovery System</span><span className="flex items-center gap-2 text-xs text-accent"><span className="glow-dot" /> Active</span></div>
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-5"><div className="space-y-3">{["Content", "Outreach", "Paid demand"].map((source, i) => <motion.div key={source} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.12 }} className="rounded-lg bg-secondary/70 border border-border/50 px-3 py-2.5 text-xs font-medium">{source}</motion.div>)}</div><div className="flex flex-col items-center gap-2 text-primary">{[0, 1, 2].map(i => <motion.span key={i} animate={reduceMotion ? {} : { opacity: [0.25, 1, 0.25], x: [0, 4, 0] }} transition={{ duration: 1.8, delay: i * 0.2, repeat: Infinity }}><ArrowRight className="w-4 h-4" /></motion.span>)}</div><motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.55 }} className="rounded-xl border border-primary/30 bg-primary/10 p-4 text-center shadow-lg shadow-primary/15"><Zap className="w-6 h-6 text-primary mx-auto mb-2" /><p className="text-xs text-muted-foreground">Instant response</p><p className="font-heading font-bold text-sm mt-1">Qualified → booked</p></motion.div></div>
+      <motion.div animate={reduceMotion ? {} : { opacity: [0.65, 1, 0.65] }} transition={{ duration: 2.4, repeat: Infinity }} className="mt-6 rounded-lg border border-accent/20 bg-accent/10 px-4 py-3 flex items-center justify-between gap-3"><span className="text-xs text-muted-foreground">Consultation calendar</span><span className="text-xs font-semibold text-accent">Booked</span></motion.div>
+    </div></div>;
 };
 
+const SectionHead = ({ badge, children, copy }: { badge: string; children: React.ReactNode; copy?: string }) => <ScrollReveal className="text-center max-w-2xl mx-auto mb-12"><div className="section-badge mx-auto mb-4">{badge}</div><h2 className="section-heading mb-4">{children}</h2>{copy && <p className="text-muted-foreground">{copy}</p>}</ScrollReveal>;
+
+const Index = () => {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  return <>
+    <section className="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden"><div className="absolute inset-0 gradient-hero" /><div className="absolute inset-0 gradient-glow" /><div className="absolute top-1/4 right-0 w-96 h-96 bg-primary/15 rounded-full blur-[120px]" /><div className="container mx-auto px-6 relative z-10"><div className="grid lg:grid-cols-2 gap-14 items-center"><motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="text-center lg:text-left"><div className="section-badge mb-6 mx-auto lg:mx-0 w-fit"><Sparkles className="w-4 h-4 text-primary" /> The Consult Recovery System</div><h1 className="font-heading font-bold tracking-tight text-4xl sm:text-5xl lg:text-6xl leading-[1.08] mb-6">Booked, qualified consultations <span className="gradient-text">on your calendar—every week.</span></h1><p className="text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 mb-8">FigFalcon combines content, outreach, paid demand, instant qualification, and calendar booking into one managed system for professional-services firms.</p><div className="flex flex-wrap justify-center lg:justify-start gap-4"><Link to="/contact" className="btn-primary text-base px-7 py-3.5">Get a Consult Recovery Audit <ArrowRight className="w-4 h-4" /></Link><button onClick={scrollToBooking} className="btn-secondary text-base px-7 py-3.5">Book a Strategy Call</button></div><p className="mt-5 text-sm text-muted-foreground">Built for better consultations—not lead dumps or promised client outcomes.</p></motion.div><motion.div initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }} className="flex justify-center"><DemandEngine /></motion.div></div></div></section>
+
+    <section className="py-24 border-y border-border/30 bg-secondary/10"><div className="container mx-auto px-6 max-w-6xl"><SectionHead badge="The gap to close" copy="When demand slows or a valuable call gets missed, the outcome is the same: a consultation that never makes it onto your calendar.">A full calendar needs more than <span className="gradient-text">more enquiries.</span></SectionHead><div className="grid md:grid-cols-2 gap-6"><ScrollReveal><div className="glass-card p-8 h-full"><Search className="w-6 h-6 text-primary mb-5" /><h3 className="font-heading font-semibold text-xl mb-3">Demand goes quiet</h3><p className="text-muted-foreground leading-relaxed">Referrals are valuable, but relying on them alone makes next month’s consultation calendar unpredictable. Your firm needs a managed way to create demand when the pipeline thins.</p></div></ScrollReveal><ScrollReveal delay={0.1}><div className="glass-card p-8 h-full"><Mic className="w-6 h-6 text-primary mb-5" /><h3 className="font-heading font-semibold text-xl mb-3">Enquiries leak before booking</h3><p className="text-muted-foreground leading-relaxed">A missed call, slow follow-up, or unclear handoff can lose an interested prospect before your team gets to have the right conversation.</p></div></ScrollReveal></div></div></section>
+
+    <section className="py-24"><div className="container mx-auto px-6 max-w-6xl"><SectionHead badge="How it works" copy="Creative, qualification, and booking tone are shaped around the professional service you provide and the clients you want to serve.">One managed path from demand to <span className="gradient-text">booked consultation.</span></SectionHead><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">{stages.map(({ icon: Icon, title, body }, i) => <ScrollReveal key={title} delay={i * 0.08}><div className="glass-card p-6 h-full"><span className="text-xs font-semibold tracking-widest text-primary">0{i + 1}</span><Icon className="w-6 h-6 text-primary mt-5 mb-4" /><h3 className="font-heading font-semibold text-lg mb-3">{title}</h3><p className="text-sm text-muted-foreground leading-relaxed">{body}</p></div></ScrollReveal>)}</div></div></section>
+
+    <section className="py-24 relative"><div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-[120px]" /><div className="container mx-auto px-6 relative z-10"><ScrollReveal className="text-center mb-16"><div className="section-badge mx-auto mb-4">What We Build For You</div><h2 className="section-heading mb-4">Done-for-You <span className="gradient-text">Growth Systems</span></h2><p className="text-muted-foreground max-w-2xl mx-auto">We build and manage operational systems that save you time, reduce chaos, and increase efficiency without adding complexity.</p></ScrollReveal><div className="grid lg:grid-cols-3 gap-6">{services.map((service, i) => <ScrollReveal key={service.title} delay={i * 0.08}><Link to={service.link} className="glass-card-hover p-8 block h-full group"><div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">{service.icon}</div><h3 className="font-heading font-semibold text-lg mb-2">{service.title}</h3><p className="text-sm text-muted-foreground">{service.desc}</p></Link></ScrollReveal>)}</div></div></section>
+
+    <section className="py-24 bg-secondary/10"><div className="container mx-auto px-6 max-w-5xl"><div className="grid lg:grid-cols-2 gap-8 items-center"><ScrollReveal><div className="section-badge mb-5">Your first step</div><h2 className="section-heading mb-5">Find the leaks before you spend more trying to <span className="gradient-text">create demand.</span></h2><p className="text-muted-foreground leading-relaxed mb-7">The free Consult Recovery Audit gives you a clear map of the demand and intake leaks holding consultations back, plus practical priorities for what to fix first.</p><Link to="/contact" className="btn-primary">Get a Consult Recovery Audit <ArrowRight className="w-4 h-4" /></Link></ScrollReveal><ScrollReveal delay={0.1}><div className="glass-card p-7"><ClipboardCheck className="w-7 h-7 text-primary mb-5" /><h3 className="font-heading font-semibold text-xl mb-5">What you get</h3><ul className="space-y-4 text-sm">{["A view of where demand and enquiries are leaking", "Practical priorities for response, qualification, and booking", "A candid fit assessment before any system is proposed"].map(item => <li key={item} className="flex gap-3"><CheckCircle className="w-4 h-4 text-accent shrink-0 mt-0.5" /><span className="text-muted-foreground">{item}</span></li>)}</ul><p className="border-t border-border/40 mt-6 pt-5 text-xs text-muted-foreground">Not a lead dump, generic marketing pitch, legal or tax advice, or a promise of signed clients or outcomes.</p></div></ScrollReveal></div></div></section>
+
+    <section className="py-24"><div className="container mx-auto px-6 max-w-5xl"><SectionHead badge="Is this for you?">Built for firms ready to turn attention into <span className="gradient-text">real conversations.</span></SectionHead><div className="grid md:grid-cols-2 gap-6"><ScrollReveal><div className="glass-card p-8 h-full"><ShieldCheck className="w-7 h-7 text-accent mb-5" /><h3 className="font-heading font-semibold text-xl mb-4">A strong fit</h3><ul className="space-y-3 text-sm text-muted-foreground"><li>Owner-led professional-services firm</li><li>Capacity to handle more qualified consultations</li><li>Willingness to invest in real paid demand when the plan calls for it</li><li>Focused on a repeatable client-acquisition system</li></ul></div></ScrollReveal><ScrollReveal delay={0.1}><div className="glass-card p-8 h-full"><Bot className="w-7 h-7 text-primary mb-5" /><h3 className="font-heading font-semibold text-xl mb-4">Not the right fit</h3><ul className="space-y-3 text-sm text-muted-foreground"><li>Looking for a cheap lead list</li><li>Expecting guaranteed clients, cases, or outcomes</li><li>Unwilling to fund paid demand when it is needed</li><li>Looking for a one-off tactic instead of a managed system</li></ul></div></ScrollReveal></div></div></section>
+
+    <section className="py-24 border-t border-border/30"><div className="container mx-auto px-6 max-w-3xl"><SectionHead badge="Questions, answered">Before you book</SectionHead><div className="space-y-3">{faqs.map(([question, answer], i) => <ScrollReveal key={question} delay={i * 0.04}><div className="glass-card overflow-hidden"><button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between gap-4 p-5 text-left"><span className="font-heading font-semibold">{question}</span><ChevronDown className={`w-5 h-5 text-primary shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} /></button><AnimatePresence>{openFaq === i && <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden"><p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">{answer}</p></motion.div>}</AnimatePresence></div></ScrollReveal>)}</div></div></section>
+
+    <section className="py-24 relative overflow-hidden"><div className="absolute inset-0 gradient-hero" /><div className="container mx-auto px-6 relative z-10 text-center max-w-3xl"><ScrollReveal><h2 className="section-heading mb-5">Stop letting valuable demand <span className="gradient-text">go nowhere.</span></h2><p className="text-muted-foreground text-lg leading-relaxed mb-8">Start with a clear view of what is costing your firm consultations—or book a strategy call when you are ready to discuss the system.</p><div className="flex flex-wrap justify-center gap-4"><Link to="/contact" className="btn-primary text-base px-7 py-3.5">Get a Consult Recovery Audit</Link><button onClick={scrollToBooking} className="btn-secondary text-base px-7 py-3.5">Book a Strategy Call</button></div></ScrollReveal></div></section>
+
+    <section id="booking" className="py-24 bg-secondary/10 scroll-mt-20"><div className="container mx-auto px-6 max-w-4xl"><SectionHead badge="Strategy call" copy="A practical conversation about your consultation flow, capacity, and whether FigFalcon is the right partner to help.">Book a time that works for <span className="gradient-text">your firm.</span></SectionHead><ScrollReveal delay={0.1}><div className="rounded-2xl overflow-hidden border border-border/40 shadow-xl"><Cal calLink={CAL_LINK} style={{ width: "100%", height: "100%", overflow: "scroll" }} config={{ layout: "month_view", theme: "dark" }} /></div></ScrollReveal></div></section>
+  </>;
+};
 export default Index;
