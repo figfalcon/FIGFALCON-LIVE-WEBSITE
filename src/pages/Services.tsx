@@ -98,7 +98,7 @@ const ServiceCard = ({ service }: { service: { id: string; icon: JSX.Element; ti
   );
   const cls = "glass-card-hover p-8 block h-full group";
   return service.link
-    ? <Link to={service.link} className={cls}>{inner}</Link>
+    ? <a href={service.link} className={cls}>{inner}</a>
     : <a href={`#${service.id}`} className={cls}>{inner}</a>;
 };
 
