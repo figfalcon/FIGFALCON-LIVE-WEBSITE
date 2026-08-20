@@ -662,8 +662,8 @@ const Onboarding = () => {
           <p className="text-center text-muted-foreground mb-3 mt-4">
             30 Minutes of Your Time. 15 Pieces of Content. Live in 14 Days.
           </p>
-          <p className="text-center text-muted-foreground/70 text-sm max-w-lg mx-auto mb-14">
-            No studio. No editing software. No content strategy needed. You record once — we handle everything else and get your content live across every platform.
+          <p className="text-center text-muted-foreground/70 text-sm max-w-none mx-auto mb-14 md:whitespace-nowrap">
+            No studio. No editing software. No content strategy needed. You record once<br />we handle everything else and get your content live across every platform.
           </p>
         </FadeIn>
         <div className="grid md:grid-cols-3 gap-6">
