@@ -38,6 +38,7 @@ const services = [
   {
     id: "ai-clone",
     icon: <Video className="w-7 h-7" />,
+    link: "/ai-content-system",
     title: "AI Clone & Video Creation",
     bestFor: "Founders, coaches, consultants who want consistent video content without filming",
     desc: "You record yourself once for 20 minutes. We handle the rest. Your AI clone produces 8-12 fresh videos per month, written, generated, and delivered ready to post to Instagram Reels and YouTube Shorts.",
