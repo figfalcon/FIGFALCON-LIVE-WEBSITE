@@ -442,7 +442,7 @@ const OfferStack = () => {
             </div>
             <div className="divide-y divide-border/30">
               {deliverables.map((d, i) => (
-                <div key={i} className="flex items-start gap-4 px-6 py-6">
+                <div key={i} className="flex items-start gap-4 px-6 py-7">
                   <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div className="flex-1">
                     <div className="font-semibold text-sm text-foreground">{d.item}</div>
@@ -457,7 +457,7 @@ const OfferStack = () => {
         <FadeIn delay={0.15}><ContentFitForm /></FadeIn>
         </div>
         <FadeIn delay={0.2}>
-          <div className="glass-card max-w-2xl mx-auto mt-6 px-6 py-8 bg-primary/5 border border-primary/20 text-center">
+          <div className="glass-card max-w-2xl mx-auto mt-12 px-6 py-8 bg-primary/5 border border-primary/20 text-center">
             <div className="text-xs text-primary uppercase tracking-widest mb-3">How Pricing Works</div>
             <p className="font-heading font-bold text-xl text-foreground mb-2">Your Package Is Built on the Call. Not Before It.</p>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto mb-6">We do not sell templates. On your free strategy call we scope exactly what your content system needs and tell you the investment required to hit your goals. No guessing. No surprise fees.</p>
