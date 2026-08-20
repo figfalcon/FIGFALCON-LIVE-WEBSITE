@@ -404,7 +404,7 @@ const AIIntakeLawFirms = () => {
               </FadeIn>
               <FadeIn delay={0.05}>
                 <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(1.375rem,0.85rem+1.7vw,2.1875rem)] mb-6">
-                  <span className="block">Never lose another client to a</span>
+                  <span className="block sm:whitespace-nowrap">Never lose another client to a</span>
                   <span className="block gradient-text">voicemail.</span>
                 </h1>
               </FadeIn>
