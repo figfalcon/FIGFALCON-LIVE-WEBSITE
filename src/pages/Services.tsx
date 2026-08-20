@@ -115,14 +115,7 @@ const Services = () => {
       <section className="py-16">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-3 gap-6">
-            {services.slice(0, 3).map((service, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <ServiceCard service={service} />
-              </ScrollReveal>
-            ))}
-          </div>
-          <div className="grid lg:grid-cols-2 gap-6 mt-6 lg:w-2/3 mx-auto">
-            {services.slice(3).map((service, i) => (
+            {services.filter((service) => service.id !== "chatbot" && service.id !== "websites").map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
                 <ServiceCard service={service} />
               </ScrollReveal>
@@ -132,7 +125,7 @@ const Services = () => {
       </section>
 
       {/* Individual Service Sections */}
-      {services.map((service, i) => (
+      {services.filter((service) => service.id !== "chatbot" && service.id !== "websites").map((service, i) => (
         <section key={i} id={service.id} className="py-24 relative scroll-mt-24">
           {i % 2 === 0 && <div className="absolute top-0 right-0 w-72 h-72 bg-primary/5 rounded-full blur-[100px]" />}
           <div className="container mx-auto px-6 relative z-10">

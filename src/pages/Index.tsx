@@ -228,20 +228,7 @@ const Index = () => {
           </ScrollReveal>
 
           <div className="grid lg:grid-cols-3 gap-6">
-            {services.slice(0, 3).map((service, i) => (
-              <ScrollReveal key={i} delay={i * 0.08}>
-                <Link to={(service as { link?: string }).link ?? "/services"} className="glass-card-hover p-8 block h-full group">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
-                    {service.icon}
-                  </div>
-                  <h3 className="font-heading font-semibold text-lg mb-2">{service.title}</h3>
-                  <p className="text-sm text-muted-foreground">{service.desc}</p>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
-          <div className="grid lg:grid-cols-2 gap-6 mt-6 lg:w-2/3 mx-auto">
-            {services.slice(3).map((service, i) => (
+            {services.filter((service) => service.title !== "Chatbot & Lead Collection" && service.title !== "Website & Funnel Building").map((service, i) => (
               <ScrollReveal key={i} delay={i * 0.08}>
                 <Link to={(service as { link?: string }).link ?? "/services"} className="glass-card-hover p-8 block h-full group">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary group-hover:bg-primary/20 transition-colors">
