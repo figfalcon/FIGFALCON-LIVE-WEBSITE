@@ -653,7 +653,7 @@ const Onboarding = () => {
   ];
   return (
     <section className="py-24 bg-secondary/10" id="get-started">
-      <div className="container mx-auto px-6 max-w-4xl">
+      <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-4xl md:text-5xl text-center mb-2">
             Get Started
@@ -666,17 +666,17 @@ const Onboarding = () => {
             No studio. No editing software. No content strategy needed. You record once — we handle everything else and get your content live across every platform.
           </p>
         </FadeIn>
-        <div className="space-y-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {steps.map((s, i) => (
             <FadeIn key={s.n} delay={i * 0.1}>
-              <div className="relative grid md:grid-cols-2 gap-0 rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm">
+              <div className="relative rounded-2xl overflow-hidden border border-border/60 bg-card shadow-sm h-full">
                 <div className="p-4 md:p-5 flex items-center justify-center bg-secondary/20">
                   <div className="w-full"><StepMockup step={i} /></div>
                 </div>
-                <div className="p-7 md:p-9 flex flex-col justify-center border-l border-border/40">
+                <div className="p-6 flex flex-col justify-center border-t border-border/40">
                   <div className="text-xs font-semibold tracking-widest text-muted-foreground mb-3 uppercase">{s.label}</div>
-                  <h3 className="font-heading font-bold text-3xl md:text-4xl leading-tight mb-4">{s.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{s.body}</p>
+                  <h3 className="font-heading font-bold text-2xl leading-tight mb-3">{s.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{s.body}</p>
                 </div>
               </div>
             </FadeIn>
