@@ -430,8 +430,8 @@ const OfferStack = () => {
             <span className="block">Everything You Get</span>
             <span className="gradient-text block">Inside the System</span>
           </h2>
-          <p className="text-center text-muted-foreground max-w-xl mx-auto mb-12">
-            Most agencies sell you one piece of the puzzle. We build and run the whole machine.
+          <p className="text-center text-muted-foreground max-w-none mx-auto mb-12 md:whitespace-nowrap">
+            Most agencies sell you one piece of the puzzle.<br />We build and run the whole machine.
           </p>
         </FadeIn>
         <div className="grid lg:grid-cols-2 gap-6 items-start">
