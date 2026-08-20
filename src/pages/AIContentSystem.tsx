@@ -5,6 +5,7 @@ import { getCalApi } from "@calcom/embed-react";
 import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
 import { PROCESS_VIDEOS } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 const CAL_NAMESPACE = "consultation";
@@ -363,6 +364,53 @@ const SystemStages = () => {
 
 /* ─────────────────────────── Offer Stack ─────────────────────────── */
 
+const ContentFitForm = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({ name: "", email: "", company: "", phone: "", website: "", capacity: "", notes: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    try {
+      const response = await fetch("https://n8n-with-ai-assistant-q76o.srv1883884.hstgr.cloud/webhook/5f4734ad-fa9f-4394-8ed1-77284b47d13c", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, submittedAt: new Date().toISOString(), source: "figfalcon.com/ai-content-system" }),
+      });
+      if (!response.ok) throw new Error("Lead submission failed");
+      toast({ title: "Request received!", description: "We'll respond within 24 hours to see if we're a fit." });
+      setFormData({ name: "", email: "", company: "", phone: "", website: "", capacity: "", notes: "" });
+    } catch {
+      toast({ title: "Submission failed", description: "Something went wrong. Please try again or email agency@figfalcon.com.", variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const fieldClass = "w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm";
+  const update = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setFormData({ ...formData, [event.target.name]: event.target.value });
+
+  return <div className="glass-card p-6 md:p-8 h-full">
+    <h3 className="font-heading font-semibold text-xl mb-1">Request a fit call</h3>
+    <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
+    <form onSubmit={submit} className="space-y-4">
+      <div className="grid sm:grid-cols-2 gap-4">
+        <label className="text-sm font-medium">Full Name <span className="text-destructive">*</span><input name="name" value={formData.name} onChange={update} required placeholder="Jordan Lee" className={`${fieldClass} mt-1.5`} /></label>
+        <label className="text-sm font-medium">Email address <span className="text-destructive">*</span><input name="email" type="email" value={formData.email} onChange={update} required placeholder="jordan@firm.com" className={`${fieldClass} mt-1.5`} /></label>
+      </div>
+      <label className="text-sm font-medium block">Company Name <span className="text-destructive">*</span><input name="company" value={formData.company} onChange={update} required placeholder="Lee & Associates" className={`${fieldClass} mt-1.5`} /></label>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <label className="text-sm font-medium">Phone number<input name="phone" type="tel" value={formData.phone} onChange={update} placeholder="(305) 555-0142" className={`${fieldClass} mt-1.5`} /></label>
+        <label className="text-sm font-medium">Website <span className="text-destructive">*</span><input name="website" type="url" value={formData.website} onChange={update} required placeholder="https://yourfirm.com" className={`${fieldClass} mt-1.5`} /></label>
+      </div>
+      <label className="text-sm font-medium block">What's your monthly content capacity? <span className="text-destructive">*</span><select name="capacity" value={formData.capacity} onChange={update} required className={`${fieldClass} mt-1.5 appearance-none`}><option value="">Select one</option><option>1–5 videos</option><option>6–15 videos</option><option>16–30 videos</option><option>30+ videos</option></select></label>
+      <label className="text-sm font-medium block">Additional notes<textarea name="notes" value={formData.notes} onChange={update} rows={3} placeholder="Please share anything that will help prepare for our meeting." className={`${fieldClass} mt-1.5 resize-none`} /></label>
+      <button type="submit" disabled={submitting} className="btn-primary w-full justify-center text-base py-4 disabled:opacity-60">{submitting ? "Sending..." : "Get Started"}</button>
+    </form>
+  </div>;
+};
+
 const OfferStack = () => {
   const deliverables = [
     { item: "AI Clone Creation and Setup", value: "$2,000", note: "Your face. Your voice. Unlimited content." },
@@ -376,7 +424,7 @@ const OfferStack = () => {
 
   return (
     <section className="py-24">
-      <div className="container mx-auto px-6 max-w-2xl">
+      <div className="container mx-auto px-6 max-w-6xl">
         <FadeIn>
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-center leading-tight mb-4">
             <span className="block">Everything You Get</span>
@@ -386,8 +434,9 @@ const OfferStack = () => {
             Most agencies sell you one piece of the puzzle. We build and run the whole machine.
           </p>
         </FadeIn>
+        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
         <FadeIn delay={0.1}>
-          <div className="glass-card overflow-hidden border border-border/60">
+          <div className="glass-card overflow-hidden border border-border/60 h-full">
             <div className="px-6 py-4 border-b border-border/40 bg-secondary/20">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">The AI Personal Brand System — What is included</p>
             </div>
@@ -417,6 +466,8 @@ const OfferStack = () => {
             </div>
           </div>
         </FadeIn>
+        <FadeIn delay={0.15}><ContentFitForm /></FadeIn>
+        </div>
       </div>
     </section>
   );
