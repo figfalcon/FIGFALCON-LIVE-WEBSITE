@@ -27,10 +27,9 @@ const Footer = () => {
           <div>
             <h4 className="font-heading font-semibold text-foreground mb-4">Services</h4>
             <div className="flex flex-col gap-3">
-              <Link to="/services#chatbot" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Chatbot & Lead Collection</Link>
-              <Link to="/services#voice-ai" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Voice AI Receptionist</Link>
-              <Link to="/services#websites" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Website & Funnel Building</Link>
-              <Link to="/services#ai-clone" className="text-sm text-muted-foreground hover:text-foreground transition-colors">AI Clone & Video Creation</Link>
+              <Link to="/ai-voice-agent" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Voice AI Receptionist</Link>
+              <Link to="/ai-content-system" className="text-sm text-muted-foreground hover:text-foreground transition-colors">AI Clone & Video Creation</Link>
+              <Link to="/second-brain-os" className="text-sm text-muted-foreground hover:text-foreground transition-colors">The Agency Second Brain OS</Link>
             </div>
           </div>
 
