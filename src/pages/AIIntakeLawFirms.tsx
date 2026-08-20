@@ -336,7 +336,7 @@ const ConsultCalendarCard = () => (
     <div className="grid grid-cols-5 gap-2.5 mb-6 flex-1">
       {pipelineDays.map((d, i) => (
         <div key={d} className="relative rounded-lg bg-white/[0.03] border border-white/5 overflow-hidden">
-          <span className={`absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wider ${i === 1 || i === 3 ? "text-white" : "text-muted-foreground/70"}`}>{d}</span>
+          <span className={`absolute z-10 top-2 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wider ${i === 1 || i === 3 ? "text-white" : "text-muted-foreground/70"}`}>{d}</span>
           {pipelineBlocks.filter((b) => b.day === i).map((b) => (
             <div key={b.label} className="absolute inset-x-1.5 rounded-md p-2 flex items-end shadow-md shadow-primary/20" style={{ top: `${b.top}%`, height: `${b.height}%`, background: "var(--gradient-primary)" }}>
               <span className="text-[10px] font-semibold text-white leading-tight">{b.label}</span>
