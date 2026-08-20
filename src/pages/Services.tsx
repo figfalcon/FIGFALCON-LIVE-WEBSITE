@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Bot, Mic, Globe, Video, Brain, Package, CheckCircle } from "lucide-react";
+import { ArrowRight, Bot, Mic, Globe, Video, Brain, Package, CheckCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 
@@ -226,7 +226,7 @@ const Services = () => {
             <h2 className="section-heading mb-4">Not Sure Which Service Is <span className="gradient-text">Right for You?</span></h2>
             <p className="text-muted-foreground mb-8">Book a free strategy call and we'll analyze your situation to recommend the best approach.</p>
             <Link to="/contact" className="btn-primary text-lg px-8 py-4">
-              Let's Automate Your Growth
+              Get a Consult Recovery Audit <ArrowRight className="w-4 h-4" />
             </Link>
           </ScrollReveal>
         </div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Cog, Zap, Wrench, Users } from "lucide-react";
+import { ArrowRight, Cog, Zap, Wrench, Users } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import PageHero from "@/components/PageHero";
 import founderImg from "@/assets/founder-bikram.png";
@@ -126,7 +126,7 @@ const About = () => {
           <ScrollReveal>
             <h2 className="section-heading mb-6">Ready to Streamline <span className="gradient-text">Your Operations?</span></h2>
             <Link to="/contact" className="btn-primary text-lg px-8 py-4">
-              Let's Automate Your Growth
+              Get a Consult Recovery Audit <ArrowRight className="w-4 h-4" />
             </Link>
           </ScrollReveal>
         </div>
