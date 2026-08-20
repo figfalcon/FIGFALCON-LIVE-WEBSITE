@@ -152,7 +152,7 @@ const LandingNavbar = () => {
           ? "bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-xl shadow-background/40"
           : "bg-transparent"
       }`}>
-        <a href="#" className="flex items-center gap-2 shrink-0">
+        <a href="/" className="flex items-center gap-2 shrink-0">
           <img src={logo} alt="Figfalcon" className="h-6 md:h-7" />
         </a>
         <nav className="hidden md:flex items-center gap-0.5">
