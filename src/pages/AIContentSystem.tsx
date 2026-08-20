@@ -391,7 +391,7 @@ const ContentFitForm = () => {
   const fieldClass = "w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm";
   const update = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setFormData({ ...formData, [event.target.name]: event.target.value });
 
-  return <div className="glass-card p-6 md:p-8 h-full">
+  return <div className="glass-card p-6 md:p-8">
     <h3 className="font-heading font-semibold text-xl mb-1">Request a fit call</h3>
     <p className="text-sm text-muted-foreground mb-6">Takes about two minutes. We respond within 24 hours.</p>
     <form onSubmit={submit} className="space-y-4">
@@ -434,9 +434,9 @@ const OfferStack = () => {
             Most agencies sell you one piece of the puzzle. We build and run the whole machine.
           </p>
         </FadeIn>
-        <div className="grid lg:grid-cols-2 gap-6 items-stretch">
+        <div className="grid lg:grid-cols-2 gap-6 items-start">
         <FadeIn delay={0.1}>
-          <div className="glass-card overflow-hidden border border-border/60 h-full">
+          <div className="glass-card overflow-hidden border border-border/60">
             <div className="px-6 py-4 border-b border-border/40 bg-secondary/20">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">The AI Personal Brand System — What is included</p>
             </div>
