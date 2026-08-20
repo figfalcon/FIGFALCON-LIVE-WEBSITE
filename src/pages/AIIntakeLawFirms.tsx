@@ -403,7 +403,7 @@ const AIIntakeLawFirms = () => {
                 <Eyebrow>AI voice receptionist</Eyebrow>
               </FadeIn>
               <FadeIn delay={0.05}>
-                <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(1.375rem,0.85rem+1.7vw,2.1875rem)] mb-6">
+                <h1 className="font-heading font-bold leading-[1.1] tracking-tight text-[clamp(2rem,1.1rem+2.4vw,3.5rem)] mb-6">
                   <span className="block">Never lose another</span>
                   <span className="block">client to a <span className="gradient-text">voicemail.</span></span>
                 </h1>
