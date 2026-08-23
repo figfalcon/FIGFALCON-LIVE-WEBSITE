@@ -8,6 +8,7 @@ import {
 import { getCalApi } from "@calcom/embed-react";
 import Cal from "@calcom/embed-react";
 import logo from "@/assets/figfalcon-logo.png";
+import RequestFitCallForm from "@/components/RequestFitCallForm";
 
 const CAL_LINK = "figfalcon/figfalcon-strategy-call";
 const CAL_NAMESPACE = "consultation";
@@ -519,6 +520,13 @@ const SecondBrainOS = () => {
               <Cal namespace={CAL_NAMESPACE} calLink={CAL_LINK} style={{ width: "100%", height: "100%", overflow: "scroll" }} config={{ layout: "month_view", theme: "dark" }} />
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* Request a fit call */}
+      <section className="py-20 md:py-24">
+        <div className="container mx-auto px-6 max-w-xl">
+          <FadeIn><RequestFitCallForm source="figfalcon.com/second-brain-os" /></FadeIn>
         </div>
       </section>
 
