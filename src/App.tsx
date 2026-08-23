@@ -18,6 +18,7 @@ import AIContentSystem from "./pages/AIContentSystem";
 import SecondBrainOS from "./pages/SecondBrainOS";
 import AIIntakeLawFirms from "./pages/AIIntakeLawFirms";
 import ScrollToTop from "@/components/ScrollToTop";
+import MetaPixelPageView from "@/components/MetaPixelPageView";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,7 @@ const App = () => (
       <Toaster />
       <BrowserRouter>
         <ScrollToTop />
+        <MetaPixelPageView />
         <AppShell />
       </BrowserRouter>
     </TooltipProvider>
