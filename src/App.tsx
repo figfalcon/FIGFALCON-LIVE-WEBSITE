@@ -17,13 +17,14 @@ import NotFound from "./pages/NotFound";
 import AIContentSystem from "./pages/AIContentSystem";
 import SecondBrainOS from "./pages/SecondBrainOS";
 import AIIntakeLawFirms from "./pages/AIIntakeLawFirms";
+import Coaches from "./pages/Coaches";
 import ScrollToTop from "@/components/ScrollToTop";
 import MetaPixelPageView from "@/components/MetaPixelPageView";
 
 const queryClient = new QueryClient();
 
 // Routes that render without the shared Header/Footer/ChatWidget (standalone landing pages)
-const BARE_ROUTES = ["/ai-content-system", "/second-brain-os", "/ai-voice-agent"];
+const BARE_ROUTES = ["/ai-content-system", "/second-brain-os", "/ai-voice-agent", "/coaches"];
 
 const AppShell = () => {
   const { pathname } = useLocation();
@@ -43,6 +44,7 @@ const AppShell = () => {
       <Route path="/second-brain-os" element={<SecondBrainOS />} />
       <Route path="/ai-voice-agent" element={<AIIntakeLawFirms />} />
       <Route path="/ai-intake-law-firms" element={<Navigate to="/ai-voice-agent" replace />} />
+      <Route path="/coaches" element={<Coaches />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -196,4 +197,56 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(222 20% 30%);
+}
+
+/* Coaches page only — luxury type + colour system. Scoped so the rest of the site keeps
+   Montserrat/Poppins/blue untouched. Overriding the same custom properties Tailwind's
+   hsl(var(--x)) classes read means every existing bg-background/text-primary/glass-card/
+   border-border class works unchanged here — just repainted in Emerald/Gold/Beige. */
+.coaches-luxe {
+  --font-luxe-script: 'Pinyon Script', cursive;
+  --font-luxe-sans: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-luxe-sans);
+
+  --background: 148 33% 7%;        /* near-black emerald */
+  --foreground: 32 52% 89%;        /* silk beige */
+  --card: 148 31% 15%;             /* emerald night */
+  --card-foreground: 32 52% 89%;
+  --secondary: 148 25% 14%;
+  --secondary-foreground: 32 52% 89%;
+  --muted: 148 20% 16%;
+  --muted-foreground: 32 15% 65%;
+  --primary: 30 53% 64%;           /* antique gold */
+  --primary-foreground: 148 40% 10%;
+  --accent: 150 40% 30%;           /* emerald glow, distinct from bg/card */
+  --accent-foreground: 32 52% 89%;
+  --border: 148 25% 20%;
+  --input: 148 25% 20%;
+  --ring: 30 53% 64%;
+
+  --gradient-primary: linear-gradient(135deg, hsl(30 53% 64%), hsl(38 65% 78%));
+  --gradient-card: linear-gradient(145deg, hsl(148 31% 17%), hsl(148 31% 11%));
+  --shadow-glow: 0 0 40px -10px hsl(30 53% 64% / 0.35);
+  --shadow-card: 0 4px 24px -4px hsl(148 40% 3% / 0.6);
+}
+
+.coaches-luxe h1,
+.coaches-luxe h2,
+.coaches-luxe h3,
+.coaches-luxe h4,
+.coaches-luxe h5,
+.coaches-luxe h6 {
+  font-family: var(--font-luxe-sans);
+}
+
+/* Script accent — for a single accent word inside a headline, never full lines or body copy */
+.coaches-luxe .font-script {
+  font-family: var(--font-luxe-script);
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* .gradient-text hardcodes its own blue literal upstream — override explicitly */
+.coaches-luxe .gradient-text {
+  background-image: var(--gradient-primary);
 }
