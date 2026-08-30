@@ -1,9 +1,10 @@
 name: Build & Deploy to Hostinger
 
 on:
-  push:
-    branches:
-      - main
+  # Auto-deploy retired here - Hostinger now deploys from the coaches branch.
+  # main is kept as a backup snapshot; workflow_dispatch still allows a manual
+  # emergency redeploy from this branch if ever needed.
+  workflow_dispatch:
 
 jobs:
   deploy:
