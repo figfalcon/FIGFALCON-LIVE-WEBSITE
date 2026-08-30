@@ -3,7 +3,7 @@ name: Build & Deploy to Hostinger
 on:
   push:
     branches:
-      - main
+      - coaches
 
 jobs:
   deploy:
